@@ -1,0 +1,16 @@
+name: Bug
+description: Report a reproducible Aprincar problem
+title: "[bug]: "
+labels: [bug]
+body:
+  - type: textarea
+    id: problem
+    attributes: { label: What happened?, description: Include expected and actual behavior. }
+    validations: { required: true }
+  - type: textarea
+    id: reproduce
+    attributes: { label: How to reproduce, description: Steps, device/browser and offline/online state. }
+    validations: { required: true }
+  - type: textarea
+    id: privacy
+    attributes: { label: Privacy note, description: Do not attach child-identifying information. }

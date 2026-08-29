@@ -1,0 +1,8 @@
+{
+  "id": "BNCC",
+  "name": "Base Nacional Comum Curricular",
+  "version": "2018",
+  "locale": "pt-BR",
+  "source": "https://basenacionalcomum.mec.gov.br/",
+  "disclaimer": "Crosswalk reference only; not an automatic school assessment."
+}

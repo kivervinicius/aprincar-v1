@@ -1,0 +1,4 @@
+# Aprincar React game template
+
+React-based single-file extension template. Read README.md, src/main.tsx, src/aprincar-sdk.ts and scripts/package.mjs.
+

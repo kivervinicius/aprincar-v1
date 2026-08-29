@@ -1,0 +1,4 @@
+# Aprincar Community Games
+
+Reviewed community extension repository. See docs/README.md and docs/WORKFLOW.md, then CONTRIBUTING.md for the submission contract.
+

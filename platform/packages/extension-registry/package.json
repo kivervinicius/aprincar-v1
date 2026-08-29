@@ -1,0 +1,17 @@
+{
+  "name": "@aprincar/extension-registry",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@aprincar/extension-contracts": "0.1.0"
+  }
+}

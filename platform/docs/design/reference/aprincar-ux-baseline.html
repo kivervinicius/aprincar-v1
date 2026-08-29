@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#fbfaf7" />
+  <title>Ludi — MVP Hub de Aprendizagem</title>
+  <style>
+    :root{
+      --bg:#f7f6f2;--surface:#fff;--surface2:#f0eee8;--text:#242523;--muted:#6f716d;
+      --line:#e2dfd7;--accent:#6f5bd7;--accent2:#efeafe;--ok:#2f8f69;--warn:#b7791f;
+      --danger:#b44c4c;--shadow:0 18px 50px rgba(55,52,45,.10);--radius:24px;
+      --tap:52px;--max:1240px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-rounded,"SF Pro Rounded",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    .hidden{display:none!important}
+    .app{min-height:100vh}
+    .shell{max-width:var(--max);margin:auto;padding:20px}
+    .topbar{position:sticky;top:0;z-index:20;background:rgba(247,246,242,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(226,223,215,.85)}
+    .topbar-inner{max-width:var(--max);margin:auto;padding:12px 20px;display:flex;align-items:center;gap:14px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.03em}
+    .brand-mark{width:38px;height:38px;border-radius:14px;background:linear-gradient(135deg,#6f5bd7,#9a85f5);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 8px 18px rgba(111,91,215,.28)}
+    .nav{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+    .nav button,.btn{border:0;border-radius:16px;min-height:44px;padding:0 16px;background:var(--surface);color:var(--text);font-weight:700;box-shadow:0 0 0 1px var(--line) inset}
+    .nav button.active,.btn.primary{background:var(--accent);color:#fff;box-shadow:none}
+    .btn.soft{background:var(--accent2);color:#5143a6}
+    .btn.ghost{background:transparent;box-shadow:none}
+    .btn.danger{background:#fff0f0;color:var(--danger)}
+    .btn.small{min-height:38px;padding:0 12px;border-radius:13px;font-size:14px}
+    .hero{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;align-items:stretch;margin:20px 0}
+    .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero-main{padding:34px;min-height:280px;position:relative;overflow:hidden}
+    .hero-main:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:#f0ebff;right:-80px;bottom:-100px}
+    .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;color:var(--accent)}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:clamp(34px,5vw,66px);line-height:.98;letter-spacing:-.055em;max-width:850px;margin-bottom:18px}
+    h2{font-size:28px;letter-spacing:-.03em}
+    h3{font-size:18px;letter-spacing:-.02em}
+    .lead{font-size:18px;line-height:1.55;color:var(--muted);max-width:760px}
+    .hero-side{padding:26px;display:flex;flex-direction:column;justify-content:space-between}
+    .stat{padding:16px 0;border-bottom:1px solid var(--line)}
+    .stat:last-child{border:0}
+    .stat strong{display:block;font-size:26px}
+    .muted{color:var(--muted)}
+    .section{margin:28px 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:14px}
+    .section-head p{margin:0;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:18px;min-width:0}
+    .game-card{display:flex;flex-direction:column;gap:12px;min-height:250px}
+    .game-icon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:30px;background:var(--surface2)}
+    .tags{display:flex;gap:6px;flex-wrap:wrap}
+    .tag{font-size:12px;border-radius:999px;padding:6px 9px;background:var(--surface2);color:#565852;font-weight:700}
+    .game-actions{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap}
+    .profile-chip{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);padding:7px 11px;border-radius:16px;min-height:46px}
+    .avatar{width:34px;height:34px;border-radius:13px;background:#efeafe;display:grid;place-items:center;font-size:20px}
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .space{justify-content:space-between}
+    .input,.select{width:100%;min-height:50px;border:1px solid var(--line);background:#fff;border-radius:15px;padding:0 14px;color:var(--text);outline:none}
+    .input:focus,.select:focus{border-color:#9d8cf0;box-shadow:0 0 0 3px #eeeaff}
+    label{font-size:13px;font-weight:800;display:block;margin-bottom:7px}
+    .field{margin-bottom:14px}
+    .choice-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .choice{min-height:74px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:10px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:800;gap:8px}
+    .choice.selected{border-color:#8b78e5;background:#f0ecff;color:#4c3e9f}
+    .choice .emoji{font-size:25px}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(30,30,28,.45);z-index:100;display:grid;place-items:center;padding:16px}
+    .modal{width:min(760px,100%);max-height:92vh;overflow:auto;background:var(--surface);border-radius:28px;padding:26px;box-shadow:0 30px 80px rgba(0,0,0,.24)}
+    .modal.wide{width:min(1100px,100%)}
+    .steps{display:flex;gap:7px;margin:16px 0 24px}
+    .step-dot{height:6px;flex:1;background:#e9e6df;border-radius:99px}
+    .step-dot.active{background:var(--accent)}
+    .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .hub-banner{background:linear-gradient(135deg,#1f2430,#34394a);color:white;padding:24px;border-radius:26px;margin:18px 0}
+    .hub-banner .muted{color:#c8cbd3}
+    .progress-row{display:grid;grid-template-columns:180px 1fr 92px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+    .bar{height:10px;background:#ece9e1;border-radius:99px;overflow:hidden}
+    .bar>span{display:block;height:100%;background:linear-gradient(90deg,#6f5bd7,#9f8df4);border-radius:inherit}
+    .runtime{position:fixed;inset:0;z-index:120;background:#f8f7f3;display:flex;flex-direction:column}
+    .runtime-head{height:66px;display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--line);background:#fff}
+    .runtime-body{flex:1;overflow:auto;display:grid;place-items:center;padding:18px}
+    .game-stage{width:min(900px,100%);height:min(680px,calc(100vh - 110px));min-height:460px;background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+    .stage-pad{padding:22px;height:100%}
+    canvas{touch-action:none;display:block}
+    .paint-wrap{display:grid;grid-template-columns:84px 1fr;height:100%}
+    .paint-tools{border-right:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:9px;background:#faf9f6}
+    .paint-color{width:48px;height:48px;border-radius:16px;border:3px solid transparent}
+    .paint-color.active{border-color:#252525}
+    #paintCanvas,#writeCanvas{width:100%;height:100%;background:#fff}
+    .sort-layout{display:grid;grid-template-columns:1fr;grid-template-rows:1fr 150px;height:100%;gap:12px}
+    .bins{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .bin{border:2px dashed #d9d5cc;border-radius:22px;display:grid;place-items:center;font-size:18px;font-weight:900;min-height:110px}
+    .tokens{display:flex;flex-wrap:wrap;gap:14px;align-content:flex-start;justify-content:center;padding:20px}
+    .token{width:68px;height:68px;border-radius:50%;box-shadow:0 8px 20px rgba(0,0,0,.12);cursor:grab}
+    .write-layout{display:grid;grid-template-columns:.62fr 1fr;height:100%}
+    .write-info{padding:28px;background:#f5f1ff;display:flex;flex-direction:column;justify-content:center}
+    .letter-demo{font-size:150px;line-height:1;font-weight:900;color:#4e419e}
+    .score-box{padding:12px;border-radius:16px;background:#fff;border:1px solid var(--line);margin-top:12px}
+    .bubble-stage{position:relative;width:100%;height:100%;background:linear-gradient(#dff5ff,#fff7dc)}
+    .bubble{position:absolute;border:0;border-radius:50%;background:rgba(111,91,215,.25);border:3px solid rgba(111,91,215,.35);display:grid;place-items:center;font-size:24px;animation:float 4s ease-in-out infinite}
+    @keyframes float{50%{transform:translateY(-14px)}}
+    .empty{padding:38px;text-align:center;border:2px dashed var(--line);border-radius:22px;color:var(--muted)}
+    .toast{position:fixed;right:18px;bottom:18px;z-index:300;background:#252624;color:white;border-radius:16px;padding:13px 16px;box-shadow:var(--shadow);max-width:360px}
+    .sep{height:1px;background:var(--line);margin:18px 0}
+    .callout{padding:14px 16px;border-radius:18px;background:#f3f0ff;color:#50429e;border:1px solid #e6e0ff}
+    .arch{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .arch>div{padding:14px;border-radius:18px;background:#fff;border:1px solid var(--line);text-align:center;font-weight:800}
+    @media(max-width:900px){
+      .hero,.grid,.grid.two{grid-template-columns:1fr}
+      .choice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .write-layout{grid-template-columns:1fr;grid-template-rows:190px 1fr}
+      .paint-wrap{grid-template-columns:68px 1fr}
+      .arch{grid-template-columns:1fr}
+      .progress-row{grid-template-columns:1fr}
+    }
+    @media(max-width:620px){
+      .shell{padding:14px}.topbar-inner{padding:10px 14px}.nav button{padding:0 11px;font-size:13px}
+      .hero-main{padding:24px}.hero-side{padding:20px}.choice-grid{grid-template-columns:1fr 1fr}
+      .modal{padding:20px}.game-stage{min-height:520px}.write-layout{grid-template-rows:175px 1fr}
+    }
+  </style>
+</head>
+<body>
+<div id="app" class="app"></div>
+<div id="modalRoot"></div>
+<div id="runtimeRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  // ============================================================
+  // LUDI MVP — single-file prototype
+  // Boundaries intentionally mirror the future architecture:
+  // MockHubRegistry -> PackageInstaller -> DeviceLibrary
+  // -> ProfileLibrary -> GameHost -> Generic Engines.
+  // No game-specific page is part of the app shell.
+  // ============================================================
+
+  const STORAGE_KEY = "ludi.mvp.v1";
+  const nowISO = () => new Date().toISOString();
+  const uid = (p="id") => p + "_" + Math.random().toString(36).slice(2,10);
+
+  const SKILLS = {
+    "visual.colors": {label:"Reconhecimento de cores", domain:"Percepção"},
+    "visual.matching": {label:"Encontrar iguais", domain:"Percepção"},
+    "visual.shapes": {label:"Formas", domain:"Percepção"},
+    "motor.pointer-control": {label:"Controle do toque", domain:"Motricidade"},
+    "motor.drag-drop": {label:"Arrastar e soltar", domain:"Motricidade"},
+    "motor.free-drawing": {label:"Desenho livre", domain:"Motricidade"},
+    "logic.classification": {label:"Classificação", domain:"Lógica"},
+    "logic.sequence": {label:"Sequências", domain:"Lógica"},
+    "math.quantity": {label:"Percepção de quantidade", domain:"Matemática"},
+    "math.counting": {label:"Contagem", domain:"Matemática"},
+    "literacy.sound-awareness": {label:"Atenção aos sons", domain:"Linguagem"},
+    "literacy.initial-sound": {label:"Som inicial", domain:"Alfabetização"},
+    "literacy.letter-recognition": {label:"Reconhecimento de letras", domain:"Alfabetização"},
+    "literacy.letter-writing": {label:"Escrita de letras", domain:"Escrita"},
+    "literacy.word-building": {label:"Formação de palavras", domain:"Escrita"},
+    "creativity.visual-expression": {label:"Expressão visual", domain:"Criatividade"},
+    "computational.sequence": {label:"Sequência de comandos", domain:"Pensamento computacional"}
+  };
+
+  // ---------------------------
+  // MOCK HUB — external catalog simulation
+  // ---------------------------
+  const HUB_REGISTRY = [
+    {id:"org.ludi.paint-free",version:"1.0.0",name:"Pintura Livre",icon:"🎨",kind:"creative",engine:"paint",age:[2,9],interests:["drawing","colors"],skills:["motor.free-drawing","creativity.visual-expression"],description:"Uma tela livre para pintar, experimentar cores e criar sem certo ou errado.",scoring:"none",offline:true,network:false,curation:"Official",size:"620 KB"},
+    {id:"org.ludi.dino-colors",version:"1.0.0",name:"Dino Cores",icon:"🦕",kind:"learning",engine:"sort-colors",age:[2,5],interests:["dinosaurs","colors"],skills:["visual.colors","logic.classification","motor.drag-drop"],description:"Ajude os dinossauros coloridos a encontrar seu lugar.",scoring:"progress",offline:true,network:false,curation:"Curated",size:"780 KB"},
+    {id:"org.ludi.shapes",version:"1.0.0",name:"Encaixe as Formas",icon:"🔷",kind:"learning",engine:"sort-colors",age:[2,4],interests:["puzzles"],skills:["visual.shapes","logic.classification"],description:"Uma brincadeira de encaixe e classificação visual.",scoring:"progress",offline:true,network:false,curation:"Curated",size:"710 KB"},
+    {id:"org.ludi.bubbles",version:"1.0.0",name:"Estoure as Bolhas",icon:"🫧",kind:"free-play",engine:"bubbles",age:[2,4],interests:["movement"],skills:["motor.pointer-control"],description:"Toque nas bolhas, explore causa e efeito e coordenação olho-mão.",scoring:"none",offline:true,network:false,curation:"Official",size:"430 KB"},
+    {id:"org.ludi.animal-sounds",version:"1.0.0",name:"Sons dos Animais",icon:"🐮",kind:"learning",engine:"bubbles",age:[2,5],interests:["animals","sounds"],skills:["literacy.sound-awareness","visual.matching"],description:"Brincadeira auditiva e visual com animais.",scoring:"progress",offline:true,network:false,curation:"Community",size:"1.4 MB"},
+    {id:"org.ludi.sound-hunt",version:"1.0.0",name:"Caça ao Som",icon:"👂",kind:"learning",engine:"bubbles",age:[4,7],interests:["letters","sounds"],skills:["literacy.initial-sound","literacy.sound-awareness"],description:"Perceba sons iniciais de palavras em uma experiência curta.",scoring:"progress",offline:true,network:false,curation:"Curated",size:"1.1 MB"},
+    {id:"org.ludi.letter-studio",version:"1.0.0",name:"Desenhe a Letra",icon:"✏️",kind:"learning",engine:"handwriting",age:[4,8],interests:["letters","drawing"],skills:["literacy.letter-recognition","literacy.letter-writing","motor.pointer-control"],description:"Observe, desenhe com o dedo e receba feedback gentil sobre a forma.",scoring:"progress",offline:true,network:false,curation:"Official",size:"890 KB"},
+    {id:"org.ludi.movable-alphabet",version:"1.0.0",name:"Alfabeto Móvel",icon:"🔤",kind:"practice",engine:"handwriting",age:[4,8],interests:["letters","words"],skills:["literacy.letter-recognition","literacy.word-building"],description:"Explore letras e construa palavras como peças.",scoring:"progress",offline:true,network:false,curation:"Community",size:"950 KB"},
+    {id:"org.ludi.count-animals",version:"1.0.0",name:"Conte os Bichos",icon:"🐞",kind:"learning",engine:"bubbles",age:[3,6],interests:["animals","numbers"],skills:["math.quantity","math.counting"],description:"Conte pequenas quantidades antes de trabalhar símbolos.",scoring:"progress",offline:true,network:false,curation:"Curated",size:"680 KB"},
+    {id:"org.ludi.tower",version:"1.0.0",name:"Torre Maluca",icon:"🏗️",kind:"creative",engine:"sort-colors",age:[3,7],interests:["construction","puzzles"],skills:["motor.drag-drop","logic.sequence"],description:"Construa, experimente e reorganize peças.",scoring:"none",offline:true,network:false,curation:"Community",size:"770 KB"},
+    {id:"org.ludi.memory",version:"1.0.0",name:"Memória Animal",icon:"🦊",kind:"practice",engine:"bubbles",age:[3,7],interests:["animals","puzzles"],skills:["visual.matching"],description:"Uma atividade curta de atenção e memória visual.",scoring:"progress",offline:true,network:false,curation:"Curated",size:"590 KB"},
+    {id:"org.ludi.robot",version:"1.0.0",name:"Leve o Robô",icon:"🤖",kind:"learning",engine:"robot",age:[4,8],interests:["robots","puzzles"],skills:["computational.sequence","logic.sequence"],description:"Monte uma sequência de comandos e leve o robô até a estrela.",scoring:"progress",offline:true,network:false,curation:"Official",size:"840 KB"}
+  ];
+
+  const DEFAULT_STATE = {
+    schemaVersion:1,
+    profiles:[],
+    currentProfileId:null,
+    installedGames:{},
+    skillState:{},
+    sessions:[],
+    settings:{parentUnlocked:false},
+    demo:{initialized:false}
+  };
+
+  const DB = {
+    load(){
+      try{
+        const raw=localStorage.getItem(STORAGE_KEY);
+        if(!raw) return structuredClone(DEFAULT_STATE);
+        return Object.assign(structuredClone(DEFAULT_STATE), JSON.parse(raw));
+      }catch(e){ return structuredClone(DEFAULT_STATE); }
+    },
+    save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); },
+    reset(){ localStorage.removeItem(STORAGE_KEY); state=structuredClone(DEFAULT_STATE); }
+  };
+
+  let state=DB.load();
+  let route="home";
+  let onboarding={step:0,name:"",avatar:"🦕",age:4,abilities:[],interests:[],limit:null};
+  let hubFilters={q:"",kind:"all",age:"all"};
+  let currentRuntime=null;
+
+  function currentProfile(){ return state.profiles.find(p=>p.id===state.currentProfileId)||null; }
+  function getGame(id){ return HUB_REGISTRY.find(g=>g.id===id); }
+  function installed(id){ return !!state.installedGames[id]; }
+  function pinned(profile,id){ return profile?.pinnedGames?.includes(id); }
+
+  // ---------------------------
+  // Recommendation Engine v1
+  // ---------------------------
+  function recommendationScore(game, profile){
+    const age=profile.age;
+    const ageFit = age>=game.age[0] && age<=game.age[1] ? 1 : Math.max(0,1-Math.min(Math.abs(age-game.age[0]),Math.abs(age-game.age[1]))*.25);
+    const interests=profile.interests||[];
+    const interestFit=game.interests.some(i=>interests.includes(i))?1:0;
+    const seen = profile.pinnedGames?.includes(game.id) ? .2 : 1;
+    const creative = ["creative","free-play"].includes(game.kind) ? .55 : .35;
+    const skillBonus = game.skills.some(s=>{
+      const ss=state.skillState[profile.id]?.[s];
+      return !ss || ss.state==="exploring" || ss.state==="developing";
+    }) ? 1 : .5;
+    return ageFit*.38 + skillBonus*.27 + interestFit*.20 + creative*.10 + seen*.05;
+  }
+  function recommendations(profile, n=6){
+    return HUB_REGISTRY.slice().sort((a,b)=>recommendationScore(b,profile)-recommendationScore(a,profile)).slice(0,n);
+  }
+
+  // ---------------------------
+  // Package Installer simulation
+  // ---------------------------
+  const PackageInstaller = {
+    install(gameId){
+      const g=getGame(gameId); if(!g) return;
+      state.installedGames[gameId]={id:g.id,version:g.version,installedAt:nowISO(),source:"mock-hub",verified:true};
+      DB.save(); toast(`${g.name} foi instalado no dispositivo.`);
+    },
+    uninstall(gameId){
+      delete state.installedGames[gameId];
+      state.profiles.forEach(p=>p.pinnedGames=p.pinnedGames.filter(x=>x!==gameId));
+      DB.save(); render(); toast("Jogo removido do dispositivo.");
+    }
+  };
+
+  // ---------------------------
+  // Event + Evidence API
+  // ---------------------------
+  const EventBus = {
+    emit(type,payload={}){
+      const p=currentProfile(); if(!p) return;
+      const evt={id:uid("evt"),ts:nowISO(),profileId:p.id,gameId:currentRuntime?.game?.id||payload.gameId||null,type,payload};
+      state.sessions.push(evt);
+      if(type==="evidence") ProgressEngine.consumeEvidence(p.id,payload);
+      DB.save();
+      return evt;
+    }
+  };
+  const ProgressEngine = {
+    consumeEvidence(profileId,e){
+      if(!e.skill || !SKILLS[e.skill]) return;
+      state.skillState[profileId] ||= {};
+      const prev=state.skillState[profileId][e.skill] || {score:.18,evidenceCount:0,independentSuccesses:0,assistedSuccesses:0,state:"exploring"};
+      const success=e.result==="success";
+      const independent=e.independent!==false;
+      const delta= success ? (independent?.10:.06) : -.025;
+      const score=Math.max(0,Math.min(1,prev.score+delta*(e.confidence||.8)));
+      const st=score>=.82?"consolidated":score>=.65?"comfortable":score>=.42?"developing":"exploring";
+      state.skillState[profileId][e.skill]={score,evidenceCount:prev.evidenceCount+1,independentSuccesses:prev.independentSuccesses+(success&&independent?1:0),assistedSuccesses:prev.assistedSuccesses+(success&&!independent?1:0),state:st,lastEvidenceAt:nowISO()};
+    }
+  };
+
+  // ---------------------------
+  // Generic UI helpers
+  // ---------------------------
+  function esc(s){ return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+  function toast(msg){
+    const root=document.getElementById("toastRoot");
+    root.innerHTML=`<div class="toast">${esc(msg)}</div>`;
+    setTimeout(()=>root.innerHTML="",2400);
+  }
+  function kindLabel(k){ return ({learning:"Aprender",practice:"Praticar",creative:"Criar","free-play":"Brincar"})[k]||k; }
+  function curationTag(c){ return `<span class="tag">${esc(c)}</span>`; }
+  function gameCard(g,profile,{hub=false}={}){
+    const isInstalled=installed(g.id), isPinned=pinned(profile,g.id);
+    return `<article class="card game-card">
+      <div class="row space">
+        <div class="game-icon">${g.icon}</div>${curationTag(g.curation)}
+      </div>
+      <div>
+        <h3>${esc(g.name)}</h3>
+        <p class="muted">${esc(g.description)}</p>
+      </div>
+      <div class="tags">
+        <span class="tag">${kindLabel(g.kind)}</span><span class="tag">${g.age[0]}–${g.age[1]} anos</span><span class="tag">${g.size}</span>
+      </div>
+      <div class="game-actions">
+        ${hub && !isInstalled ? `<button class="btn primary small" data-action="install" data-id="${g.id}">Instalar</button>`:""}
+        ${hub && isInstalled && profile && !isPinned ? `<button class="btn soft small" data-action="pin" data-id="${g.id}">Adicionar ao perfil</button>`:""}
+        ${isInstalled && isPinned ? `<button class="btn primary small" data-action="play" data-id="${g.id}">Jogar</button>`:""}
+        ${hub && isInstalled ? `<button class="btn ghost small" data-action="details" data-id="${g.id}">Detalhes</button>`:""}
+      </div>
+    </article>`;
+  }
+
+  function topbar(){
+    const p=currentProfile();
+    return `<header class="topbar"><div class="topbar-inner">
+      <div class="brand"><div class="brand-mark">L</div><span>Ludi</span></div>
+      ${p?`<button class="profile-chip" data-action="profiles"><span class="avatar">${p.avatar}</span><strong>${esc(p.name)}</strong></button>`:""}
+      <nav class="nav">
+        <button data-route="home" class="${route==="home"?"active":""}">Início</button>
+        <button data-route="hub" class="${route==="hub"?"active":""}">Explorar</button>
+        <button data-route="parent" class="${route==="parent"?"active":""}">Responsável</button>
+      </nav>
+    </div></header>`;
+  }
+
+  function render(){
+    const app=document.getElementById("app");
+    app.innerHTML=topbar()+`<main class="shell">${route==="hub"?renderHub():route==="parent"?renderParent():renderHome()}</main>`;
+    bind();
+    if(!state.profiles.length && !document.querySelector(".modal-backdrop")) openOnboarding();
+  }
+
+  function renderHome(){
+    const p=currentProfile();
+    if(!p) return `<div class="hero"><section class="panel hero-main"><div class="eyebrow">offline-first</div><h1>Um lugar para brincar e aprender.</h1><p class="lead">Crie um perfil local e descubra jogos curados para a fase da criança.</p><button class="btn primary" data-action="new-profile">Criar perfil</button></section></div>`;
+    const pins=(p.pinnedGames||[]).map(getGame).filter(Boolean);
+    const recs=recommendations(p,6);
+    return `
+      <div class="hero">
+        <section class="panel hero-main">
+          <div class="eyebrow">perfil local • sem conta</div>
+          <h1>Olá, ${esc(p.name)} ${p.avatar}</h1>
+          <p class="lead">Os jogos favoritos deste perfil ficam aqui. Depois de instalados, continuam disponíveis sem Internet.</p>
+          <div class="row"><button class="btn primary" data-route="hub">Descobrir jogos</button><button class="btn soft" data-action="new-profile">Novo perfil</button></div>
+        </section>
+        <aside class="panel hero-side">
+          <div class="stat"><span class="muted">Jogos fixados</span><strong>${pins.length}</strong></div>
+          <div class="stat"><span class="muted">Jogos no dispositivo</span><strong>${Object.keys(state.installedGames).length}</strong></div>
+          <div class="stat"><span class="muted">Armazenamento</span><strong>Local</strong><span class="muted">sem sincronização</span></div>
+        </aside>
+      </div>
+      <section class="section">
+        <div class="section-head"><div><h2>Para brincar agora</h2><p>Biblioteca fixa de ${esc(p.name)}.</p></div></div>
+        ${pins.length?`<div class="grid">${pins.map(g=>gameCard(g,p)).join("")}</div>`:`<div class="empty">Ainda não há jogos fixados neste perfil.<br><br><button class="btn primary" data-route="hub">Explorar o Hub</button></div>`}
+      </section>
+      <section class="section">
+        <div class="section-head"><div><h2>Talvez goste destes</h2><p>Recomendação local baseada em idade, interesses e evidências de aprendizagem.</p></div><button class="btn soft" data-route="hub">Ver todos</button></div>
+        <div class="grid">${recs.map(g=>gameCard(g,p,{hub:true})).join("")}</div>
+      </section>
+      <section class="section">
+        <div class="callout"><strong>Arquitetura do protótipo:</strong> o catálogo abaixo é tratado como um registro externo. Instalar um jogo cria uma entrada na biblioteca do dispositivo; fixar associa apenas o ID do pacote ao perfil da criança.</div>
+      </section>`;
+  }
+
+  function renderHub(){
+    const p=currentProfile();
+    let games=HUB_REGISTRY.filter(g=>{
+      const q=hubFilters.q.trim().toLowerCase();
+      const qok=!q || (g.name+" "+g.description+" "+g.skills.join(" ")).toLowerCase().includes(q);
+      const kok=hubFilters.kind==="all"||g.kind===hubFilters.kind;
+      const aok=hubFilters.age==="all"||(Number(hubFilters.age)>=g.age[0]&&Number(hubFilters.age)<=g.age[1]);
+      return qok&&kok&&aok;
+    });
+    return `<section class="hub-banner">
+      <div class="eyebrow" style="color:#b8adff">Ludi Hub • catálogo separado</div>
+      <h1 style="font-size:44px;margin:8px 0 12px">Jogos são peças do ecossistema.</h1>
+      <p class="muted">O App não possui jogos próprios. Este MVP simula um registry externo e Game Packs instaláveis.</p>
+      <div class="arch"><div>1. Hub Registry</div><div>2. Game Pack</div><div>3. App Runtime</div></div>
+    </section>
+    <section class="section">
+      <div class="toolbar">
+        <input id="hubQ" class="input" style="flex:1;min-width:220px" placeholder="Buscar jogos, habilidades..." value="${esc(hubFilters.q)}">
+        <select id="hubKind" class="select" style="width:auto">
+          <option value="all">Todos os tipos</option><option value="learning">Aprender</option><option value="practice">Praticar</option><option value="creative">Criar</option><option value="free-play">Brincar</option>
+        </select>
+        <select id="hubAge" class="select" style="width:auto">
+          <option value="all">Todas as idades</option>${[2,3,4,5,6,7,8].map(a=>`<option value="${a}">${a} anos</option>`).join("")}
+        </select>
+      </div>
+    </section>
+    <section class="section">
+      <div class="section-head"><div><h2>${games.length} jogos no Hub</h2><p>${p?`Adicionar a ${esc(p.name)} é opcional; a recomendação nunca bloqueia o adulto.`:"Selecione um perfil para fixar jogos."}</p></div></div>
+      <div class="grid">${games.map(g=>gameCard(g,p,{hub:true})).join("")}</div>
+    </section>`;
+  }
+
+  function renderParent(){
+    const p=currentProfile();
+    if(!p) return `<div class="empty">Crie um perfil primeiro.</div>`;
+    const skillEntries=Object.entries(state.skillState[p.id]||{}).sort((a,b)=>b[1].score-a[1].score);
+    const installedGames=Object.keys(state.installedGames).map(getGame).filter(Boolean);
+    return `
+      <section class="section">
+        <div class="section-head"><div><div class="eyebrow">modo responsável</div><h1 style="font-size:48px">Acompanhar sem transformar em ranking.</h1><p>Dados armazenados apenas neste navegador.</p></div></div>
+      </section>
+      <div class="grid two">
+        <section class="card">
+          <h2>${p.avatar} ${esc(p.name)}</h2>
+          <p class="muted">${p.age} anos • ${p.interests.length} interesses informados</p>
+          <div class="field">
+            <label>Limite diário</label>
+            <select id="limitSelect" class="select">
+              <option value="none" ${p.parentControls.dailyLimitMinutes==null?"selected":""}>Sem limite</option>
+              ${[15,30,45,60].map(n=>`<option value="${n}" ${p.parentControls.dailyLimitMinutes===n?"selected":""}>${n} minutos</option>`).join("")}
+            </select>
+          </div>
+          <button class="btn soft" data-action="profiles">Trocar / gerenciar perfis</button>
+        </section>
+        <section class="card">
+          <h2>Biblioteca do dispositivo</h2>
+          <p class="muted">${installedGames.length} pacotes instalados. Um pacote pode ser usado por vários perfis.</p>
+          <div class="tags">${installedGames.map(g=>`<span class="tag">${g.icon} ${esc(g.name)}</span>`).join("")||'<span class="muted">Nenhum jogo instalado.</span>'}</div>
+        </section>
+      </div>
+      <section class="section card">
+        <div class="section-head"><div><h2>Habilidades observadas</h2><p>O jogo envia evidências; o Progress Engine mantém o estado.</p></div></div>
+        ${skillEntries.length?skillEntries.map(([id,s])=>`<div class="progress-row">
+          <strong>${esc(SKILLS[id]?.label||id)}</strong>
+          <div class="bar"><span style="width:${Math.round(s.score*100)}%"></span></div>
+          <span class="tag">${({exploring:"Explorando",developing:"Desenvolvendo",comfortable:"Confortável",consolidated:"Consolidado"})[s.state]}</span>
+        </div>`).join(""):`<div class="empty">Ainda não há evidências. Jogue algumas atividades para ver o painel ganhar contexto.</div>`}
+      </section>
+      <section class="section card">
+        <div class="section-head"><div><h2>Controles da demonstração</h2><p>Útil para testar o protótipo várias vezes.</p></div></div>
+        <button class="btn danger" data-action="reset">Redefinir demonstração</button>
+      </section>`;
+  }
+
+  // ---------------------------
+  // Onboarding
+  // ---------------------------
+  function openOnboarding(){
+    onboarding={step:0,name:"",avatar:"🦕",age:4,abilities:[],interests:[],limit:null};
+    renderOnboarding();
+  }
+  function renderOnboarding(){
+    const root=document.getElementById("modalRoot");
+    const step=onboarding.step;
+    const content=[
+      `<div class="field"><label>Como podemos chamar a criança?</label><input id="obName" class="input" maxlength="24" placeholder="Nome ou apelido" value="${esc(onboarding.name)}"></div>
+       <label>Escolha um avatar</label><div class="choice-grid">${["🦕","🐼","🦊","🚀","🐯","🐙","🐸","🌈"].map(a=>`<button class="choice ${onboarding.avatar===a?"selected":""}" data-ob-avatar="${a}"><span class="emoji">${a}</span></button>`).join("")}</div>`,
+      `<label>Idade aproximada</label><div class="choice-grid">${[2,3,4,5,6,7,8].map(a=>`<button class="choice ${onboarding.age===a?"selected":""}" data-ob-age="${a}"><span class="emoji">${a}</span><span>anos</span></button>`).join("")}</div><p class="muted" style="margin-top:16px">A idade orienta recomendações, mas não bloqueia jogos.</p>`,
+      `<label>O que você já observa?</label><p class="muted">Pode deixar tudo em branco. O sistema também aprende brincando.</p><div class="choice-grid">${[
+        ["matching","Encontra iguais","🧩"],["colors","Reconhece cores","🌈"],["counting","Conta alguns objetos","🔢"],["letters","Reconhece letras","🔤"],["sounds","Percebe sons","👂"],["writing","Escreve algumas letras","✏️"]
+      ].map(([id,l,e])=>`<button class="choice ${onboarding.abilities.includes(id)?"selected":""}" data-ob-ability="${id}"><span class="emoji">${e}</span><span>${l}</span></button>`).join("")}</div>`,
+      `<label>Do que mais gosta?</label><p class="muted">Isso ajuda a escolher temas, não limita o aprendizado.</p><div class="choice-grid">${[
+        ["dinosaurs","Dinossauros","🦕"],["animals","Animais","🐶"],["drawing","Desenhar","🎨"],["music","Música","🎵"],["robots","Robôs","🤖"],["construction","Construir","🏗️"],["letters","Letras","🔤"],["numbers","Números","🔢"],["puzzles","Quebra-cabeças","🧩"],["colors","Cores","🌈"]
+      ].map(([id,l,e])=>`<button class="choice ${onboarding.interests.includes(id)?"selected":""}" data-ob-interest="${id}"><span class="emoji">${e}</span><span>${l}</span></button>`).join("")}</div>`,
+      `<div class="callout"><strong>Pronto.</strong> O perfil será salvo apenas neste dispositivo. Nenhuma conta, servidor ou sincronização será usada neste MVP.</div>
+       <div style="margin-top:18px"><label>Controle de tempo inicial</label><select id="obLimit" class="select"><option value="none">Sem limite</option><option value="15">15 minutos</option><option value="30">30 minutos</option><option value="45">45 minutos</option><option value="60">60 minutos</option></select></div>`
+    ][step];
+    root.innerHTML=`<div class="modal-backdrop"><div class="modal">
+      <div class="row space"><div><div class="eyebrow">novo perfil</div><h2 style="margin:4px 0">Poucas perguntas, sem cadastro.</h2></div>${state.profiles.length?'<button class="btn ghost" data-action="close-modal">Fechar</button>':""}</div>
+      <div class="steps">${[0,1,2,3,4].map(i=>`<div class="step-dot ${i<=step?"active":""}"></div>`).join("")}</div>
+      ${content}
+      <div class="sep"></div>
+      <div class="row space">
+        <button class="btn ghost" data-ob="back" ${step===0?"disabled":""}>Voltar</button>
+        <button class="btn primary" data-ob="${step===4?"finish":"next"}">${step===4?"Criar perfil":"Continuar"}</button>
+      </div>
+    </div></div>`;
+    bindModal();
+  }
+  function finishOnboarding(){
+    const name=(onboarding.name||"Criança").trim();
+    const p={id:uid("child"),name,avatar:onboarding.avatar,age:onboarding.age,ageBand:`${onboarding.age}-${onboarding.age+1}`,interests:onboarding.interests,onboarding:{abilities:onboarding.abilities},pinnedGames:[],hiddenGames:[],parentControls:{dailyLimitMinutes:onboarding.limit},createdAt:nowISO()};
+    state.profiles.push(p); state.currentProfileId=p.id;
+    seedSkills(p);
+    // Pre-install and pin top 4 recommendations to demonstrate zero-friction setup.
+    recommendations(p,4).forEach(g=>{ PackageInstaller.install(g.id); if(!p.pinnedGames.includes(g.id)) p.pinnedGames.push(g.id); });
+    DB.save(); document.getElementById("modalRoot").innerHTML=""; route="home"; render(); toast("Perfil criado. Os primeiros jogos foram preparados.");
+  }
+  function seedSkills(p){
+    state.skillState[p.id] ||= {};
+    const map={matching:"visual.matching",colors:"visual.colors",counting:"math.counting",letters:"literacy.letter-recognition",sounds:"literacy.sound-awareness",writing:"literacy.letter-writing"};
+    p.onboarding.abilities.forEach(a=>{
+      const id=map[a]; if(id) state.skillState[p.id][id]={score:.42,evidenceCount:0,independentSuccesses:0,assistedSuccesses:0,state:"developing",source:"onboarding"};
+    });
+  }
+
+  // ---------------------------
+  // Profile manager
+  // ---------------------------
+  function openProfiles(){
+    const root=document.getElementById("modalRoot");
+    root.innerHTML=`<div class="modal-backdrop"><div class="modal">
+      <div class="row space"><div><div class="eyebrow">perfis locais</div><h2>Quem vai brincar?</h2></div><button class="btn ghost" data-action="close-modal">Fechar</button></div>
+      <div class="grid two">${state.profiles.map(p=>`<button class="choice ${p.id===state.currentProfileId?"selected":""}" data-profile="${p.id}"><span class="emoji">${p.avatar}</span><span>${esc(p.name)}<br><small>${p.age} anos</small></span></button>`).join("")}</div>
+      <div class="sep"></div><button class="btn primary" data-action="new-profile">Adicionar outra criança</button>
+    </div></div>`;
+    bindModal();
+  }
+
+  // ---------------------------
+  // Details
+  // ---------------------------
+  function openDetails(id){
+    const g=getGame(id),p=currentProfile(); if(!g)return;
+    document.getElementById("modalRoot").innerHTML=`<div class="modal-backdrop"><div class="modal">
+      <div class="row space"><div class="row"><div class="game-icon">${g.icon}</div><div><div class="eyebrow">${g.curation}</div><h2 style="margin:2px 0">${esc(g.name)}</h2></div></div><button class="btn ghost" data-action="close-modal">Fechar</button></div>
+      <p class="lead">${esc(g.description)}</p>
+      <div class="tags"><span class="tag">${kindLabel(g.kind)}</span><span class="tag">${g.age[0]}–${g.age[1]} anos</span><span class="tag">Offline obrigatório</span><span class="tag">Rede bloqueada</span><span class="tag">${g.size}</span></div>
+      <div class="sep"></div>
+      <h3>Habilidades declaradas pelo Game Pack</h3>
+      <div class="tags">${g.skills.map(s=>`<span class="tag">${esc(SKILLS[s]?.label||s)}</span>`).join("")}</div>
+      <div class="sep"></div>
+      <pre style="white-space:pre-wrap;background:#f6f4ee;border-radius:18px;padding:16px;overflow:auto">${esc(JSON.stringify({schemaVersion:1,id:g.id,version:g.version,kind:g.kind,engine:g.engine,ageGuidance:{min:g.age[0],max:g.age[1]},skills:g.skills,offline:true,network:false,scoring:g.scoring,compatibility:{sdk:"^1.0.0"}},null,2))}</pre>
+      <div class="game-actions">${!installed(id)?`<button class="btn primary" data-action="install" data-id="${id}">Instalar pacote</button>`:""}${installed(id)&&p&&!pinned(p,id)?`<button class="btn soft" data-action="pin" data-id="${id}">Adicionar ao perfil</button>`:""}</div>
+    </div></div>`;
+    bindModal();
+  }
+
+  // ---------------------------
+  // Game Host + generic engines
+  // ---------------------------
+  const GameHost = {
+    open(gameId){
+      const g=getGame(gameId),p=currentProfile();
+      if(!g||!p) return;
+      if(!installed(gameId)){ toast("Instale o jogo primeiro."); return; }
+      currentRuntime={game:g,startedAt:Date.now()};
+      EventBus.emit("game.started",{});
+      const root=document.getElementById("runtimeRoot");
+      root.innerHTML=`<div class="runtime"><div class="runtime-head"><button class="btn ghost" data-action="close-game">← Sair</button><div class="game-icon" style="width:42px;height:42px;border-radius:13px">${g.icon}</div><strong>${esc(g.name)}</strong><span class="tag">${esc(g.curation)}</span><span class="muted" style="margin-left:auto">executado em Game Host</span></div><div class="runtime-body"><div class="game-stage" id="gameStage"></div></div></div>`;
+      document.querySelector('[data-action="close-game"]').onclick=()=>this.close();
+      EngineRegistry[g.engine]?.mount(document.getElementById("gameStage"),g);
+    },
+    close(){
+      if(currentRuntime){ EventBus.emit("game.abandoned",{durationMs:Date.now()-currentRuntime.startedAt}); }
+      currentRuntime=null; document.getElementById("runtimeRoot").innerHTML=""; render();
+    },
+    complete(){
+      if(currentRuntime){ EventBus.emit("game.completed",{durationMs:Date.now()-currentRuntime.startedAt}); toast("Brincadeira concluída."); }
+    }
+  };
+
+  function emitGameEvidence(game,skill,result="success",confidence=.85){
+    if(!game.skills.includes(skill)) return;
+    EventBus.emit("evidence",{skill,result,independent:true,confidence,difficulty:.35});
+  }
+
+  const EngineRegistry = {
+    "paint": { mount(stage,game){ mountPaint(stage,game); } },
+    "sort-colors": { mount(stage,game){ mountSort(stage,game); } },
+    "handwriting": { mount(stage,game){ mountHandwriting(stage,game); } },
+    "bubbles": { mount(stage,game){ mountBubbles(stage,game); } },
+    "robot": { mount(stage,game){ mountRobot(stage,game); } }
+  };
+
+  function fitCanvas(canvas){
+    const r=canvas.getBoundingClientRect(), dpr=Math.max(1,window.devicePixelRatio||1);
+    canvas.width=Math.round(r.width*dpr); canvas.height=Math.round(r.height*dpr);
+    const ctx=canvas.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0);
+    return ctx;
+  }
+
+  function mountPaint(stage,game){
+    stage.innerHTML=`<div class="paint-wrap"><div class="paint-tools">
+      ${["#222222","#6f5bd7","#ed6a5a","#f4bd4f","#3ba272","#3d8dd8"].map((c,i)=>`<button class="paint-color ${i===0?"active":""}" style="background:${c}" data-color="${c}"></button>`).join("")}
+      <button class="btn small" id="paintClear">Limpar</button>
+    </div><canvas id="paintCanvas"></canvas></div>`;
+    const canvas=stage.querySelector("#paintCanvas"),ctx=fitCanvas(canvas); let drawing=false,last=null,color="#222222";
+    ctx.lineCap="round";ctx.lineJoin="round";ctx.lineWidth=10;
+    function pos(e){const r=canvas.getBoundingClientRect();const t=e.touches?.[0]||e;return{x:t.clientX-r.left,y:t.clientY-r.top}}
+    function start(e){drawing=true;last=pos(e);e.preventDefault()}
+    function move(e){if(!drawing)return;const p=pos(e);ctx.strokeStyle=color;ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;e.preventDefault();EventBus.emit("creative.action",{kind:"stroke"});}
+    function end(){drawing=false;last=null;emitGameEvidence(game,"motor.free-drawing","success",.7)}
+    canvas.addEventListener("pointerdown",start);canvas.addEventListener("pointermove",move);window.addEventListener("pointerup",end,{once:false});
+    stage.querySelectorAll("[data-color]").forEach(b=>b.onclick=()=>{color=b.dataset.color;stage.querySelectorAll("[data-color]").forEach(x=>x.classList.toggle("active",x===b));});
+    stage.querySelector("#paintClear").onclick=()=>ctx.clearRect(0,0,canvas.clientWidth,canvas.clientHeight);
+  }
+
+  function mountSort(stage,game){
+    stage.innerHTML=`<div class="stage-pad sort-layout"><div class="tokens" id="tokens"></div><div class="bins"><div class="bin" data-bin="red">🔴 Vermelho</div><div class="bin" data-bin="blue">🔵 Azul</div></div></div>`;
+    const colors=["red","blue","red","blue","blue","red"];
+    const tokens=stage.querySelector("#tokens");
+    colors.sort(()=>Math.random()-.5).forEach((c,i)=>{
+      const el=document.createElement("div");el.className="token";el.draggable=true;el.dataset.color=c;el.style.background=c==="red"?"#ee6a5f":"#4b8fdf";el.title="Arraste";el.addEventListener("dragstart",e=>e.dataTransfer.setData("text/plain",String(i)+"|"+c));tokens.appendChild(el);
+      el.addEventListener("pointerup",()=>{});
+    });
+    stage.querySelectorAll(".bin").forEach(bin=>{
+      bin.addEventListener("dragover",e=>e.preventDefault());
+      bin.addEventListener("drop",e=>{
+        e.preventDefault(); const [,c]=e.dataTransfer.getData("text/plain").split("|");
+        const token=[...tokens.children].find(x=>x.dataset.color===c);
+        const ok=c===bin.dataset.bin;
+        EventBus.emit(ok?"success":"mistake",{});
+        if(ok&&token){ token.remove(); game.skills.slice(0,2).forEach(s=>emitGameEvidence(game,s,"success",.86)); }
+        else toast("Vamos tentar de outro jeito?");
+        if(!tokens.children.length){ GameHost.complete(); }
+      });
+    });
+  }
+
+  function mountHandwriting(stage,game){
+    stage.innerHTML=`<div class="write-layout"><aside class="write-info"><div class="eyebrow">escrita com o dedo</div><div class="letter-demo">A</div><p>Observe a forma e tente escrever um <strong>A</strong> grande na área branca.</p><button class="btn soft" id="writeClear">Tentar novamente</button><div class="score-box" id="writeScore">Desenhe para receber um feedback.</div></aside><canvas id="writeCanvas"></canvas></div>`;
+    const canvas=stage.querySelector("#writeCanvas"),ctx=fitCanvas(canvas);let drawing=false,last=null,points=[];
+    ctx.lineCap="round";ctx.lineJoin="round";ctx.lineWidth=12;ctx.strokeStyle="#342f4b";
+    function pos(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+    canvas.addEventListener("pointerdown",e=>{drawing=true;last=pos(e);points.push({...last,start:true});canvas.setPointerCapture(e.pointerId)});
+    canvas.addEventListener("pointermove",e=>{if(!drawing)return;const p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();points.push(p);last=p});
+    canvas.addEventListener("pointerup",()=>{drawing=false;evaluate();});
+    stage.querySelector("#writeClear").onclick=()=>{ctx.clearRect(0,0,canvas.clientWidth,canvas.clientHeight);points=[];stage.querySelector("#writeScore").textContent="Desenhe para receber um feedback."};
+    function distPointSeg(p,a,b){const dx=b.x-a.x,dy=b.y-a.y;const l2=dx*dx+dy*dy;if(!l2)return Math.hypot(p.x-a.x,p.y-a.y);let t=((p.x-a.x)*dx+(p.y-a.y)*dy)/l2;t=Math.max(0,Math.min(1,t));return Math.hypot(p.x-(a.x+t*dx),p.y-(a.y+t*dy));}
+    function evaluate(){
+      if(points.length<12)return;
+      const w=canvas.clientWidth,h=canvas.clientHeight;
+      const model=[
+        [{x:w*.28,y:h*.82},{x:w*.50,y:h*.18}],
+        [{x:w*.50,y:h*.18},{x:w*.72,y:h*.82}],
+        [{x:w*.37,y:h*.58},{x:w*.63,y:h*.58}]
+      ];
+      let near=0;
+      points.forEach(p=>{const d=Math.min(...model.map(([a,b])=>distPointSeg(p,a,b))); if(d<Math.max(26,w*.055))near++;});
+      const similarity=near/points.length;
+      const xs=points.map(p=>p.x),ys=points.map(p=>p.y); const spread=((Math.max(...xs)-Math.min(...xs))/w + (Math.max(...ys)-Math.min(...ys))/h)/2;
+      const score=Math.min(1,similarity*.78+Math.min(1,spread/.55)*.22);
+      const ok=score>.48;
+      stage.querySelector("#writeScore").innerHTML=ok?`<strong>Reconhecível como A.</strong><br><span class="muted">Confiança geométrica: ${Math.round(score*100)}%. O MVP aceita variações e não exige caligrafia perfeita.</span>`:`<strong>Vamos experimentar mais uma vez?</strong><br><span class="muted">Tente usar mais da área e aproximar os três traços do modelo.</span>`;
+      EventBus.emit(ok?"success":"mistake",{confidence:score});
+      emitGameEvidence(game,"literacy.letter-writing",ok?"success":"failure",Math.max(.45,score));
+      emitGameEvidence(game,"literacy.letter-recognition",ok?"success":"failure",Math.max(.45,score));
+      if(ok)GameHost.complete();
+    }
+  }
+
+  function mountBubbles(stage,game){
+    stage.innerHTML=`<div class="bubble-stage" id="bubbleStage"><div style="position:absolute;z-index:2;left:18px;top:18px;background:white;border-radius:15px;padding:10px 14px;font-weight:800">Toque em 8 bolhas</div></div>`;
+    const area=stage.querySelector("#bubbleStage");let hits=0;
+    for(let i=0;i<12;i++){
+      const b=document.createElement("button");b.className="bubble";const sz=52+Math.random()*38;b.style.width=b.style.height=sz+"px";b.style.left=(8+Math.random()*78)+"%";b.style.top=(14+Math.random()*68)+"%";b.textContent=["⭐","🐞","🔤","●"][i%4];
+      b.onclick=()=>{b.remove();hits++;EventBus.emit("success",{});game.skills.slice(0,1).forEach(s=>emitGameEvidence(game,s,"success",.72));if(hits>=8)GameHost.complete();};area.appendChild(b);
+    }
+  }
+
+  function mountRobot(stage,game){
+    stage.innerHTML=`<div class="stage-pad" style="display:flex;flex-direction:column;gap:16px;height:100%">
+      <div class="row space"><div><div class="eyebrow">sequência de comandos</div><h2>Leve o robô até a estrela</h2></div><div id="robotStatus" class="tag">posição 0</div></div>
+      <div style="flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:center">${[0,1,2,3,4].map(i=>`<div id="cell${i}" style="height:120px;border-radius:22px;background:#f2f0eb;display:grid;place-items:center;font-size:42px">${i===0?"🤖":i===4?"⭐":""}</div>`).join("")}</div>
+      <div class="row" style="justify-content:center"><button class="btn soft" data-cmd="forward">→ Avançar</button><button class="btn soft" data-cmd="back">← Voltar</button><button class="btn primary" id="robotRun">Executar</button><button class="btn ghost" id="robotReset">Limpar</button></div>
+      <div class="callout">Programa: <strong id="program">vazio</strong></div>
+    </div>`;
+    let program=[];const prog=stage.querySelector("#program");
+    stage.querySelectorAll("[data-cmd]").forEach(b=>b.onclick=()=>{program.push(b.dataset.cmd);prog.textContent=program.map(x=>x==="forward"?"→":"←").join(" ");EventBus.emit("attempt",{command:b.dataset.cmd})});
+    stage.querySelector("#robotReset").onclick=()=>{program=[];prog.textContent="vazio"};
+    stage.querySelector("#robotRun").onclick=()=>{
+      let pos=0;program.forEach(c=>pos=Math.max(0,Math.min(4,pos+(c==="forward"?1:-1))));
+      for(let i=0;i<5;i++)stage.querySelector("#cell"+i).textContent=i===4?"⭐":"";
+      stage.querySelector("#cell"+pos).textContent=pos===4?"🤖⭐":"🤖";
+      stage.querySelector("#robotStatus").textContent="posição "+pos;
+      const ok=pos===4;
+      EventBus.emit(ok?"success":"mistake",{program});
+      emitGameEvidence(game,"computational.sequence",ok?"success":"failure",.88);
+      emitGameEvidence(game,"logic.sequence",ok?"success":"failure",.82);
+      if(ok)GameHost.complete(); else toast("O robô ainda não chegou. Você pode mudar a sequência.");
+    };
+  }
+
+  // ---------------------------
+  // Bind events
+  // ---------------------------
+  function bind(){
+    document.querySelectorAll("[data-route]").forEach(b=>b.onclick=()=>{route=b.dataset.route;render()});
+    document.querySelectorAll("[data-action]").forEach(b=>b.onclick=()=>handleAction(b.dataset.action,b.dataset.id));
+    const q=document.getElementById("hubQ"); if(q)q.oninput=e=>{hubFilters.q=e.target.value;render()};
+    const k=document.getElementById("hubKind"); if(k){k.value=hubFilters.kind;k.onchange=e=>{hubFilters.kind=e.target.value;render()}}
+    const a=document.getElementById("hubAge"); if(a){a.value=hubFilters.age;a.onchange=e=>{hubFilters.age=e.target.value;render()}}
+    const lim=document.getElementById("limitSelect"); if(lim)lim.onchange=e=>{const p=currentProfile();p.parentControls.dailyLimitMinutes=e.target.value==="none"?null:Number(e.target.value);DB.save();toast("Controle salvo neste dispositivo.")};
+  }
+  function bindModal(){
+    document.querySelectorAll("#modalRoot [data-action]").forEach(b=>b.onclick=()=>handleAction(b.dataset.action,b.dataset.id));
+    document.querySelectorAll("[data-ob-avatar]").forEach(b=>b.onclick=()=>{onboarding.avatar=b.dataset.obAvatar;renderOnboarding()});
+    document.querySelectorAll("[data-ob-age]").forEach(b=>b.onclick=()=>{onboarding.age=Number(b.dataset.obAge);renderOnboarding()});
+    document.querySelectorAll("[data-ob-ability]").forEach(b=>b.onclick=()=>toggleArr(onboarding.abilities,b.dataset.obAbility,renderOnboarding));
+    document.querySelectorAll("[data-ob-interest]").forEach(b=>b.onclick=()=>toggleArr(onboarding.interests,b.dataset.obInterest,renderOnboarding));
+    document.querySelectorAll("[data-profile]").forEach(b=>b.onclick=()=>{state.currentProfileId=b.dataset.profile;DB.save();document.getElementById("modalRoot").innerHTML="";render()});
+    document.querySelectorAll("[data-ob]").forEach(b=>b.onclick=()=>{
+      const name=document.getElementById("obName");if(name)onboarding.name=name.value;
+      const lim=document.getElementById("obLimit");if(lim)onboarding.limit=lim.value==="none"?null:Number(lim.value);
+      if(b.dataset.ob==="back"){onboarding.step=Math.max(0,onboarding.step-1);renderOnboarding()}
+      if(b.dataset.ob==="next"){onboarding.step=Math.min(4,onboarding.step+1);renderOnboarding()}
+      if(b.dataset.ob==="finish")finishOnboarding();
+    });
+  }
+  function toggleArr(arr,v,cb){const i=arr.indexOf(v);i>=0?arr.splice(i,1):arr.push(v);cb();}
+  function handleAction(action,id){
+    const p=currentProfile();
+    if(action==="new-profile"){openOnboarding();return}
+    if(action==="profiles"){openProfiles();return}
+    if(action==="close-modal"){document.getElementById("modalRoot").innerHTML="";return}
+    if(action==="install"){PackageInstaller.install(id);render();return}
+    if(action==="pin"){
+      if(!p)return;
+      if(!installed(id))PackageInstaller.install(id);
+      if(!p.pinnedGames.includes(id))p.pinnedGames.push(id);
+      DB.save();document.getElementById("modalRoot").innerHTML="";render();toast("Jogo fixado no perfil.");return
+    }
+    if(action==="play"){GameHost.open(id);return}
+    if(action==="details"){openDetails(id);return}
+    if(action==="reset"){
+      if(confirm("Apagar todos os perfis e dados locais desta demonstração?")){DB.reset();document.getElementById("modalRoot").innerHTML="";route="home";render()}
+    }
+  }
+
+  // First paint
+  render();
+})();
+</script>
+</body>
+</html>

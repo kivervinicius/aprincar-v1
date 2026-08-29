@@ -1,0 +1,3 @@
+* @aprincar/maintainers
+/packages/extension-* @aprincar/platform-maintainers
+/packages/skill-graph/ @aprincar/pedagogy-reviewers

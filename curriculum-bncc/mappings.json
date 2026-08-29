@@ -1,0 +1,72 @@
+[
+  {
+    "skillId": "math.counting.1-10",
+    "reference": {
+      "framework": "BNCC",
+      "version": "2018",
+      "code": "EI03ET07",
+      "stage": "educacao-infantil"
+    },
+    "relation": "partial",
+    "confidence": 0.7,
+    "notes": "Contribui para relações entre números, quantidades e sequência; não cobre o objetivo inteiro."
+  },
+  {
+    "skillId": "math.number-symbol.1-10",
+    "reference": {
+      "framework": "BNCC",
+      "version": "2018",
+      "code": "EI03ET07",
+      "stage": "educacao-infantil"
+    },
+    "relation": "direct",
+    "confidence": 0.9
+  },
+  {
+    "skillId": "math.counting.1-10",
+    "reference": {
+      "framework": "BNCC",
+      "version": "2018",
+      "code": "EF01MA02",
+      "stage": "ensino-fundamental",
+      "grade": "1"
+    },
+    "relation": "direct",
+    "confidence": 0.9
+  },
+  {
+    "skillId": "logic.classification.one-attribute",
+    "reference": {
+      "framework": "BNCC",
+      "version": "2018",
+      "code": "EI03ET05",
+      "stage": "educacao-infantil"
+    },
+    "relation": "direct",
+    "confidence": 0.9
+  },
+  {
+    "skillId": "logic.classification.one-attribute",
+    "reference": {
+      "framework": "BNCC",
+      "version": "2018",
+      "code": "EF01MA09",
+      "stage": "ensino-fundamental",
+      "grade": "1"
+    },
+    "relation": "supports",
+    "confidence": 0.75
+  },
+  {
+    "skillId": "math.geometry.plane-shapes",
+    "reference": {
+      "framework": "BNCC",
+      "version": "2018",
+      "code": "EF01MA14",
+      "stage": "ensino-fundamental",
+      "grade": "1"
+    },
+    "relation": "supports",
+    "confidence": 0.7
+  }
+]

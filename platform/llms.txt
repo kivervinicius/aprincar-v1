@@ -1,0 +1,4 @@
+# Aprincar Platform
+
+React/Vite PWA and standalone Hub. Read docs/ARCHITECTURE.md for boundaries, docs/DEVELOPMENT.md for commands, docs/EXTENSIONS.md for the GameManifest/SDK contract, and docs/OPERATIONS.md for deployment.
+

@@ -1,0 +1,23 @@
+name: Build Web Artifacts
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+jobs:
+  build:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - uses: actions/upload-artifact@v4
+        with: { name: aprincar-app, path: apps/app/dist }
+      - uses: actions/upload-artifact@v4
+        with: { name: aprincar-hub, path: apps/hub/dist }

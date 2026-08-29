@@ -1,0 +1,4 @@
+# Aprincar Three.js game template
+
+Three.js single-file extension template. Read README.md, src/main.ts, src/aprincar-sdk.ts and scripts/package.mjs.
+

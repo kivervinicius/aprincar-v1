@@ -1,0 +1,12 @@
+name: Game idea
+description: Propose a community game before implementation
+title: "[game idea]: "
+body:
+  - type: textarea
+    id: experience
+    attributes: {label: Child experience, description: Describe what the child actually does.}
+    validations: {required: true}
+  - type: textarea
+    id: skills
+    attributes: {label: Skills/evidence, description: List candidate Aprincar skills and observable evidence.}
+    validations: {required: true}

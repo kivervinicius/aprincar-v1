@@ -1,0 +1,4 @@
+# Aprincar Phaser game template
+
+Phaser 2D single-file extension template. Read README.md, src/main.ts, src/aprincar-sdk.ts and scripts/package.mjs.
+

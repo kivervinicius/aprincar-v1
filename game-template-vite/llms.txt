@@ -1,0 +1,4 @@
+# Aprincar Vite game template
+
+Single-file extension template. Read README.md, manifest.json, src/aprincar-sdk.ts and scripts/package.mjs.
+

@@ -1,0 +1,12 @@
+{
+  "name": "aprincar-curriculum-bncc",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "prepare": "node scripts/install-hooks.mjs",
+    "validate": "node scripts/validate.mjs",
+    "check": "npm run validate"
+  }
+}

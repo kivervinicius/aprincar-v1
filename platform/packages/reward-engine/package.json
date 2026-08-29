@@ -1,0 +1,17 @@
+{
+  "name": "@aprincar/reward-engine",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "types": "./src/index.ts",
+  "dependencies": {
+    "@aprincar/extension-contracts": "0.1.0"
+  }
+}

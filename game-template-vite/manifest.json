@@ -1,0 +1,36 @@
+{
+  "manifestVersion": 1,
+  "id": "your-publisher.your-game",
+  "kind": "game",
+  "version": "0.1.0",
+  "publisher": "your-publisher",
+  "name": {
+    "pt-BR": "Meu Jogo Aprincar"
+  },
+  "engines": {
+    "aprincar": "^1.0.0",
+    "sdkProtocol": 1
+  },
+  "entrypoints": {
+    "game": "game.html"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "optionalPermissions": [],
+  "contributes": {
+    "skills": [
+      "logic.patterns.ab"
+    ],
+    "ageGuidance": {
+      "min": 4,
+      "max": 8
+    },
+    "interests": [
+      "logic"
+    ],
+    "playType": "learning"
+  },
+  "offline": true,
+  "bundleMode": "single-html"
+}

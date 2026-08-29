@@ -1,0 +1,35 @@
+{
+  "manifestVersion": 1,
+  "id": "example.sequence-story",
+  "kind": "game",
+  "version": "1.0.0",
+  "publisher": "example",
+  "name": {
+    "pt-BR": "Ordem da História"
+  },
+  "engines": {
+    "aprincar": "^1.0.0",
+    "sdkProtocol": 1
+  },
+  "entrypoints": {
+    "game": "game.html"
+  },
+  "permissions": [],
+  "optionalPermissions": [],
+  "contributes": {
+    "skills": [
+      "language.story.sequence"
+    ],
+    "ageGuidance": {
+      "min": 4,
+      "max": 8
+    },
+    "interests": [
+      "stories",
+      "logic"
+    ],
+    "playType": "learning"
+  },
+  "offline": true,
+  "bundleMode": "single-html"
+}

@@ -1,0 +1,4 @@
+# Aprincar Curriculum BNCC
+
+Conservative Skill-to-BNCC crosswalk. Read README.md, framework.json, mappings.json and docs/README.md. Do not infer coverage beyond explicit mappings.
+

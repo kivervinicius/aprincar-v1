@@ -1,0 +1,268 @@
+[
+  {
+    "id": "aprincar.block-tower",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Torre de Blocos"
+    },
+    "description": {
+      "pt-BR": "Monte torres com a quantidade certa de blocos."
+    },
+    "skills": [
+      "math.counting.1-10"
+    ],
+    "ageGuidance": {
+      "min": 4,
+      "max": 7
+    },
+    "manifestUrl": "/extensions/block-tower/manifest.json",
+    "entryUrl": "/extensions/block-tower/game.html",
+    "integrity": "533f82d33be80dcdb0ca9316628899878e564872b61fbd1115d064a89ff8d2f8",
+    "tags": [
+      "math",
+      "counting",
+      "construction"
+    ]
+  },
+  {
+    "id": "aprincar.color-match",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Mundo das Cores"
+    },
+    "description": {
+      "pt-BR": "Leve cada peça até a cor correspondente."
+    },
+    "skills": [
+      "perception.colors.match"
+    ],
+    "ageGuidance": {
+      "min": 2,
+      "max": 6
+    },
+    "manifestUrl": "/extensions/color-match/manifest.json",
+    "entryUrl": "/extensions/color-match/game.html",
+    "integrity": "8c1e863e5ecbe8d74c31b90008dc1f2d32bd1fbd7299eba325dc78e8de9dfacb",
+    "tags": [
+      "colors",
+      "logic",
+      "drag"
+    ]
+  },
+  {
+    "id": "aprincar.counting-animals",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Conte os Bichos"
+    },
+    "description": {
+      "pt-BR": "Conte bichos animados e escolha a quantidade correta."
+    },
+    "skills": [
+      "math.counting.1-10"
+    ],
+    "ageGuidance": {
+      "min": 4,
+      "max": 7
+    },
+    "manifestUrl": "/extensions/counting-animals/manifest.json",
+    "entryUrl": "/extensions/counting-animals/game.html",
+    "integrity": "b041e7a9f60a1eacbcdfadb368b1fd59650c7642dd729a228c80339171240ffb",
+    "tags": [
+      "math",
+      "counting",
+      "animals"
+    ]
+  },
+  {
+    "id": "aprincar.fruit-basket",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Cesta de Frutas"
+    },
+    "description": {
+      "pt-BR": "Escolha a quantidade pedida e leve as frutas até a cesta."
+    },
+    "skills": [
+      "math.counting.1-10"
+    ],
+    "ageGuidance": {
+      "min": 4,
+      "max": 7
+    },
+    "manifestUrl": "/extensions/fruit-basket/manifest.json",
+    "entryUrl": "/extensions/fruit-basket/game.html",
+    "integrity": "71a9dcb9b605b69eab89a8f43b6d1f30b3d554ad6b280c0333c1c653194b2b5d",
+    "tags": [
+      "math",
+      "counting",
+      "fruits"
+    ]
+  },
+  {
+    "id": "aprincar.letter-hunt",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Caça às Letras"
+    },
+    "description": {
+      "pt-BR": "Encontre letras em movimento e avance por desafios."
+    },
+    "skills": [
+      "literacy.letter.recognition"
+    ],
+    "ageGuidance": {
+      "min": 4,
+      "max": 7
+    },
+    "manifestUrl": "/extensions/letter-hunt/manifest.json",
+    "entryUrl": "/extensions/letter-hunt/game.html",
+    "integrity": "bf990813299bb0fcbd0505d3500682e5757616c9c0468936e083ef886e2d3327",
+    "tags": [
+      "letters",
+      "literacy"
+    ]
+  },
+  {
+    "id": "aprincar.memory-animals",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Memória dos Bichos"
+    },
+    "description": {
+      "pt-BR": "Encontre pares em tabuleiros que crescem automaticamente."
+    },
+    "skills": [
+      "perception.visual.discrimination"
+    ],
+    "ageGuidance": {
+      "min": 3,
+      "max": 10
+    },
+    "manifestUrl": "/extensions/memory-animals/manifest.json",
+    "entryUrl": "/extensions/memory-animals/game.html",
+    "integrity": "74398bc1094efeeb9a446cff931bd564e4fa107f48cb02a897a9db17cbd42452",
+    "tags": [
+      "memory",
+      "animals",
+      "logic"
+    ]
+  },
+  {
+    "id": "aprincar.paint-free",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Pintura Livre"
+    },
+    "description": {
+      "pt-BR": "Desenhe, pinte e experimente sem resposta certa ou errada."
+    },
+    "skills": [
+      "creativity.visual-expression"
+    ],
+    "ageGuidance": {
+      "min": 2,
+      "max": 10
+    },
+    "manifestUrl": "/extensions/paint-free/manifest.json",
+    "entryUrl": "/extensions/paint-free/game.html",
+    "integrity": "82cbb5041a4ed991dfd1092f23018fc45fcc6d06ad96b7e0e30ee50e9e01b819",
+    "tags": [
+      "paint",
+      "creative"
+    ]
+  },
+  {
+    "id": "aprincar.pattern-play",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Trem dos Padrões"
+    },
+    "description": {
+      "pt-BR": "Descubra qual peça continua cada sequência."
+    },
+    "skills": [
+      "logic.patterns.ab"
+    ],
+    "ageGuidance": {
+      "min": 4,
+      "max": 8
+    },
+    "manifestUrl": "/extensions/pattern-play/manifest.json",
+    "entryUrl": "/extensions/pattern-play/game.html",
+    "integrity": "c14e403eeaacc58f954aaccae09a24c0c3654b4de1316b6ec66bf92c9ad67bcd",
+    "tags": [
+      "logic",
+      "patterns"
+    ]
+  },
+  {
+    "id": "aprincar.space-shapes-3d",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Formas no Espaço 3D"
+    },
+    "description": {
+      "pt-BR": "Gire sólidos em 3D e reconheça suas formas."
+    },
+    "skills": [
+      "math.geometry.solids"
+    ],
+    "ageGuidance": {
+      "min": 5,
+      "max": 10
+    },
+    "manifestUrl": "/extensions/space-shapes-3d/manifest.json",
+    "entryUrl": "/extensions/space-shapes-3d/game.html",
+    "integrity": "fd3bb23e929723a9b03ac3c4ecdb9bf72bb035e94393b2296264d65576bfb234",
+    "tags": [
+      "geometry",
+      "3d",
+      "exploration"
+    ]
+  },
+  {
+    "id": "aprincar.write-a",
+    "version": "1.1.0",
+    "trust": "official",
+    "publisher": "aprincar",
+    "name": {
+      "pt-BR": "Ateliê de Letras"
+    },
+    "description": {
+      "pt-BR": "Desenhe letras com apoio visual que diminui conforme você avança."
+    },
+    "skills": [
+      "writing.trace-letter"
+    ],
+    "ageGuidance": {
+      "min": 4,
+      "max": 8
+    },
+    "manifestUrl": "/extensions/write-a/manifest.json",
+    "entryUrl": "/extensions/write-a/game.html",
+    "integrity": "1fc8bf7bf3597930ef395b02aef73734d7ea0719a9990294f701a9de05870cd5",
+    "tags": [
+      "letters",
+      "writing"
+    ]
+  }
+]

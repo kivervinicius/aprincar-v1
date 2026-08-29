@@ -1,0 +1,17 @@
+{
+  "name": "@aprincar/extension-validator",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "bin": {
+    "aprincar-validate": "./src/cli.mjs"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@aprincar/extension-contracts": "0.1.0",
+    "@aprincar/skill-graph": "0.1.0"
+  }
+}

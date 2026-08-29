@@ -1,0 +1,2 @@
+node scripts/check-staged-secrets.mjs
+node node_modules/lint-staged/bin/lint-staged.js

@@ -1,0 +1,13 @@
+name: Feature proposal
+description: Propose a platform or community capability
+title: "[proposal]: "
+labels: [proposal]
+body:
+  - type: textarea
+    id: need
+    attributes: { label: User need, description: What problem does this solve for child, family or contributor? }
+    validations: { required: true }
+  - type: textarea
+    id: lego
+    attributes: { label: Extension fit, description: Should this live in Core or be an extension/contribution point? }
+    validations: { required: true }
