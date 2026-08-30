@@ -75,6 +75,7 @@ jobs:
           }
           NODE
           cp site/app/registry.json site/registry.json
+          cp site/app/index.html site/404.html
           cat > site/index.html <<'HTML'
           <!doctype html>
           <html lang="pt-BR">

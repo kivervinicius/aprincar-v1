@@ -1,5 +1,12 @@
 # Aprincar DEV Worklog
 
+## [2026-08-30] Rotas Pages, atualização PWA e marca da home
+
+- O deploy passa a copiar o shell do App para `404.html`, permitindo atualizar rotas profundas no GitHub Pages.
+- O PWA verifica atualizações no registro, ativa o novo service worker e recarrega a versão atualizada sem manter conteúdo antigo indefinidamente.
+- A marca da home foi alinhada à estrela canônica, removendo os traços decorativos que divergiam do ativo original.
+- Testes de regressão adicionados para fallback de rotas e ciclo de atualização do PWA.
+
 ## [2026-08-30 11:45 BRT] - Post-Production Hardening Autopilot: PRODUCTION_GO Complete
 
 - **Ecosystem Governance & Branch Protection:**

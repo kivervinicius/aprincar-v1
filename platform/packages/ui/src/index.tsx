@@ -71,8 +71,6 @@ export function BrandMark({ size = 46, style }: { size?: number; style?: CSSProp
         />
         <circle cx="19.5" cy="35" r="2.5" fill="#FF8C8C" opacity=".72" />
         <circle cx="44.5" cy="35" r="2.5" fill="#FF8C8C" opacity=".72" />
-        <path d="M48 13.5l3.4-5.7 4.4 2.6-3.4 5.7z" fill={APRINCAR_COLORS.blue} />
-        <path d="M51.4 7.8 54 3.6l4.4 2.6-2.6 4.2z" fill={APRINCAR_COLORS.coral} />
       </g>
     </svg>
   );
