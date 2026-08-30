@@ -2,10 +2,6 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { db, extensionCacheAdapter, persistStorage, type ChildProfile } from '@aprincar/storage';
 import { ExtensionManager } from '@aprincar/extension-manager';
 import type { RegistryEntry } from '@aprincar/extension-contracts';
-import {
-  recommendNextExperience,
-  type LearningRecommendation,
-} from '../../../packages/learning-engine/src/index.ts';
 
 export interface CreateProfileInput {
   name: string;
@@ -20,7 +16,6 @@ export interface AppStore {
   profile: ChildProfile | null;
   profiles: ChildProfile[];
   registry: RegistryEntry[];
-  nextExperience: LearningRecommendation | null;
   loading: boolean;
   initialized: boolean;
   createProfile(input: CreateProfileInput | string, age?: number): Promise<void>;
@@ -65,7 +60,6 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
   const [profile, setProfile] = useState<ChildProfile | null>(null);
   const [registry, setRegistry] = useState<RegistryEntry[]>([]);
-  const [nextExperience, setNextExperience] = useState<LearningRecommendation | null>(null);
   const [libraryIds, setLibraryIds] = useState(new Set<string>());
   const [allowCommunity, setAllowCommunityState] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -83,21 +77,10 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     const allow = Boolean((await db.settings.get('allowCommunity'))?.value ?? false);
     setAllowCommunityState(allow);
     const loaded = await loadRegistry();
-    const visible = loaded.filter(
-      (e) => e.trust === 'official' || e.trust === 'curated' || (allow && e.trust === 'community'),
-    );
-    setRegistry(visible);
-    const states = p ? await db.skillStates.where('profileId').equals(p.id).toArray() : [];
-    setNextExperience(
-      p
-        ? recommendNextExperience({
-            profileId: p.id,
-            age: p.age,
-            interests: p.interests,
-            registry: visible,
-            skillStates: states,
-          })
-        : null,
+    setRegistry(
+      loaded.filter(
+        (e) => e.trust === 'official' || e.trust === 'curated' || (allow && e.trust === 'community'),
+      ),
     );
     setLoading(false);
   };
@@ -112,7 +95,6 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       profile,
       profiles,
       registry,
-      nextExperience,
       loading,
       initialized: !loading,
       libraryIds,
@@ -170,7 +152,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
         await refresh();
       },
     }),
-    [profile, profiles, registry, nextExperience, loading, libraryIds, allowCommunity],
+    [profile, profiles, registry, loading, libraryIds, allowCommunity],
   );
 
   return <C.Provider value={value}>{children}</C.Provider>;

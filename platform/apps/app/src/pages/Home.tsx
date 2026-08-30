@@ -8,7 +8,7 @@ import { WORLDS, MISSIONS, type MissionItem } from '../worlds';
 import { useState } from 'react';
 
 export function Home() {
-  const { profile, registry, libraryIds, nextExperience } = useAppStore();
+  const { profile, registry, libraryIds } = useAppStore();
   const navigate = useNavigate();
   const age = profile?.age ?? 5;
 
@@ -75,24 +75,6 @@ export function Home() {
           <AprincarMascot size={250} className="hero-star-mascot" />
         </div>
       </section>
-
-      {nextExperience && (
-        <section className="aprincar-panel" aria-label="Próxima experiência recomendada">
-          <div className="section-head">
-            <div>
-              <h2>Próxima experiência</h2>
-              <p>
-                {nextExperience.entry.experience?.fantasy ?? 'Uma nova aventura para continuar aprendendo.'}
-              </p>
-            </div>
-            <Link to="/play/$gameId" params={{ gameId: nextExperience.entry.id }}>
-              <Button className="ap-primary" rightSection={<ArrowRight size={18} />}>
-                Continuar
-              </Button>
-            </Link>
-          </div>
-        </section>
-      )}
 
       {/* Featured shelf */}
       <section>

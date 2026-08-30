@@ -22,26 +22,6 @@ export interface AgeGuidance {
   max: number;
 }
 
-export type ExperienceMechanic =
-  | 'tap-count'
-  | 'drag-into-basket'
-  | 'stack'
-  | 'drag-match'
-  | 'tap-sequence'
-  | 'tap-chase'
-  | 'trace'
-  | 'free-draw'
-  | 'flip-pairs'
-  | 'rotate-select';
-
-export interface ExperienceContract {
-  fantasy: string;
-  mechanic: ExperienceMechanic;
-  interaction: 'tap' | 'drag' | 'draw' | 'rotate';
-  progression: { maxLevel: number; adaptive: boolean };
-  learningSignals: string[];
-}
-
 export interface ExtensionManifest {
   manifestVersion: 1;
   id: string;
@@ -61,7 +41,6 @@ export interface ExtensionManifest {
     interests?: string[];
     playType?: 'learning' | 'practice' | 'creative' | 'free-play';
   };
-  experience?: ExperienceContract;
   offline: boolean;
   bundleMode: 'single-html';
 }
@@ -79,7 +58,6 @@ export interface RegistryEntry {
   entryUrl: string;
   integrity: string;
   tags?: string[];
-  experience?: ExperienceContract;
 }
 
 export interface ResolvedExtension {

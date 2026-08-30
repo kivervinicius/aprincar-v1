@@ -36,19 +36,6 @@
     ],
     "playType": "creative"
   },
-  "experience": {
-    "fantasy": "Estúdio de pintura",
-    "mechanic": "free-draw",
-    "interaction": "draw",
-    "progression": {
-      "maxLevel": 5,
-      "adaptive": true
-    },
-    "learningSignals": [
-      "exploration",
-      "expression"
-    ]
-  },
   "offline": true,
   "bundleMode": "single-html"
 }
