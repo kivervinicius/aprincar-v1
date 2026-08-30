@@ -707,6 +707,125 @@ window.AprincarFeedback = (() => {
   };
 })();
 
+// TapOrDragController and Input Gestures Primitive for Aprincar Games
+(() => {
+  class TapOrDragController {
+    /**
+     * @param {Phaser.Scene} scene
+     * @param {Phaser.GameObjects.GameObject} gameObject
+     * @param {Object} options
+     * @param {number} [options.threshold=10]
+     * @param {Function} [options.onTap]
+     * @param {Function} [options.onDragStart]
+     * @param {Function} [options.onDrag]
+     * @param {Function} [options.onDragEnd]
+     */
+    constructor(scene, gameObject, options = {}) {
+      this.scene = scene;
+      this.gameObject = gameObject;
+      this.threshold = options.threshold ?? 10;
+      this.onTap = options.onTap;
+      this.onDragStart = options.onDragStart;
+      this.onDrag = options.onDrag;
+      this.onDragEnd = options.onDragEnd;
+
+      this.downX = 0;
+      this.downY = 0;
+      this.isDragging = false;
+      this.isDown = false;
+
+      this.setup();
+    }
+
+    setup() {
+      this.gameObject.setInteractive({ draggable: true, useHandCursor: true });
+      this.scene.input.setDraggable(this.gameObject);
+
+      this.gameObject.on('pointerdown', (pointer) => {
+        this.downX = pointer.x;
+        this.downY = pointer.y;
+        this.isDragging = false;
+        this.isDown = true;
+      });
+
+      this.gameObject.on('dragstart', (pointer) => {
+        const dist = Phaser.Math.Distance.Between(this.downX, this.downY, pointer.x, pointer.y);
+        if (dist >= this.threshold) {
+          this.isDragging = true;
+          if (this.onDragStart) this.onDragStart(pointer, this.gameObject);
+        }
+      });
+
+      this.gameObject.on('drag', (pointer, dragX, dragY) => {
+        const dist = Phaser.Math.Distance.Between(this.downX, this.downY, pointer.x, pointer.y);
+        if (!this.isDragging && dist >= this.threshold) {
+          this.isDragging = true;
+          if (this.onDragStart) this.onDragStart(pointer, this.gameObject);
+        }
+        if (this.isDragging && this.onDrag) {
+          this.onDrag(pointer, this.gameObject, dragX, dragY);
+        }
+      });
+
+      this.gameObject.on('dragend', (pointer) => {
+        if (this.isDragging) {
+          if (this.onDragEnd) this.onDragEnd(pointer, this.gameObject);
+        }
+      });
+
+      this.gameObject.on('pointerup', (pointer) => {
+        const dist = Phaser.Math.Distance.Between(this.downX, this.downY, pointer.x, pointer.y);
+        if (!this.isDragging && dist < this.threshold) {
+          if (this.onTap) this.onTap(pointer, this.gameObject);
+        }
+        this.isDown = false;
+        this.isDragging = false;
+      });
+    }
+
+    destroy() {
+      this.gameObject.off('pointerdown');
+      this.gameObject.off('dragstart');
+      this.gameObject.off('drag');
+      this.gameObject.off('dragend');
+      this.gameObject.off('pointerup');
+    }
+  }
+
+  window.AprincarInputGestures = {
+    TapOrDragController,
+    attachTapOrDrag(scene, gameObject, options) {
+      return new TapOrDragController(scene, gameObject, options);
+    }
+  };
+})();
+
+// Standardized Phaser Game Configuration Factory for Aprincar
+window.createAprincarPhaserConfig = function createAprincarPhaserConfig(sceneClass, options = {}) {
+  return {
+    type: Phaser.AUTO,
+    parent: 'game',
+    backgroundColor: options.backgroundColor || '#f7f6f2',
+    scale: {
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+      width: 960,
+      height: 640
+    },
+    input: {
+      activePointers: 3
+    },
+    render: {
+      antialias: true,
+      pixelArt: false,
+      roundPixels: true,
+      powerPreference: 'high-performance'
+    },
+    scene: Array.isArray(sceneClass) ? sceneClass : [sceneClass],
+    ...options
+  };
+};
+
 // Base Game Scene providing standardized infrastructure and SDK bridge
 (() => {
   const CFG = window.APRINCAR_GAME_CONFIG;
@@ -861,58 +980,58 @@ window.AprincarFeedback = (() => {
         const blockContainer = this.add.container(x, y);
         const blockGfx = this.add.graphics();
         window.AprincarVectorArt.drawIsometricBlock(blockGfx, 0, 0, 78, 64, blockColor);
-        const hitZone = this.add.rectangle(0, 0, 88, 74, 0xffffff, 0.001).setInteractive({ draggable: true, useHandCursor: true });
-        this.input.setDraggable(hitZone);
+        const hitZone = this.add.rectangle(0, 0, 88, 74, 0xffffff, 0.001);
         blockContainer.add([blockGfx, hitZone]);
         this.roundGroup.add(blockContainer);
 
         this.target(`block-${i + 1}`, x, y, 88, 74, 'drag-source');
         this.target(`block-${i + 1}`, x, y, 88, 74, 'toggle');
-        let dragged = false;
-        hitZone.on('dragstart', () => { dragged = true; });
-        hitZone.on('drag', (_pointer, _gameObject, dragX, dragY) => {
-          blockContainer.x = dragX;
-          blockContainer.y = dragY;
-        });
-        hitZone.on('dragend', (_pointer, _gameObject) => {
-          const inTower = blockContainer.x > 340 && blockContainer.x < 620 && blockContainer.y > 325;
-          const picked = blockContainer.getData('picked') === true;
-          if (inTower && !picked) {
+
+        window.AprincarInputGestures.attachTapOrDrag(this, hitZone, {
+          threshold: 10,
+          onDrag: (_pointer, _gameObject, dragX, dragY) => {
+            blockContainer.x = dragX;
+            blockContainer.y = dragY;
+          },
+          onDragEnd: () => {
+            const inTower = blockContainer.x > 340 && blockContainer.x < 620 && blockContainer.y > 325;
+            const picked = blockContainer.getData('picked') === true;
+            if (inTower && !picked) {
+              blockContainer.setData('picked', true);
+              this.stack.push(blockContainer);
+              this.selected += 1;
+              blockContainer.x = 480;
+              blockContainer.y = 430 - (this.stack.length - 1) * 58;
+              this.tweens.add({ targets: blockContainer, angle: 2, duration: 90, yoyo: true });
+              if (window.AprincarAudio) window.AprincarAudio.drop();
+            } else if (!inTower && picked) {
+              blockContainer.setData('picked', false);
+              this.stack = this.stack.filter((item) => item !== blockContainer);
+              this.selected = Math.max(0, this.selected - 1);
+              blockContainer.x = x;
+              blockContainer.y = y;
+              if (window.AprincarAudio) window.AprincarAudio.pop();
+            }
+            this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'drag', inputReady: true });
+          },
+          onTap: () => {
+            const picked = blockContainer.getData('picked') === true;
+            if (picked) {
+              blockContainer.setData('picked', false);
+              this.stack = this.stack.filter((item) => item !== blockContainer);
+              this.selected = Math.max(0, this.selected - 1);
+              this.tweens.add({ targets: blockContainer, alpha: 1, scale: 1, duration: 150 });
+              if (window.AprincarAudio) window.AprincarAudio.pop();
+              this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'tap-remove', inputReady: true });
+              return;
+            }
             blockContainer.setData('picked', true);
             this.stack.push(blockContainer);
             this.selected += 1;
-            blockContainer.x = 480;
-            blockContainer.y = 430 - (this.stack.length - 1) * 58;
-            this.tweens.add({ targets: blockContainer, angle: 2, duration: 90, yoyo: true });
+            this.tweens.add({ targets: blockContainer, alpha: 0.75, scale: 0.85, duration: 150 });
             if (window.AprincarAudio) window.AprincarAudio.drop();
-          } else if (!inTower && picked) {
-            blockContainer.setData('picked', false);
-            this.stack = this.stack.filter((item) => item !== blockContainer);
-            this.selected = Math.max(0, this.selected - 1);
-            blockContainer.x = x;
-            blockContainer.y = y;
-            if (window.AprincarAudio) window.AprincarAudio.pop();
+            this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'tap-fallback', inputReady: true });
           }
-          this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'drag', inputReady: true });
-        });
-        hitZone.on('pointerup', (pointer) => {
-          if (dragged) { dragged = false; return; }
-          if (blockContainer.getData('picked') === true) {
-            blockContainer.setData('picked', false);
-            this.stack = this.stack.filter((item) => item !== blockContainer);
-            this.selected = Math.max(0, this.selected - 1);
-            blockContainer.x = x;
-            blockContainer.y = y;
-            this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'tap-remove', inputReady: true });
-            return;
-          }
-          blockContainer.setData('picked', true);
-          this.stack.push(blockContainer);
-          this.selected += 1;
-          blockContainer.x = 480;
-          blockContainer.y = 430 - (this.stack.length - 1) * 58;
-          this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'tap-fallback', inputReady: true });
-          dragged = false;
         });
       }
 
@@ -936,16 +1055,6 @@ window.AprincarFeedback = (() => {
     }
   }
 
-  new Phaser.Game({
-    type: Phaser.AUTO,
-    width: 960,
-    height: 640,
-    parent: 'game',
-    backgroundColor: '#f7f6f2',
-    scene: [BlockTowerScene],
-    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-    input: { activePointers: 3 },
-    render: { antialias: true }
-  });
+  new Phaser.Game(window.createAprincarPhaserConfig(BlockTowerScene));
 })();
 </script></body></html>

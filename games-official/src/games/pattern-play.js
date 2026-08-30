@@ -91,15 +91,5 @@
     }
   }
 
-  new Phaser.Game({
-    type: Phaser.AUTO,
-    width: 960,
-    height: 640,
-    parent: 'game',
-    backgroundColor: '#f7f6f2',
-    scene: [PatternPlayScene],
-    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-    input: { activePointers: 3 },
-    render: { antialias: true }
-  });
+  new Phaser.Game(window.createAprincarPhaserConfig(PatternPlayScene));
 })();

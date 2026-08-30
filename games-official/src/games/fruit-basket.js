@@ -41,53 +41,54 @@
         const fruitContainer = this.add.container(x, y);
         const fruitGfx = this.add.graphics();
         window.AprincarVectorArt.drawFruit(fruitGfx, fruitType, 0, 0, 58);
-        const hitZone = this.add.circle(0, 0, 38, 0xffffff, 0.001).setInteractive({ draggable: true, useHandCursor: true });
-        this.input.setDraggable(hitZone);
+        const hitZone = this.add.circle(0, 0, 44, 0xffffff, 0.001);
         fruitContainer.add([fruitGfx, hitZone]);
         this.roundGroup.add(fruitContainer);
 
-        this.target(`fruit-${i + 1}`, x, y, 76, 76, 'drag-source');
-        this.target(`fruit-${i + 1}`, x, y, 76, 76, 'toggle');
-        let dragged = false;
-        hitZone.on('dragstart', () => { dragged = true; });
-        hitZone.on('drag', (_pointer, _gameObject, dragX, dragY) => {
-          fruitContainer.x = dragX;
-          fruitContainer.y = dragY;
-        });
-        hitZone.on('dragend', (_pointer, _gameObject) => {
-          const inBasket = Phaser.Geom.Rectangle.Contains(new Phaser.Geom.Rectangle(340, 365, 280, 130), fruitContainer.x, fruitContainer.y);
-          const picked = fruitContainer.getData('picked') === true;
-          if (inBasket && !picked) {
+        this.target(`fruit-${i + 1}`, x, y, 88, 88, 'drag-source');
+        this.target(`fruit-${i + 1}`, x, y, 88, 88, 'toggle');
+
+        window.AprincarInputGestures.attachTapOrDrag(this, hitZone, {
+          threshold: 10,
+          onDrag: (_pointer, _gameObject, dragX, dragY) => {
+            fruitContainer.x = dragX;
+            fruitContainer.y = dragY;
+          },
+          onDragEnd: () => {
+            const inBasket = Phaser.Geom.Rectangle.Contains(new Phaser.Geom.Rectangle(340, 365, 280, 130), fruitContainer.x, fruitContainer.y);
+            const picked = fruitContainer.getData('picked') === true;
+            if (inBasket && !picked) {
+              fruitContainer.setData('picked', true);
+              this.selected += 1;
+              this.tweens.add({ targets: basketContainer, scale: 1.06, duration: 100, yoyo: true });
+              if (window.AprincarAudio) window.AprincarAudio.drop();
+            } else if (!inBasket && picked) {
+              fruitContainer.setData('picked', false);
+              this.selected = Math.max(0, this.selected - 1);
+              if (window.AprincarAudio) window.AprincarAudio.pop();
+            }
+            this.counter.setText(String(this.selected));
+            this.updateState({ selectedCount: this.selected, lastGesture: 'drag', inputReady: true });
+          },
+          onTap: () => {
+            const picked = fruitContainer.getData('picked') === true;
+            if (picked) {
+              fruitContainer.setData('picked', false);
+              this.selected = Math.max(0, this.selected - 1);
+              this.tweens.add({ targets: fruitContainer, alpha: 1, scale: 1, duration: 150 });
+              if (window.AprincarAudio) window.AprincarAudio.pop();
+              this.counter.setText(String(this.selected));
+              this.updateState({ selectedCount: this.selected, lastGesture: 'tap-remove', inputReady: true });
+              return;
+            }
             fruitContainer.setData('picked', true);
             this.selected += 1;
+            this.tweens.add({ targets: fruitContainer, alpha: 0.75, scale: 0.85, duration: 150 });
             this.tweens.add({ targets: basketContainer, scale: 1.06, duration: 100, yoyo: true });
             if (window.AprincarAudio) window.AprincarAudio.drop();
-          } else if (!inBasket && picked) {
-            fruitContainer.setData('picked', false);
-            this.selected = Math.max(0, this.selected - 1);
-            if (window.AprincarAudio) window.AprincarAudio.pop();
-          }
-          this.counter.setText(String(this.selected));
-          this.updateState({ selectedCount: this.selected, lastGesture: 'drag', inputReady: true });
-        });
-        hitZone.on('pointerup', (pointer) => {
-          if (dragged) { dragged = false; return; }
-          if (fruitContainer.getData('picked') === true) {
-            fruitContainer.setData('picked', false);
-            this.selected = Math.max(0, this.selected - 1);
-            fruitContainer.x = x;
-            fruitContainer.y = y;
             this.counter.setText(String(this.selected));
-            this.updateState({ selectedCount: this.selected, lastGesture: 'tap-remove', inputReady: true });
-            return;
+            this.updateState({ selectedCount: this.selected, lastGesture: 'tap-fallback', inputReady: true });
           }
-          fruitContainer.setData('picked', true);
-          fruitContainer.x = 480 + (this.selected % 5) * 36 - 72;
-          fruitContainer.y = 410;
-          this.selected += 1;
-          this.counter.setText(String(this.selected));
-          this.updateState({ selectedCount: this.selected, lastGesture: 'tap-fallback', inputReady: true });
-          dragged = false;
         });
       }
 
@@ -111,15 +112,5 @@
     }
   }
 
-  new Phaser.Game({
-    type: Phaser.AUTO,
-    width: 960,
-    height: 640,
-    parent: 'game',
-    backgroundColor: '#f7f6f2',
-    scene: [FruitBasketScene],
-    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-    input: { activePointers: 3 },
-    render: { antialias: true }
-  });
+  new Phaser.Game(window.createAprincarPhaserConfig(FruitBasketScene));
 })();

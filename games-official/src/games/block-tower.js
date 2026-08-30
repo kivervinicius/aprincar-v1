@@ -24,58 +24,58 @@
         const blockContainer = this.add.container(x, y);
         const blockGfx = this.add.graphics();
         window.AprincarVectorArt.drawIsometricBlock(blockGfx, 0, 0, 78, 64, blockColor);
-        const hitZone = this.add.rectangle(0, 0, 88, 74, 0xffffff, 0.001).setInteractive({ draggable: true, useHandCursor: true });
-        this.input.setDraggable(hitZone);
+        const hitZone = this.add.rectangle(0, 0, 88, 74, 0xffffff, 0.001);
         blockContainer.add([blockGfx, hitZone]);
         this.roundGroup.add(blockContainer);
 
         this.target(`block-${i + 1}`, x, y, 88, 74, 'drag-source');
         this.target(`block-${i + 1}`, x, y, 88, 74, 'toggle');
-        let dragged = false;
-        hitZone.on('dragstart', () => { dragged = true; });
-        hitZone.on('drag', (_pointer, _gameObject, dragX, dragY) => {
-          blockContainer.x = dragX;
-          blockContainer.y = dragY;
-        });
-        hitZone.on('dragend', (_pointer, _gameObject) => {
-          const inTower = blockContainer.x > 340 && blockContainer.x < 620 && blockContainer.y > 325;
-          const picked = blockContainer.getData('picked') === true;
-          if (inTower && !picked) {
+
+        window.AprincarInputGestures.attachTapOrDrag(this, hitZone, {
+          threshold: 10,
+          onDrag: (_pointer, _gameObject, dragX, dragY) => {
+            blockContainer.x = dragX;
+            blockContainer.y = dragY;
+          },
+          onDragEnd: () => {
+            const inTower = blockContainer.x > 340 && blockContainer.x < 620 && blockContainer.y > 325;
+            const picked = blockContainer.getData('picked') === true;
+            if (inTower && !picked) {
+              blockContainer.setData('picked', true);
+              this.stack.push(blockContainer);
+              this.selected += 1;
+              blockContainer.x = 480;
+              blockContainer.y = 430 - (this.stack.length - 1) * 58;
+              this.tweens.add({ targets: blockContainer, angle: 2, duration: 90, yoyo: true });
+              if (window.AprincarAudio) window.AprincarAudio.drop();
+            } else if (!inTower && picked) {
+              blockContainer.setData('picked', false);
+              this.stack = this.stack.filter((item) => item !== blockContainer);
+              this.selected = Math.max(0, this.selected - 1);
+              blockContainer.x = x;
+              blockContainer.y = y;
+              if (window.AprincarAudio) window.AprincarAudio.pop();
+            }
+            this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'drag', inputReady: true });
+          },
+          onTap: () => {
+            const picked = blockContainer.getData('picked') === true;
+            if (picked) {
+              blockContainer.setData('picked', false);
+              this.stack = this.stack.filter((item) => item !== blockContainer);
+              this.selected = Math.max(0, this.selected - 1);
+              this.tweens.add({ targets: blockContainer, alpha: 1, scale: 1, duration: 150 });
+              if (window.AprincarAudio) window.AprincarAudio.pop();
+              this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'tap-remove', inputReady: true });
+              return;
+            }
             blockContainer.setData('picked', true);
             this.stack.push(blockContainer);
             this.selected += 1;
-            blockContainer.x = 480;
-            blockContainer.y = 430 - (this.stack.length - 1) * 58;
-            this.tweens.add({ targets: blockContainer, angle: 2, duration: 90, yoyo: true });
+            this.tweens.add({ targets: blockContainer, alpha: 0.75, scale: 0.85, duration: 150 });
             if (window.AprincarAudio) window.AprincarAudio.drop();
-          } else if (!inTower && picked) {
-            blockContainer.setData('picked', false);
-            this.stack = this.stack.filter((item) => item !== blockContainer);
-            this.selected = Math.max(0, this.selected - 1);
-            blockContainer.x = x;
-            blockContainer.y = y;
-            if (window.AprincarAudio) window.AprincarAudio.pop();
+            this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'tap-fallback', inputReady: true });
           }
-          this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'drag', inputReady: true });
-        });
-        hitZone.on('pointerup', (pointer) => {
-          if (dragged) { dragged = false; return; }
-          if (blockContainer.getData('picked') === true) {
-            blockContainer.setData('picked', false);
-            this.stack = this.stack.filter((item) => item !== blockContainer);
-            this.selected = Math.max(0, this.selected - 1);
-            blockContainer.x = x;
-            blockContainer.y = y;
-            this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'tap-remove', inputReady: true });
-            return;
-          }
-          blockContainer.setData('picked', true);
-          this.stack.push(blockContainer);
-          this.selected += 1;
-          blockContainer.x = 480;
-          blockContainer.y = 430 - (this.stack.length - 1) * 58;
-          this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'tap-fallback', inputReady: true });
-          dragged = false;
         });
       }
 
@@ -99,15 +99,5 @@
     }
   }
 
-  new Phaser.Game({
-    type: Phaser.AUTO,
-    width: 960,
-    height: 640,
-    parent: 'game',
-    backgroundColor: '#f7f6f2',
-    scene: [BlockTowerScene],
-    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-    input: { activePointers: 3 },
-    render: { antialias: true }
-  });
+  new Phaser.Game(window.createAprincarPhaserConfig(BlockTowerScene));
 })();

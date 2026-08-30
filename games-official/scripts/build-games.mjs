@@ -12,6 +12,8 @@ const brand = fs.readFileSync(path.join(root, 'src/runtime/brand.js'), 'utf8');
 const audio = fs.readFileSync(path.join(root, 'src/common/audio.js'), 'utf8');
 const vectorArt = fs.readFileSync(path.join(root, 'src/common/vector-art.js'), 'utf8');
 const feedback = fs.readFileSync(path.join(root, 'src/common/feedback.js'), 'utf8');
+const inputGestures = fs.readFileSync(path.join(root, 'src/common/input-gestures.js'), 'utf8');
+const phaserConfig = fs.readFileSync(path.join(root, 'src/common/phaser-config.js'), 'utf8');
 const baseScene = fs.readFileSync(path.join(root, 'src/common/base-scene.js'), 'utf8');
 
 const phaser = fs.readFileSync(path.join(root, 'vendor/phaser.min.js'), 'utf8');
@@ -42,7 +44,7 @@ for (const game of games) {
   if (game.mode === 'three') {
     engine = `${three}\n${brand}\n${audio}\n${gameSpecificCode}`;
   } else {
-    engine = `${phaser}\n${brand}\n${audio}\n${vectorArt}\n${feedback}\n${baseScene}\n${gameSpecificCode}`;
+    engine = `${phaser}\n${brand}\n${audio}\n${vectorArt}\n${feedback}\n${inputGestures}\n${phaserConfig}\n${baseScene}\n${gameSpecificCode}`;
   }
 
   const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>${game.name} — Aprincar</title><style>${css}</style></head><body><div id="game"></div><script>window.APRINCAR_GAME_CONFIG=${config};</script><script>${sdk}</script><script>${challengeSource}</script><script>${engine}</script></body></html>`;
