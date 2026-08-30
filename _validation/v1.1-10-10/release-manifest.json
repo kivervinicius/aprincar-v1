@@ -1,0 +1,7 @@
+{
+  "tag": null,
+  "commit": null,
+  "timestamp": "2026-08-30",
+  "status": "NOT_RELEASED",
+  "reason": "Production gates, remote CI, Pages smoke and mirror synchronization not yet verified"
+}

@@ -11,8 +11,8 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   webServer: [
-    { command: 'npm run dev', port: 4173, reuseExistingServer: true, timeout: 120_000 },
-    { command: 'npm run dev:hub', port: 4174, reuseExistingServer: true, timeout: 120_000 },
+    { command: 'npm --prefix apps/app run dev', port: 4173, reuseExistingServer: true, timeout: 120_000 },
+    { command: 'npm --prefix apps/hub run dev', port: 4174, reuseExistingServer: true, timeout: 120_000 },
   ],
   use: {
     baseURL: 'http://localhost:4173',

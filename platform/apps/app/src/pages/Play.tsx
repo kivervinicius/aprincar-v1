@@ -1,5 +1,5 @@
-import { Alert, Badge, Button, Group, Loader, Modal, Stack, Text } from '@mantine/core';
-import { ArrowLeft, CloudOff, RotateCcw, ShieldCheck, Sparkles, Trophy } from 'lucide-react';
+import { Button, Group } from '@mantine/core';
+import { ArrowLeft } from 'lucide-react';
 import { Link, useParams, useNavigate } from '@tanstack/react-router';
 import { useEffect, useMemo, useState } from 'react';
 import { GameHost } from '@aprincar/extension-host';
@@ -7,7 +7,7 @@ import type { ResolvedExtension } from '@aprincar/extension-contracts';
 import { extensionManager, useAppStore } from '../app-store';
 import { createGameServices } from '../game-services';
 import { db, sumUsageSecondsForDay } from '@aprincar/storage';
-import { GameError, GameExitDialog, GameLoading, TrustBadge, OfflineBadge } from '@aprincar/ui';
+import { GameError, GameExitDialog, GameLoading } from '@aprincar/ui';
 
 export function Play() {
   const { gameId } = useParams({ from: '/play/$gameId' });
@@ -116,22 +116,6 @@ export function Play() {
         <div className="game-runtime-title">
           <strong>{gameName}</strong>
           <span>Aprincar</span>
-        </div>
-
-        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-          {entry && (
-            <Badge variant="light" color="blue" size="sm" className="game-runtime-badge">
-              {entry.trust === 'official' ? 'Oficial' : entry.trust}
-            </Badge>
-          )}
-          <Badge
-            variant="light"
-            color="teal"
-            leftSection={<CloudOff size={11} />}
-            className="game-runtime-badge"
-          >
-            local-first
-          </Badge>
         </div>
       </header>
 

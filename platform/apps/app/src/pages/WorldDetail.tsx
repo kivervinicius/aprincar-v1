@@ -1,6 +1,8 @@
 import { Button, Text, Group, Badge } from '@mantine/core';
 import { ArrowLeft, Play, Sparkles, Star, Trophy } from 'lucide-react';
 import { Link, useParams, useNavigate } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
+import { db } from '@aprincar/storage';
 import { WORLDS, type WorldInfo } from '../worlds';
 import { useAppStore } from '../app-store';
 import { GameCard } from '../components/GameCard';
@@ -8,7 +10,16 @@ import { GameCard } from '../components/GameCard';
 export function WorldDetail() {
   const { worldId } = useParams({ from: '/world/$worldId' });
   const navigate = useNavigate();
-  const { registry } = useAppStore();
+  const { registry, profile } = useAppStore();
+  const [states, setStates] = useState<Record<string, number>>({});
+  useEffect(() => {
+    if (profile)
+      db.skillStates
+        .where('profileId')
+        .equals(profile.id)
+        .toArray()
+        .then((rows) => setStates(Object.fromEntries(rows.map((r) => [r.skillId, r.confidence]))));
+  }, [profile?.id]);
 
   const world: WorldInfo = WORLDS.find((w) => w.id === worldId) ?? WORLDS[0]!;
 
@@ -60,7 +71,9 @@ export function WorldDetail() {
           <div className="world-trail-nodes">
             {world.trail.map((step, idx) => (
               <div key={step} className="world-trail-node-wrap">
-                <div className={`world-trail-node ${idx === 0 ? 'current' : 'upcoming'}`}>
+                <div
+                  className={`world-trail-node ${idx <= Math.floor(world.skillIds.reduce((a, s) => a + (states[s] ?? 0), 0) / Math.max(1, world.skillIds.length) / 0.34) ? 'current' : 'upcoming'}`}
+                >
                   {idx === 0 ? <Star size={16} fill="currentColor" /> : idx + 1}
                 </div>
                 <span className="world-trail-label">{step}</span>

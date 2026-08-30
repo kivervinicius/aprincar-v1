@@ -11,6 +11,9 @@ export function Settings() {
   const [pinSaved, setPinSaved] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [installed, setInstalled] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);
+  const [gateInput, setGateInput] = useState('');
+  const [configuredPin, setConfiguredPin] = useState('');
 
   useEffect(() => {
     db.settings.get('theme').then((r) => {
@@ -19,7 +22,10 @@ export function Settings() {
       document.documentElement.dataset.aprincarTheme = t;
     });
     db.settings.get('parentPin').then((r) => {
-      if (r?.value) setPin(String(r.value));
+      if (r?.value) {
+        setPin(String(r.value));
+        setConfiguredPin(String(r.value));
+      } else setUnlocked(true);
     });
 
     const handleBeforeInstall = (e: Event) => {
@@ -36,6 +42,26 @@ export function Settings() {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
     };
   }, []);
+
+  if (!unlocked)
+    return (
+      <div className="aprincar-page">
+        <section className="parent-card">
+          <h2>Área do responsável</h2>
+          <Text>Digite o PIN para acessar as configurações.</Text>
+          <PasswordInput value={gateInput} onChange={(e) => setGateInput(e.currentTarget.value)} mt="md" />
+          <Button
+            className="ap-primary"
+            mt="md"
+            onClick={() => {
+              if (gateInput === configuredPin) setUnlocked(true);
+            }}
+          >
+            Desbloquear
+          </Button>
+        </section>
+      </div>
+    );
 
   async function changeTheme(value: string | null) {
     const t = value ?? 'standard';
