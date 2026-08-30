@@ -1,25 +1,29 @@
-# Documentação da organização Aprincar
+# Documentação geral do Aprincar
 
-Este repositório contém os arquivos padrão da organização GitHub.
+Este diretório é o ponto de entrada da organização Aprincar. Ele explica como os repositórios se conectam, como executar o sistema localmente, como criar extensões e como participar do fluxo de revisão.
 
-## Conteúdo
+## Navegação
 
-- `profile/README.md`: apresentação pública da organização.
-- `CODE_OF_CONDUCT.md`: código de convivência.
-- `CONTRIBUTING.md`: fluxo geral de contribuição.
-- `SECURITY.md`: canal e prioridade para vulnerabilidades.
-- `SUPPORT.md`: suporte e dúvidas.
-- `.github/ISSUE_TEMPLATE/`: modelos de bug, funcionalidade e configuração.
-- `.github/PULL_REQUEST_TEMPLATE.md`: checklist mínimo de pull request.
+| Documento                           | Quando consultar                     |
+| ----------------------------------- | ------------------------------------ |
+| [Começando](GETTING_STARTED.md)     | Primeira instalação e execução local |
+| [Projetos](PROJECTS.md)             | Escolher o repositório correto       |
+| [Arquitetura](ARCHITECTURE.md)      | Entender App, Hub, jogos e dados     |
+| [Extensões](EXTENSIONS.md)          | Criar, validar e publicar um jogo    |
+| [Operação e release](OPERATIONS.md) | CI, Pages, offline e troubleshooting |
+| [Contribuição](../CONTRIBUTING.md)  | Branches, commits, PRs e revisão     |
+| [Segurança](../SECURITY.md)         | Reportar vulnerabilidades            |
 
-## Fluxo de contribuição
+## Princípios
 
-1. Escolha o repositório responsável pelo domínio.
-2. Abra uma branch baseada em `main`.
-3. Faça uma alteração pequena e documentada.
-4. Execute os checks do repositório.
-5. Abra um pull request preenchendo o template.
-6. Aguarde CI, revisão técnica e, quando aplicável, revisão pedagógica.
+- O App é local-first: perfis, biblioteca, progresso e evidências permanecem no dispositivo.
+- Jogos são extensões independentes; o App não importa código de `games/*`.
+- A comunicação entre jogo e plataforma acontece pelo Game SDK e por `MessageChannel`.
+- Jogos produzem evidências; somente o Progress Engine calcula estados de habilidade.
+- Recompensas são separadas de mastery pedagógico.
+- BNCC é um mapeamento opcional de Skill IDs, nunca uma dependência direta do jogo.
+- Privacidade infantil, acessibilidade, segurança e revisão pedagógica são requisitos do produto.
 
-A organização não deve receber credenciais, dados de crianças ou arquivos de ambiente.
+## Repositórios
 
+Todos os repositórios públicos estão em [github.com/aprincar](https://github.com/aprincar). O site publicado está em [aprincar.github.io/platform](https://aprincar.github.io/platform/).
