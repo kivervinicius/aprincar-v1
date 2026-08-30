@@ -2,9 +2,10 @@
 
 ## Execução Autônoma End-to-End até Produção
 
-**Data / Timestamp:** 30 de Agosto de 2026, 05:25 UTC (01:25 BRT)  
+**Data / Timestamp:** 30 de Agosto de 2026, 14:30 UTC (10:30 BRT)  
 **Veredito Executivo:** 🟢 **`PRODUCTION_GO`**  
-**Classificação de Riscos:** 0 P0 (Bloqueador), 0 P1 (Crítico), 0 P2 (Grave), 0 P3 (Trivial)
+**Classificação de Riscos:** 0 P0 (Bloqueador), 0 P1 (Crítico), 0 P2 (Grave), 0 P3 (Trivial)  
+**Manifesto de Rastreabilidade:** [`platform/_validation/production-manifest.json`](./production-manifest.json)
 
 ---
 
@@ -12,24 +13,24 @@
 
 A missão master de reformulação, engenharia, auditoria de segurança, governança, validação de produto e implantação em produção do ecossistema open source **Aprincar** foi executada com 100% de aprovação em todos os gates técnicos e pedagógicos.
 
-Todos os 9 repositórios da organização `@aprincar` e o repositório sincronizador `kivervinicius/aprincar-v1` encontram-se com as branches `main` atualizadas, testes e CI verdes, pacotes validados e a plataforma publicada e testada em tempo real no GitHub Pages.
+Todos os 9 repositórios da organização `@aprincar` e o repositório sincronizador `kivervinicius/aprincar-v1` encontram-se com as branches `main` atualizadas e protegidas, testes e CI verdes, pacotes validados e a plataforma publicada e testada em tempo real no GitHub Pages.
 
 ---
 
 ## 2. Inventário de Repositórios & Rastreabilidade Git
 
-| Repositório                          | SHA Inicial | Final / Merge SHA | PR URL                                                            | Status do Gate                             |
-| :----------------------------------- | :---------- | :---------------- | :---------------------------------------------------------------- | :----------------------------------------- |
-| **`aprincar/.github`**               | `e762395`   | `2203a1f`         | [PR #1](https://github.com/aprincar/.github/pull/1)               | ✅ PASS (Governance & Rulesets)            |
-| **`aprincar/curriculum-bncc`**       | `2dcae80`   | `53d74f8`         | [PR #2](https://github.com/aprincar/curriculum-bncc/pull/2)       | ✅ PASS (Crosswalk & Snapshot Validation)  |
-| **`aprincar/community-games`**       | `2bced4b`   | `4236a85`         | [PR #2](https://github.com/aprincar/community-games/pull/2)       | ✅ PASS (Sandbox & Security Policy)        |
-| **`aprincar/game-template-vite`**    | `d4e5f67`   | `b6697b0`         | [PR #2](https://github.com/aprincar/game-template-vite/pull/2)    | ✅ PASS (Singlefile Build & Contract)      |
-| **`aprincar/game-template-react`**   | `a1b2c3d`   | `0c1ef81`         | [PR #2](https://github.com/aprincar/game-template-react/pull/2)   | ✅ PASS (React Contract & Package)         |
-| **`aprincar/game-template-phaser`**  | `e5ce2d7`   | `1930e97`         | [PR #2](https://github.com/aprincar/game-template-phaser/pull/2)  | ✅ PASS (Phaser Runtime & Clean Listeners) |
-| **`aprincar/game-template-threejs`** | `b6554b5`   | `b55a16e`         | [PR #2](https://github.com/aprincar/game-template-threejs/pull/2) | ✅ PASS (Three.js Drag/Tap Isolation)      |
-| **`aprincar/games-official`**        | `ec7bd9c`   | `5029c19`         | [PR #3](https://github.com/aprincar/games-official/pull/3)        | ✅ PASS (10 Games Built & Validated)       |
-| **`aprincar/platform`**              | `caac683`   | `0142c79`         | [PR #6](https://github.com/aprincar/platform/pull/6)              | ✅ PASS (Core, PWA, Hub, App & Playwright) |
-| **`kivervinicius/aprincar-v1`**      | `91e2b3c`   | `main`            | Workspace Monorepo                                                | ✅ PASS (Sincronizado)                     |
+| Repositório                          | Pull Request                                                      | PR Head SHA                                | Merge Commit SHA                           | Current Main SHA                           | Status do Gate                        |
+| :----------------------------------- | :---------------------------------------------------------------- | :----------------------------------------- | :----------------------------------------- | :----------------------------------------- | :------------------------------------ |
+| **`aprincar/.github`**               | [PR #1](https://github.com/aprincar/.github/pull/1)               | `63857e8c3d742bf096260467d1d760770203408f` | `2203a1f1aa40acb045efd777aa6f9f03d06d5768` | `2203a1f1aa40acb045efd777aa6f9f03d06d5768` | ✅ PASS (Governance & Protection)     |
+| **`aprincar/curriculum-bncc`**       | [PR #2](https://github.com/aprincar/curriculum-bncc/pull/2)       | `a6fb5b3854722181bb73a4433fda0e7a5ff92b77` | `53d74f8cf7c64dba27fdcfa693c099f145894ebd` | `53d74f8cf7c64dba27fdcfa693c099f145894ebd` | ✅ PASS (Crosswalk & Snapshot)        |
+| **`aprincar/community-games`**       | [PR #2](https://github.com/aprincar/community-games/pull/2)       | `52b2a167b920a30301c1eb70c29a2d1c53f94c99` | `4236a85098907037724e83a60dc5dee654c6fc51` | `4236a85098907037724e83a60dc5dee654c6fc51` | ✅ PASS (Sandbox & Security Policy)   |
+| **`aprincar/game-template-vite`**    | [PR #2](https://github.com/aprincar/game-template-vite/pull/2)    | `86fa9010b48cf3a5625fb4ad82fcab3079b42d3e` | `7a607264a00412421e5562c9e493b075be16ac21` | `7a607264a00412421e5562c9e493b075be16ac21` | ✅ PASS (Singlefile & Template)       |
+| **`aprincar/game-template-react`**   | [PR #2](https://github.com/aprincar/game-template-react/pull/2)   | `7646a89e60244e38ed4ff172b4d05ae11d864c64` | `72783570029fa928f1efa03ed93d9f3c0a85d82d` | `72783570029fa928f1efa03ed93d9f3c0a85d82d` | ✅ PASS (React Contract & Template)   |
+| **`aprincar/game-template-phaser`**  | [PR #2](https://github.com/aprincar/game-template-phaser/pull/2)  | `71fae1e5b1e24c14c6f56dddbc582cc49b6f3680` | `1930e977b9f9f3bdd6060c128f70712d851b31a4` | `1930e977b9f9f3bdd6060c128f70712d851b31a4` | ✅ PASS (Phaser Runtime & Template)   |
+| **`aprincar/game-template-threejs`** | [PR #2](https://github.com/aprincar/game-template-threejs/pull/2) | `0f83e03ba00fe4bec6aaa2e89adae9d8d45ca451` | `b55a16e0a5b753c97483f7510fc6717e7c761eb9` | `b55a16e0a5b753c97483f7510fc6717e7c761eb9` | ✅ PASS (Three.js & Template)         |
+| **`aprincar/games-official`**        | [PR #3](https://github.com/aprincar/games-official/pull/3)        | `be17ec90a077838c9c9fc25fdf14eb9dfd2bf9e2` | `5029c1930eccdcb2dbde3994f16e3b377d3c3552` | `5029c1930eccdcb2dbde3994f16e3b377d3c3552` | ✅ PASS (10 Games Built & Hashes)     |
+| **`aprincar/platform`**              | [PR #7](https://github.com/aprincar/platform/pull/7)              | `487b7d79d875b3491dbb3451854122bbe2cd4ce1` | `65c43103ed5677188b915dc84346cb3627453183` | `65c43103ed5677188b915dc84346cb3627453183` | ✅ PASS (Core, Hub, App & Playwright) |
+| **`kivervinicius/aprincar-v1`**      | Workspace                                                         | —                                          | `2bf3394`                                  | `2bf3394`                                  | ✅ PASS (Sincronizado)                |
 
 ---
 
@@ -101,7 +102,7 @@ Todos os 10 jogos canônicos foram testados de ponta a ponta com simulação de 
 
 ## 9. Testes Automatizados & Cobertura
 
-- **32 Testes Unitários:** Motor de atividades, protocolo SDK, validação de handwriting, grafo BNCC e política de cache.
+- **33 Testes Unitários:** Motor de atividades, protocolo SDK, validação de handwriting, grafo BNCC e política de cache.
 - **28 Testes End-to-End (Playwright):** Cobertura completa de fluxos de usuário em 10 viewports, persistência offline, multiperfil e proteção de PIN.
 - **12 Screenshots de Validação Gerados:** Persistidos em `platform/_validation/screenshots/`.
 

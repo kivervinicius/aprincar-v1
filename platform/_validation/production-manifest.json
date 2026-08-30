@@ -1,0 +1,215 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-08-30T15:38:52.816Z",
+  "organization": "aprincar",
+  "productionEnvironment": {
+    "status": "PRODUCTION_GO",
+    "portalUrl": "https://aprincar.github.io/platform/",
+    "appUrl": "https://aprincar.github.io/platform/app/",
+    "hubUrl": "https://aprincar.github.io/platform/hub/"
+  },
+  "repositories": {
+    ".github": {
+      "role": "governance",
+      "defaultBranch": "main",
+      "currentMainSha": "2203a1f1aa40acb045efd777aa6f9f03d06d5768",
+      "lastCommitMessage": "feat(governance): add GITHUB_PRODUCTION_SETTINGS.md and update org documentation (#1)",
+      "lastCommitDate": "2026-08-30T05:03:31Z",
+      "lastMergedPr": {
+        "number": 1,
+        "title": "feat(governance): add GITHUB_PRODUCTION_SETTINGS.md and update org documentation",
+        "headSha": "63857e8c3d742bf096260467d1d760770203408f",
+        "mergeCommitSha": "2203a1f1aa40acb045efd777aa6f9f03d06d5768",
+        "mergedAt": "2026-08-30T05:03:31Z"
+      },
+      "isTemplate": false,
+      "topics": [
+        "aprincar",
+        "community-health",
+        "governance",
+        "open-source"
+      ]
+    },
+    "curriculum-bncc": {
+      "role": "curriculum",
+      "defaultBranch": "main",
+      "currentMainSha": "53d74f8cf7c64dba27fdcfa693c099f145894ebd",
+      "lastCommitMessage": "feat(curriculum): validate BNCC skill snapshot consistency and catalog relations (#2)",
+      "lastCommitDate": "2026-08-30T05:04:37Z",
+      "lastMergedPr": {
+        "number": 2,
+        "title": "feat(curriculum): validate BNCC skill snapshot consistency and catalog relations",
+        "headSha": "a6fb5b3854722181bb73a4433fda0e7a5ff92b77",
+        "mergeCommitSha": "53d74f8cf7c64dba27fdcfa693c099f145894ebd",
+        "mergedAt": "2026-08-30T05:04:37Z"
+      },
+      "isTemplate": false,
+      "topics": [
+        "aprincar",
+        "bncc",
+        "curriculum",
+        "early-childhood-education",
+        "learning-goals"
+      ]
+    },
+    "community-games": {
+      "role": "community",
+      "defaultBranch": "main",
+      "currentMainSha": "4236a85098907037724e83a60dc5dee654c6fc51",
+      "lastCommitMessage": "feat(community): add explicit production validation and security gates (#2)",
+      "lastCommitDate": "2026-08-30T05:05:20Z",
+      "lastMergedPr": {
+        "number": 2,
+        "title": "feat(community): add explicit production validation and security gates",
+        "headSha": "52b2a167b920a30301c1eb70c29a2d1c53f94c99",
+        "mergeCommitSha": "4236a85098907037724e83a60dc5dee654c6fc51",
+        "mergedAt": "2026-08-30T05:05:20Z"
+      },
+      "isTemplate": false,
+      "topics": [
+        "aprincar",
+        "community-games",
+        "education",
+        "sandbox",
+        "validation"
+      ]
+    },
+    "game-template-vite": {
+      "role": "template-vite",
+      "defaultBranch": "main",
+      "currentMainSha": "7a607264a00412421e5562c9e493b075be16ac21",
+      "lastCommitMessage": "feat(template): add package contract test and strict extension validator (#2)",
+      "lastCommitDate": "2026-08-30T05:06:10Z",
+      "lastMergedPr": {
+        "number": 2,
+        "title": "feat(template): add package contract test and strict extension validator",
+        "headSha": "86fa9010b48cf3a5625fb4ad82fcab3079b42d3e",
+        "mergeCommitSha": "7a607264a00412421e5562c9e493b075be16ac21",
+        "mergedAt": "2026-08-30T05:06:10Z"
+      },
+      "isTemplate": true,
+      "topics": [
+        "aprincar",
+        "game-template",
+        "single-file-html",
+        "typescript",
+        "vite"
+      ]
+    },
+    "game-template-react": {
+      "role": "template-react",
+      "defaultBranch": "main",
+      "currentMainSha": "72783570029fa928f1efa03ed93d9f3c0a85d82d",
+      "lastCommitMessage": "feat(template): add package contract test and strict extension validator (#2)",
+      "lastCommitDate": "2026-08-30T05:06:17Z",
+      "lastMergedPr": {
+        "number": 2,
+        "title": "feat(template): add package contract test and strict extension validator",
+        "headSha": "7646a89e60244e38ed4ff172b4d05ae11d864c64",
+        "mergeCommitSha": "72783570029fa928f1efa03ed93d9f3c0a85d82d",
+        "mergedAt": "2026-08-30T05:06:17Z"
+      },
+      "isTemplate": true,
+      "topics": [
+        "aprincar",
+        "game-template",
+        "react",
+        "typescript",
+        "vite"
+      ]
+    },
+    "game-template-phaser": {
+      "role": "template-phaser",
+      "defaultBranch": "main",
+      "currentMainSha": "1930e977b9f9f3bdd6060c128f70712d851b31a4",
+      "lastCommitMessage": "feat(template): add package contract test and strict extension validator (#2)",
+      "lastCommitDate": "2026-08-30T05:06:25Z",
+      "lastMergedPr": {
+        "number": 2,
+        "title": "feat(template): add package contract test and strict extension validator",
+        "headSha": "71fae1e5b1e24c14c6f56dddbc582cc49b6f3680",
+        "mergeCommitSha": "1930e977b9f9f3bdd6060c128f70712d851b31a4",
+        "mergedAt": "2026-08-30T05:06:26Z"
+      },
+      "isTemplate": true,
+      "topics": [
+        "aprincar",
+        "game-development",
+        "game-template",
+        "phaser",
+        "typescript",
+        "vite"
+      ]
+    },
+    "game-template-threejs": {
+      "role": "template-threejs",
+      "defaultBranch": "main",
+      "currentMainSha": "b55a16e0a5b753c97483f7510fc6717e7c761eb9",
+      "lastCommitMessage": "feat(template): add package contract test and strict extension validator (#2)",
+      "lastCommitDate": "2026-08-30T05:06:33Z",
+      "lastMergedPr": {
+        "number": 2,
+        "title": "feat(template): add package contract test and strict extension validator",
+        "headSha": "0f83e03ba00fe4bec6aaa2e89adae9d8d45ca451",
+        "mergeCommitSha": "b55a16e0a5b753c97483f7510fc6717e7c761eb9",
+        "mergedAt": "2026-08-30T05:06:34Z"
+      },
+      "isTemplate": true,
+      "topics": [
+        "3d",
+        "aprincar",
+        "game-template",
+        "threejs",
+        "typescript",
+        "vite",
+        "webgl"
+      ]
+    },
+    "games-official": {
+      "role": "games-official",
+      "defaultBranch": "main",
+      "currentMainSha": "5029c1930eccdcb2dbde3994f16e3b377d3c3552",
+      "lastCommitMessage": "feat(games): implement Brand System v3, procedural round cleanup and official game suite (#3)",
+      "lastCommitDate": "2026-08-30T05:07:59Z",
+      "lastMergedPr": {
+        "number": 3,
+        "title": "feat(games): implement Brand System v3, procedural round cleanup and official game suite",
+        "headSha": "be17ec90a077838c9c9fc25fdf14eb9dfd2bf9e2",
+        "mergeCommitSha": "5029c1930eccdcb2dbde3994f16e3b377d3c3552",
+        "mergedAt": "2026-08-30T05:08:00Z"
+      },
+      "isTemplate": false,
+      "topics": [
+        "aprincar",
+        "canvas",
+        "educational-games",
+        "offline-first",
+        "phaser",
+        "threejs"
+      ]
+    },
+    "platform": {
+      "role": "platform",
+      "defaultBranch": "main",
+      "currentMainSha": "c7733524e080d6cbcfd32be41aba42899ce0a68d",
+      "lastCommitMessage": "feat(hardening): post-production governance, dependabot multi-major fix, reproducible release manifest and E2E stabilization (#8)",
+      "lastCommitDate": "2026-08-30T15:38:42Z",
+      "lastMergedPr": {
+        "number": 8,
+        "title": "feat(hardening): post-production governance, dependabot multi-major fix and release manifest",
+        "headSha": "88b8bcc9c8c0ac98f9ba6a26d259c26a52737c14",
+        "mergeCommitSha": "c7733524e080d6cbcfd32be41aba42899ce0a68d",
+        "mergedAt": "2026-08-30T15:38:42Z"
+      },
+      "isTemplate": false,
+      "topics": [
+        "aprincar",
+        "educational-games",
+        "offline-first",
+        "pwa",
+        "react",
+        "typescript"
+      ]
+    }
+  }
+}

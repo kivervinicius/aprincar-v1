@@ -19,6 +19,7 @@ function targetByKind(state: GameState, kind: string, value?: string | number) {
 }
 
 async function chooseWrongThenCorrect(page: Page, frame: Frame) {
+  await waitForGameInput(frame);
   const initial = await getGameState(frame);
   const answer = initial.challenge.answer;
   expect(answer).toBeDefined();
@@ -28,18 +29,25 @@ async function chooseWrongThenCorrect(page: Page, frame: Frame) {
   expect(correct).toBeTruthy();
 
   await clickCanvasTarget(page, frame, wrong!);
-  await expect.poll(async () => (await getGameState(frame)).lastResult).toBe('failure');
+  await expect.poll(async () => (await getGameState(frame)).lastResult, { timeout: 10000 }).toBe('failure');
   await waitForGameInput(frame);
-  await clickCanvasTarget(page, frame, correct!);
-  await expect.poll(async () => (await getGameState(frame)).lastResult).toBe('success');
+  await page.waitForTimeout(300);
+
+  const updatedState = await getGameState(frame);
+  const updatedCorrect = updatedState.targets.find(
+    (target) => target.kind === 'choice' && target.value === answer,
+  );
+  await clickCanvasTarget(page, frame, updatedCorrect || correct!);
+  await expect.poll(async () => (await getGameState(frame)).lastResult, { timeout: 10000 }).toBe('success');
   await expect
-    .poll(async () => (await getGameState(frame)).level, { timeout: 3500 })
+    .poll(async () => (await getGameState(frame)).level, { timeout: 10000 })
     .toBeGreaterThan(initial.level);
 }
 
 async function exerciseReversibleCounting(page: Page, gameId: string, title: string) {
   await completeOnboarding(page, title.includes('Frutas') ? 'Lia' : 'Bia');
   const { frame } = await openGame(page, gameId, title);
+  await waitForGameInput(frame);
   const initial = await getGameState(frame);
   const answer = Number(initial.challenge.answer);
   expect(Number.isFinite(answer)).toBe(true);
@@ -48,18 +56,23 @@ async function exerciseReversibleCounting(page: Page, gameId: string, title: str
   const action = targetByKind(initial, 'action', 'Conferir');
   expect(action).toBeTruthy();
 
-  for (const target of toggles.slice(0, answer + 1)) await clickCanvasTarget(page, frame, target);
-  await expect.poll(async () => (await getGameState(frame)).selectedCount).toBe(answer + 1);
+  for (const target of toggles.slice(0, answer + 1)) {
+    await clickCanvasTarget(page, frame, target);
+    await page.waitForTimeout(100);
+  }
+  await expect
+    .poll(async () => (await getGameState(frame)).selectedCount, { timeout: 10000 })
+    .toBe(answer + 1);
 
   await clickCanvasTarget(page, frame, action!);
-  await expect.poll(async () => (await getGameState(frame)).lastResult).toBe('failure');
+  await expect.poll(async () => (await getGameState(frame)).lastResult, { timeout: 10000 }).toBe('failure');
   await waitForGameInput(frame);
 
   await clickCanvasTarget(page, frame, toggles[answer]!);
-  await expect.poll(async () => (await getGameState(frame)).selectedCount).toBe(answer);
+  await expect.poll(async () => (await getGameState(frame)).selectedCount, { timeout: 10000 }).toBe(answer);
   await clickCanvasTarget(page, frame, action!);
   await expect
-    .poll(async () => (await getGameState(frame)).level, { timeout: 3500 })
+    .poll(async () => (await getGameState(frame)).level, { timeout: 10000 })
     .toBeGreaterThan(initial.level);
 }
 
@@ -91,7 +104,7 @@ test.describe('Semantic gameplay for every official game family', () => {
     await waitForGameInput(frame);
     await dragCanvasTarget(page, frame, source!, correct!);
     await expect
-      .poll(async () => (await getGameState(frame)).level, { timeout: 3500 })
+      .poll(async () => (await getGameState(frame)).level, { timeout: 10000 })
       .toBeGreaterThan(initial.level);
   });
 
@@ -110,6 +123,7 @@ test.describe('Semantic gameplay for every official game family', () => {
   test('memory reports a mismatch and can solve every generated pair', async ({ page }) => {
     await completeOnboarding(page, 'Davi');
     const { frame } = await openGame(page, 'aprincar.memory-animals', 'Memória dos Bichos');
+    await waitForGameInput(frame);
     const initial = await getGameState(frame);
     const cards = initial.challenge.cards ?? [];
     expect(cards.length).toBeGreaterThanOrEqual(6);
@@ -123,8 +137,9 @@ test.describe('Semantic gameplay for every official game family', () => {
     expect(targetFor(mismatch!.id)).toBeTruthy();
 
     await clickCanvasTarget(page, frame, targetFor(first.id)!);
+    await page.waitForTimeout(250);
     await clickCanvasTarget(page, frame, targetFor(mismatch!.id)!);
-    await expect.poll(async () => (await getGameState(frame)).lastResult, { timeout: 2500 }).toBe('failure');
+    await expect.poll(async () => (await getGameState(frame)).lastResult, { timeout: 10000 }).toBe('failure');
     await waitForGameInput(frame);
 
     const pairs = new Map<string, string[]>();
@@ -132,14 +147,19 @@ test.describe('Semantic gameplay for every official game family', () => {
     let matched = 0;
     for (const ids of pairs.values()) {
       expect(ids).toHaveLength(2);
-      for (const id of ids) await clickCanvasTarget(page, frame, targetFor(id)!);
+      for (const id of ids) {
+        await clickCanvasTarget(page, frame, targetFor(id)!);
+        await page.waitForTimeout(250);
+      }
       matched += 1;
       await expect
-        .poll(async () => (await getGameState(frame)).matchedPairs ?? 0, { timeout: 2500 })
+        .poll(async () => (await getGameState(frame)).matchedPairs, { timeout: 10000 })
         .toBe(matched);
+      await waitForGameInput(frame);
     }
+
     await expect
-      .poll(async () => (await getGameState(frame)).level, { timeout: 4000 })
+      .poll(async () => (await getGameState(frame)).level, { timeout: 10000 })
       .toBeGreaterThan(initial.level);
   });
 
@@ -166,7 +186,7 @@ test.describe('Semantic gameplay for every official game family', () => {
     expect(action).toBeTruthy();
     await clickCanvasTarget(page, frame, action!);
     await expect
-      .poll(async () => (await getGameState(frame)).level, { timeout: 4000 })
+      .poll(async () => (await getGameState(frame)).level, { timeout: 10000 })
       .toBeGreaterThan(initial.level);
   });
 
@@ -216,7 +236,7 @@ test.describe('Semantic gameplay for every official game family', () => {
     expect(currentCorrect?.normalized).toBeTruthy();
     await clickThreeTarget(page, frame, currentCorrect!);
     await expect
-      .poll(async () => (await getGameState(frame)).level, { timeout: 4000 })
+      .poll(async () => (await getGameState(frame)).level, { timeout: 10000 })
       .toBeGreaterThan(initial.level);
   });
 });

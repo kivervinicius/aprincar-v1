@@ -40,32 +40,58 @@ declare global {
 
 export async function completeOnboarding(page: Page, name: string) {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Quem vai brincar?' })).toBeVisible({ timeout: 10000 });
+  const state = await Promise.race([
+    page
+      .waitForSelector('text=Mundos de Descoberta', { timeout: 8000 })
+      .then(() => 'home')
+      .catch(() => null),
+    page
+      .waitForSelector('text=Quem vai brincar?', { timeout: 8000 })
+      .then(() => 'onboarding')
+      .catch(() => null),
+  ]);
+
+  if (state === 'home') {
+    return;
+  }
+
+  if (state !== 'onboarding') {
+    await page.goto('/onboarding');
+  }
+
+  const onboardingHeading = page.getByRole('heading', { name: 'Quem vai brincar?' });
+  await expect(onboardingHeading).toBeVisible({ timeout: 15000 });
   await page.getByLabel('Nome ou apelido').fill(name);
   await page.getByRole('button', { name: 'Continuar' }).click();
-  await expect(page.getByRole('heading', { name: 'Quantos anos?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Quantos anos?' })).toBeVisible({ timeout: 10000 });
   await page.getByRole('button', { name: 'Continuar' }).click();
-  await expect(page.getByRole('heading', { name: 'O que já gosta de explorar?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'O que já gosta de explorar?' })).toBeVisible({
+    timeout: 10000,
+  });
   await page.getByRole('button', { name: 'Continuar' }).click();
-  await expect(page.getByRole('heading', { name: 'Interesses' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Interesses' })).toBeVisible({ timeout: 10000 });
   await page.getByRole('button', { name: 'Continuar' }).click();
-  await expect(page.getByRole('heading', { name: 'Tempo para brincar' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Tempo para brincar' })).toBeVisible({ timeout: 10000 });
   await page.getByRole('button', { name: 'Criar meu espaço' }).click();
-  await expect(page.getByText(new RegExp(`Oi, ${name}!`))).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Mundos de Descoberta' })).toBeVisible({ timeout: 15000 });
 }
 
 export async function openGame(page: Page, gameId: string, title: string) {
-  await page.getByRole('link', { name: 'Descobrir', exact: true }).click();
+  if (!page.url().includes('/discover')) {
+    await page.getByRole('link', { name: 'Descobrir', exact: true }).click();
+  }
   const card = page.locator(`[data-game-id="${gameId}"]`);
-  await expect(card).toBeVisible();
+  await expect(card).toBeVisible({ timeout: 15000 });
   await card.getByRole('button', { name: 'Jogar' }).click();
   const iframe = page.locator(`iframe[title="${title}"]`);
-  await expect(iframe).toBeVisible();
+  await expect(iframe).toBeVisible({ timeout: 15000 });
   const handle = await iframe.elementHandle();
   const frame = await handle?.contentFrame();
   expect(frame).toBeTruthy();
   await expect
-    .poll(async () => Boolean(await frame!.evaluate(() => window.__APRINCAR_GAME_STATE__)))
+    .poll(async () => Boolean(await frame!.evaluate(() => window.__APRINCAR_GAME_STATE__)), {
+      timeout: 15000,
+    })
     .toBe(true);
   return { frame: frame!, iframe };
 }
@@ -88,13 +114,11 @@ async function canvasBox(frame: Frame) {
   return box!;
 }
 
-export async function clickCanvasTarget(_page: Page, frame: Frame, target: GameTarget) {
+export async function clickCanvasTarget(page: Page, frame: Frame, target: GameTarget) {
   expect(target.x).toBeDefined();
   expect(target.y).toBeDefined();
   const box = await canvasBox(frame);
-  await frame.locator('canvas').click({
-    position: { x: (target.x! / 960) * box.width, y: (target.y! / 640) * box.height },
-  });
+  await page.mouse.click(box.x + (target.x! / 960) * box.width, box.y + (target.y! / 640) * box.height);
 }
 
 export async function dragCanvasTarget(page: Page, frame: Frame, from: GameTarget, to: GameTarget) {

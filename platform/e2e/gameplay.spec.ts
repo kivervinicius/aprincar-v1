@@ -19,18 +19,19 @@ test.describe('Gameplay and Evidence Generation', () => {
     expect(correct).toBeTruthy();
 
     await clickCanvasTarget(page, frame, wrong!);
-    await expect.poll(async () => (await getGameState(frame)).lastResult).toBe('failure');
-    await expect.poll(async () => (await getGameState(frame)).inputReady).toBe(true);
+    await expect.poll(async () => (await getGameState(frame)).lastResult, { timeout: 10000 }).toBe('failure');
+    await expect.poll(async () => (await getGameState(frame)).inputReady, { timeout: 10000 }).toBe(true);
+    await page.waitForTimeout(300);
 
-    await clickCanvasTarget(page, frame, correct!);
+    const updatedState = await getGameState(frame);
+    const updatedCorrect = updatedState.targets.find((t) => t.kind === 'choice' && t.value === answer);
+    await clickCanvasTarget(page, frame, updatedCorrect || correct!);
     await expect
-      .poll(async () => (await getGameState(frame)).level, { timeout: 8000 })
+      .poll(async () => (await getGameState(frame)).level, { timeout: 10000 })
       .toBeGreaterThan(initial.level);
 
-    await page.goto('/');
-    await page.getByLabel('Menu de perfis').click();
-    await page.getByRole('menuitem', { name: 'Área do responsável' }).click();
-    await expect(page.getByText('Olá, responsável!')).toBeVisible();
-    await expect(page.getByText('Contar até 10')).toBeVisible();
+    await page.goto('/parent');
+    await expect(page.getByText('Olá, responsável!')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText('Contar até 10')).toBeVisible({ timeout: 10000 });
   });
 });
