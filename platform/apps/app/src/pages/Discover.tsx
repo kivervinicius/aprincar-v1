@@ -1,6 +1,5 @@
-import { Button, Group, RangeSlider, Select, Text, TextInput } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { Compass, RotateCcw, Search, SlidersHorizontal } from 'lucide-react';
+import { Button, TextInput } from '@mantine/core';
+import { Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useAppStore } from '../app-store';
 import { GameCard } from '../components/GameCard';
@@ -20,11 +19,6 @@ export function Discover() {
   const { registry } = useAppStore();
   const [q, setQ] = useState('');
   const [category, setCategory] = useState('all');
-
-  // Adult filter state
-  const [adultFiltersOpen, { toggle: toggleAdultFilters }] = useDisclosure(false);
-  const [trustFilter, setTrustFilter] = useState<string>('all');
-  const [ageRange, setAgeRange] = useState<[number, number]>([2, 10]);
 
   const list = useMemo(() => {
     return registry.filter((e) => {
@@ -46,21 +40,13 @@ export function Discover() {
       const catOk =
         category === 'all' || (category === '3d' ? e.id.includes('3d') : (e.tags ?? []).includes(category));
 
-      // Adult filters
-      const trustOk = trustFilter === 'all' || e.trust === trustFilter;
-      const minAge = e.ageGuidance?.min ?? 2;
-      const maxAge = e.ageGuidance?.max ?? 10;
-      const ageOk = minAge <= ageRange[1] && maxAge >= ageRange[0];
-
-      return qok && catOk && trustOk && ageOk;
+      return qok && catOk;
     });
-  }, [registry, q, category, trustFilter, ageRange]);
+  }, [registry, q, category]);
 
   const resetFilters = () => {
     setQ('');
     setCategory('all');
-    setTrustFilter('all');
-    setAgeRange([2, 10]);
   };
 
   return (
@@ -95,14 +81,6 @@ export function Discover() {
             radius="xl"
             aria-label="Buscar brincadeiras"
           />
-          <Button
-            variant={adultFiltersOpen ? 'filled' : 'light'}
-            color="violet"
-            leftSection={<SlidersHorizontal size={16} />}
-            onClick={toggleAdultFilters}
-          >
-            Filtros do adulto
-          </Button>
         </div>
 
         {/* Child Category Chips */}
@@ -117,66 +95,6 @@ export function Discover() {
             </button>
           ))}
         </div>
-
-        {/* Collapsible Adult Filters */}
-        {adultFiltersOpen && (
-          <div
-            className="adult-filters-box"
-            style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--ap-border)' }}
-          >
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                gap: 16,
-              }}
-            >
-              <div>
-                <Text size="sm" fw={800} mb={6}>
-                  Nível de confiança (Trust)
-                </Text>
-                <Select
-                  value={trustFilter}
-                  onChange={(v) => setTrustFilter(v ?? 'all')}
-                  data={[
-                    { value: 'all', label: 'Todos os níveis' },
-                    { value: 'official', label: 'Oficial Aprincar' },
-                    { value: 'curated', label: 'Curado pela equipe' },
-                    { value: 'community', label: 'Comunidade' },
-                    { value: 'experimental', label: 'Experimental' },
-                  ]}
-                  radius="md"
-                />
-              </div>
-
-              <div>
-                <Text size="sm" fw={800} mb={6}>
-                  Faixa etária sugerida ({ageRange[0]} a {ageRange[1]} anos)
-                </Text>
-                <RangeSlider
-                  min={2}
-                  max={12}
-                  step={1}
-                  value={ageRange}
-                  onChange={setAgeRange}
-                  color="violet"
-                  mt="sm"
-                />
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                <Button
-                  variant="subtle"
-                  color="gray"
-                  leftSection={<RotateCcw size={14} />}
-                  onClick={resetFilters}
-                >
-                  Limpar filtros
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
       </section>
 
       {/* Results grid */}

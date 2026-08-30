@@ -14,6 +14,7 @@
     "@aprincar/extension-contracts": "0.1.0",
     "@aprincar/extension-host": "0.1.0",
     "@aprincar/extension-manager": "0.1.0",
+    "@aprincar/learning-engine": "0.1.0",
     "@aprincar/progress-engine": "0.1.0",
     "@aprincar/reward-engine": "0.1.0",
     "@aprincar/skill-graph": "0.1.0",

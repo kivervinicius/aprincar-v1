@@ -23,12 +23,7 @@
         "mergedAt": "2026-08-30T05:03:31Z"
       },
       "isTemplate": false,
-      "topics": [
-        "aprincar",
-        "community-health",
-        "governance",
-        "open-source"
-      ]
+      "topics": ["aprincar", "community-health", "governance", "open-source"]
     },
     "curriculum-bncc": {
       "role": "curriculum",
@@ -44,13 +39,7 @@
         "mergedAt": "2026-08-30T05:04:37Z"
       },
       "isTemplate": false,
-      "topics": [
-        "aprincar",
-        "bncc",
-        "curriculum",
-        "early-childhood-education",
-        "learning-goals"
-      ]
+      "topics": ["aprincar", "bncc", "curriculum", "early-childhood-education", "learning-goals"]
     },
     "community-games": {
       "role": "community",
@@ -66,13 +55,7 @@
         "mergedAt": "2026-08-30T05:05:20Z"
       },
       "isTemplate": false,
-      "topics": [
-        "aprincar",
-        "community-games",
-        "education",
-        "sandbox",
-        "validation"
-      ]
+      "topics": ["aprincar", "community-games", "education", "sandbox", "validation"]
     },
     "game-template-vite": {
       "role": "template-vite",
@@ -88,13 +71,7 @@
         "mergedAt": "2026-08-30T05:06:10Z"
       },
       "isTemplate": true,
-      "topics": [
-        "aprincar",
-        "game-template",
-        "single-file-html",
-        "typescript",
-        "vite"
-      ]
+      "topics": ["aprincar", "game-template", "single-file-html", "typescript", "vite"]
     },
     "game-template-react": {
       "role": "template-react",
@@ -110,13 +87,7 @@
         "mergedAt": "2026-08-30T05:06:17Z"
       },
       "isTemplate": true,
-      "topics": [
-        "aprincar",
-        "game-template",
-        "react",
-        "typescript",
-        "vite"
-      ]
+      "topics": ["aprincar", "game-template", "react", "typescript", "vite"]
     },
     "game-template-phaser": {
       "role": "template-phaser",
@@ -132,14 +103,7 @@
         "mergedAt": "2026-08-30T05:06:26Z"
       },
       "isTemplate": true,
-      "topics": [
-        "aprincar",
-        "game-development",
-        "game-template",
-        "phaser",
-        "typescript",
-        "vite"
-      ]
+      "topics": ["aprincar", "game-development", "game-template", "phaser", "typescript", "vite"]
     },
     "game-template-threejs": {
       "role": "template-threejs",
@@ -155,15 +119,7 @@
         "mergedAt": "2026-08-30T05:06:34Z"
       },
       "isTemplate": true,
-      "topics": [
-        "3d",
-        "aprincar",
-        "game-template",
-        "threejs",
-        "typescript",
-        "vite",
-        "webgl"
-      ]
+      "topics": ["3d", "aprincar", "game-template", "threejs", "typescript", "vite", "webgl"]
     },
     "games-official": {
       "role": "games-official",
@@ -179,14 +135,7 @@
         "mergedAt": "2026-08-30T05:08:00Z"
       },
       "isTemplate": false,
-      "topics": [
-        "aprincar",
-        "canvas",
-        "educational-games",
-        "offline-first",
-        "phaser",
-        "threejs"
-      ]
+      "topics": ["aprincar", "canvas", "educational-games", "offline-first", "phaser", "threejs"]
     },
     "platform": {
       "role": "platform",
@@ -202,14 +151,7 @@
         "mergedAt": "2026-08-30T15:38:42Z"
       },
       "isTemplate": false,
-      "topics": [
-        "aprincar",
-        "educational-games",
-        "offline-first",
-        "pwa",
-        "react",
-        "typescript"
-      ]
+      "topics": ["aprincar", "educational-games", "offline-first", "pwa", "react", "typescript"]
     }
   }
 }

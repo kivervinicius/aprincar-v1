@@ -8,23 +8,27 @@ import { WORLDS, MISSIONS, type MissionItem } from '../worlds';
 import { useState } from 'react';
 
 export function Home() {
-  const { profile, registry, libraryIds } = useAppStore();
+  const { profile, registry, libraryIds, recommendation, completedMissionIds, completeMission } =
+    useAppStore();
   const navigate = useNavigate();
   const age = profile?.age ?? 5;
 
   const [missionIndex, setMissionIndex] = useState(0);
-  const [completedMissions, setCompletedMissions] = useState<Set<string>>(new Set());
 
   const currentMission: MissionItem = MISSIONS[missionIndex % MISSIONS.length] ?? MISSIONS[0]!;
-  const isCurrentMissionDone = completedMissions.has(currentMission.id);
+  const isCurrentMissionDone = completedMissionIds.has(currentMission.id);
 
   const handleCompleteMission = () => {
-    setCompletedMissions((prev) => new Set(prev).add(currentMission.id));
+    completeMission(currentMission.id, currentMission.worldId, currentMission.skills ?? []);
   };
 
   const handleNextMission = () => {
     setMissionIndex((prev) => prev + 1);
   };
+
+  const topRecommended = recommendation.recommended;
+  const primaryGameLink = topRecommended ? `/play/${topRecommended.id}` : '/discover';
+  const primaryGameName = topRecommended ? topRecommended.name['pt-BR'] : 'Começar a brincar';
 
   // Find games fitting age and child preferences
   const fitting = registry.filter(
@@ -46,17 +50,18 @@ export function Home() {
           </h1>
           <p className="hero-question">O que vamos descobrir hoje?</p>
           <p className="hero-description">
+            {recommendation.reason ? `${recommendation.reason}. ` : ''}
             Escolha uma aventura, continue algo que gostou ou experimente um jogo novo. Aqui, aprender
             acontece brincando.
           </p>
           <div className="hero-actions">
             <Button
               component={Link}
-              to="/discover"
+              to={primaryGameLink}
               className="ap-primary hero-cta"
               rightSection={<ArrowRight size={18} />}
             >
-              Começar a brincar
+              {topRecommended ? `Brincar: ${primaryGameName}` : 'Começar a brincar'}
             </Button>
             <Button
               component={Link}

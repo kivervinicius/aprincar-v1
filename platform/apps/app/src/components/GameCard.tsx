@@ -1,7 +1,7 @@
 import { Badge, Button, Group, Text } from '@mantine/core';
 import { CloudDownload, Play, Star } from 'lucide-react';
 import type { RegistryEntry } from '@aprincar/extension-contracts';
-import { OfflineBadge, TrustBadge } from '@aprincar/ui';
+import { OfflineBadge } from '@aprincar/ui';
 import { useEffect, useMemo, useState } from 'react';
 import { useAppStore } from '../app-store';
 import { Link } from '@tanstack/react-router';
@@ -45,9 +45,6 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
       <div className="game-card-body">
         <Group justify="space-between" gap="xs" wrap="nowrap" className="game-card-heading">
           <div className="game-title">{name}</div>
-          <div className="game-card-trust">
-            <TrustBadge trust={entry.trust} />
-          </div>
         </Group>
         <div className="game-meta">
           <Badge radius="xl" variant="light">
