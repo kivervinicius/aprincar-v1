@@ -9,6 +9,7 @@ import {
   openGame,
   type GameState,
   type GameTarget,
+  waitForGameInput,
 } from './helpers';
 
 function targetByKind(state: GameState, kind: string, value?: string | number) {
@@ -28,7 +29,9 @@ async function chooseWrongThenCorrect(page: Page, frame: Frame) {
 
   await clickCanvasTarget(page, frame, wrong!);
   await expect.poll(async () => (await getGameState(frame)).lastResult).toBe('failure');
+  await waitForGameInput(frame);
   await clickCanvasTarget(page, frame, correct!);
+  await expect.poll(async () => (await getGameState(frame)).lastResult).toBe('success');
   await expect
     .poll(async () => (await getGameState(frame)).level, { timeout: 3500 })
     .toBeGreaterThan(initial.level);
@@ -50,6 +53,7 @@ async function exerciseReversibleCounting(page: Page, gameId: string, title: str
 
   await clickCanvasTarget(page, frame, action!);
   await expect.poll(async () => (await getGameState(frame)).lastResult).toBe('failure');
+  await waitForGameInput(frame);
 
   await clickCanvasTarget(page, frame, toggles[answer]!);
   await expect.poll(async () => (await getGameState(frame)).selectedCount).toBe(answer);
@@ -84,7 +88,7 @@ test.describe('Semantic gameplay for every official game family', () => {
 
     await dragCanvasTarget(page, frame, source!, wrong!);
     await expect.poll(async () => (await getGameState(frame)).lastResult).toBe('failure');
-    await page.waitForTimeout(400);
+    await waitForGameInput(frame);
     await dragCanvasTarget(page, frame, source!, correct!);
     await expect
       .poll(async () => (await getGameState(frame)).level, { timeout: 3500 })
@@ -121,6 +125,7 @@ test.describe('Semantic gameplay for every official game family', () => {
     await clickCanvasTarget(page, frame, targetFor(first.id)!);
     await clickCanvasTarget(page, frame, targetFor(mismatch!.id)!);
     await expect.poll(async () => (await getGameState(frame)).lastResult, { timeout: 2500 }).toBe('failure');
+    await waitForGameInput(frame);
 
     const pairs = new Map<string, string[]>();
     for (const card of cards) pairs.set(card.pairId, [...(pairs.get(card.pairId) ?? []), card.id]);

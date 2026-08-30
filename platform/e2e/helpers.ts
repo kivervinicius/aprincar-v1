@@ -76,6 +76,10 @@ export async function getGameState(frame: Frame): Promise<GameState> {
   return state!;
 }
 
+export async function waitForGameInput(frame: Frame) {
+  await expect.poll(async () => (await getGameState(frame)).inputReady).toBe(true);
+}
+
 async function canvasBox(frame: Frame) {
   const canvas = frame.locator('canvas');
   await expect(canvas).toBeVisible();
@@ -84,11 +88,13 @@ async function canvasBox(frame: Frame) {
   return box!;
 }
 
-export async function clickCanvasTarget(page: Page, frame: Frame, target: GameTarget) {
+export async function clickCanvasTarget(_page: Page, frame: Frame, target: GameTarget) {
   expect(target.x).toBeDefined();
   expect(target.y).toBeDefined();
   const box = await canvasBox(frame);
-  await page.mouse.click(box.x + (target.x! / 960) * box.width, box.y + (target.y! / 640) * box.height);
+  await frame.locator('canvas').click({
+    position: { x: (target.x! / 960) * box.width, y: (target.y! / 640) * box.height },
+  });
 }
 
 export async function dragCanvasTarget(page: Page, frame: Frame, from: GameTarget, to: GameTarget) {
