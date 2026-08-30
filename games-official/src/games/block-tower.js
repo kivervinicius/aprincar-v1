@@ -31,6 +31,8 @@
 
         this.target(`block-${i + 1}`, x, y, 88, 74, 'drag-source');
         this.target(`block-${i + 1}`, x, y, 88, 74, 'toggle');
+        let dragged = false;
+        hitZone.on('dragstart', () => { dragged = true; });
         hitZone.on('drag', (_pointer, _gameObject, dragX, dragY) => {
           blockContainer.x = dragX;
           blockContainer.y = dragY;
@@ -57,7 +59,7 @@
           this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'drag', inputReady: true });
         });
         hitZone.on('pointerup', (pointer) => {
-          if (pointer.getDistance?.() > 8) return;
+          if (dragged) { dragged = false; return; }
           if (blockContainer.getData('picked') === true) {
             blockContainer.setData('picked', false);
             this.stack = this.stack.filter((item) => item !== blockContainer);
@@ -73,6 +75,7 @@
           blockContainer.x = 480;
           blockContainer.y = 430 - (this.stack.length - 1) * 58;
           this.updateState({ selectedCount: this.selected, stackHeight: this.stack.length, lastGesture: 'tap-fallback', inputReady: true });
+          dragged = false;
         });
       }
 

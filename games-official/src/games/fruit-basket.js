@@ -48,6 +48,8 @@
 
         this.target(`fruit-${i + 1}`, x, y, 76, 76, 'drag-source');
         this.target(`fruit-${i + 1}`, x, y, 76, 76, 'toggle');
+        let dragged = false;
+        hitZone.on('dragstart', () => { dragged = true; });
         hitZone.on('drag', (_pointer, _gameObject, dragX, dragY) => {
           fruitContainer.x = dragX;
           fruitContainer.y = dragY;
@@ -69,7 +71,7 @@
           this.updateState({ selectedCount: this.selected, lastGesture: 'drag', inputReady: true });
         });
         hitZone.on('pointerup', (pointer) => {
-          if (pointer.getDistance?.() > 8) return;
+          if (dragged) { dragged = false; return; }
           if (fruitContainer.getData('picked') === true) {
             fruitContainer.setData('picked', false);
             this.selected = Math.max(0, this.selected - 1);
@@ -85,6 +87,7 @@
           this.selected += 1;
           this.counter.setText(String(this.selected));
           this.updateState({ selectedCount: this.selected, lastGesture: 'tap-fallback', inputReady: true });
+          dragged = false;
         });
       }
 
