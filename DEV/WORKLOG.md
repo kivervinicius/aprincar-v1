@@ -1,5 +1,12 @@
 # Aprincar DEV Worklog
 
+## [2026-08-30] V1.1: experiências e Learning Engine
+
+- Os 10 jogos oficiais agora declaram fantasias reconhecíveis, mecânicas, interação direta, progressão adaptativa e sinais de aprendizagem distintos no manifesto.
+- O novo `@aprincar/learning-engine` seleciona deterministicamente a próxima experiência por estado de habilidade, contexto, idade, interesses e repetição recente.
+- A Home apresenta a próxima experiência recomendada; a seleção usa apenas SkillState/Evidence e não depende de Rewards.
+- Verificação: 13 testes dos jogos oficiais, 37 testes core, TypeScript, ESLint, builds e snapshot oficial aprovados. A suíte Playwright passou 31/32 no primeiro ciclo por uma falha transitória de onboarding e o teste de pattern passou isoladamente na repetição.
+
 ## [2026-08-30] Rotas Pages, atualização PWA e marca da home
 
 - O deploy passa a copiar o shell do App para `404.html`, permitindo atualizar rotas profundas no GitHub Pages.
