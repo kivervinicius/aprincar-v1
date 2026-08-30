@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#F7F6F2"/><path d="M25 5c3-5 11-5 14 0l16 30c3 6-1 13-8 13H17c-7 0-11-7-8-13L25 5Z" fill="#6F5BD7"/><path d="m32 18 2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8L32 18Z" fill="#fff"/><rect x="4" y="40" width="25" height="16" rx="8" transform="rotate(-18 4 40)" fill="#F07867"/><rect x="25" y="42" width="17" height="17" rx="5" fill="#65A67A"/><circle cx="53" cy="50" r="9" fill="#62A6D8"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" data-brand-version="3">
+  <rect width="192" height="192" rx="44" fill="#2563EB"/>
+  <g id="aprincar-star" transform="translate(34 30) scale(1.95)">
+    <path d="M32 5.4 39.4 21l17 2.3-12.5 12 3 16.9L32 44.1 17.1 52.2l3-16.9-12.5-12L24.6 21 32 5.4Z" fill="#FBCB24" stroke="#FB923C" stroke-width="2.2" stroke-linejoin="round"/>
+    <ellipse cx="25" cy="29" rx="3.2" ry="4.1" fill="#13203D"/><ellipse cx="39" cy="29" rx="3.2" ry="4.1" fill="#13203D"/>
+    <circle cx="26" cy="27.8" r="1" fill="#fff"/><circle cx="40" cy="27.8" r="1" fill="#fff"/>
+    <path d="M25 36c4.6 4.3 9.4 4.3 14 0" fill="none" stroke="#13203D" stroke-width="2.4" stroke-linecap="round"/>
+  </g>
+</svg>

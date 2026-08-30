@@ -10,6 +10,9 @@ export interface ChildProfile {
   name: string;
   age?: number;
   avatar: string;
+  interests?: string[];
+  focusSkills?: string[];
+  dailyGoalMinutes?: number;
   createdAt: string;
 }
 export interface LibraryItem {

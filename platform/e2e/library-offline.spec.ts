@@ -1,11 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { completeOnboarding } from './helpers';
 
 test.describe('Library and Offline Persistence', () => {
   test('adds game to library, caches offline and persists across reload', async ({ page }) => {
-    // 1. Create profile
-    await page.goto('/');
-    await page.getByLabel('Nome ou apelido').fill('Maya');
-    await page.getByRole('button', { name: /Criar (perfil|meu espaço)/ }).click();
+    await completeOnboarding(page, 'Maya');
 
     // 2. Add "Mundo das Cores" to library
     const colorCard = page.locator('.child-card', { hasText: 'Mundo das Cores' });

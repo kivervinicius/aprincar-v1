@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import '@mantine/core/styles.css';
 import './styles.css';
-import { Badge, Button, Group, MantineProvider, Text, TextInput } from '@mantine/core';
+import { Badge, Group, MantineProvider, Text, TextInput } from '@mantine/core';
 import { Search } from 'lucide-react';
-import { Brand, TrustBadge } from '@aprincar/ui';
+import { AprincarMascot, Brand, TrustBadge } from '@aprincar/ui';
 function artwork(e: any) {
   if (e.id.includes('3d')) return '🪐';
   if (e.id.includes('memory')) return '🦕🦊';
@@ -14,6 +14,15 @@ function artwork(e: any) {
   if ((e.tags ?? []).includes('colors')) return '●▲■';
   return '🧩';
 }
+function appUrl(gameId: string) {
+  const configured = String(import.meta.env.VITE_APRINCAR_APP_URL ?? '').replace(/\/$/, '');
+  if (configured) return `${configured}/play/${encodeURIComponent(gameId)}`;
+  const basePath = String(import.meta.env.BASE_URL || '/');
+  const siblingApp = basePath.replace(/\/hub\/?$/, '/app');
+  const normalized = siblingApp === basePath ? '/app' : siblingApp.replace(/\/$/, '');
+  return `${normalized}/play/${encodeURIComponent(gameId)}`;
+}
+
 function Hub() {
   const [registry, setRegistry] = useState<any[]>([]),
     [q, setQ] = useState(''),
@@ -68,9 +77,12 @@ function Hub() {
             ou offline quando preparadas no dispositivo.
           </p>
         </div>
-        <div className="hub-stat">
-          <strong>{registry.length}</strong>
-          <span>jogos publicados</span>
+        <div className="hub-hero-side">
+          <AprincarMascot size={132} withPencil={false} className="hub-mascot" />
+          <div className="hub-stat">
+            <strong>{registry.length}</strong>
+            <span>jogos publicados</span>
+          </div>
         </div>
       </section>
       <section className="hub-toolbar">
@@ -130,9 +142,7 @@ function Hub() {
                 ))}
               </Group>
               <div className="hub-actions">
-                <a
-                  href={`${import.meta.env.VITE_APRINCAR_APP_URL ?? 'http://localhost:4173'}/play/${encodeURIComponent(e.id)}`}
-                >
+                <a href={appUrl(e.id)}>
                   <button>Abrir no Aprincar</button>
                 </a>
               </div>

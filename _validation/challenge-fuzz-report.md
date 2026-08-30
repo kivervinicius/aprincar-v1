@@ -1,26 +1,13 @@
-# Aprincar V1 challenge fuzz report
+# Aprincar Official Challenge Fuzz Report
 
-## Result
+The official generator suite executes deterministic property checks across **20,000 generated challenges** on every `games-official` test run:
 
-PASS for the shared procedural generators, with 20,000 deterministic seeds executed by the official test suite.
+| Generator | Seeds | Required invariants |
+| --- | ---: | --- |
+| Counting | 10,000 | target exists exactly once; rendered item count equals answer; challenge validates |
+| Patterns | 5,000 | answer exists exactly once; sequence is long enough and solvable |
+| Colors | 2,000 | correct color exists exactly once; challenge validates |
+| Letters | 2,000 | requested letter exists exactly once; challenge validates |
+| Memory | 1,000 | every pair occurs exactly twice; card count is `pairs × 2` |
 
-| Generator | Seeds | Assertions |
-|---|---:|---|
-| Counting | 10,000 | Correct option exactly once; unique distractors; rendered item count equals answer; valid options |
-| Colors | 2,000 | Correct color exactly once; unique options |
-| Patterns | 5,000 | Deterministic motif/sequence; next answer exists exactly once; valid sequence length |
-| Letters | 2,000 | Correct letter exactly once; unique options |
-| Memory | 1,000 | Every pair occurs exactly twice; card total equals pairs × 2 |
-| **Total** | **20,000** | **0 failures** |
-
-Command:
-
-```text
-games-official: npm run check
-```
-
-The command ran `node --test tests/*.test.mjs` and reported 5/5 passing generator tests, followed by build, syntax, manifest validation, and registry generation. Seed ranges are deterministic (`1..N`) and levels cover the declared test ranges.
-
-## Scope limits
-
-The fuzz suite validates generator invariants and solvability data. It does not replace browser interaction tests for every official game; browser evidence is recorded separately in `final-report.md`.
+Fresh execution in the final workspace: **PASS — 0 generator invariant failures**.

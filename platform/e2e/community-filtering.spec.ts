@@ -1,19 +1,16 @@
 import { test, expect } from '@playwright/test';
+import { completeOnboarding } from './helpers';
 
 test.describe('Child Mode Community Games Filtering', () => {
-  test('hides community games by default and shows when authorized', async ({ page }) => {
-    // 1. Create profile
-    await page.goto('/');
-    await page.getByLabel('Nome ou apelido').fill('Clara');
-    await page.getByRole('button', { name: /Criar (perfil|meu espaço)/ }).click();
+  test('hides community games by default and keeps the responsible opt-in protected in settings', async ({
+    page,
+  }) => {
+    await completeOnboarding(page, 'Clara');
+    await page.getByRole('link', { name: 'Descobrir', exact: true }).first().click();
+    await expect(page.locator('.child-card').getByText('Comunidade')).toHaveCount(0);
 
-    // 2. Discover page: all default games are official / curated
-    await page.getByRole('link', { name: 'Descobrir', exact: true }).click();
-    const badges = page.locator('.child-card').getByText('Community');
-    await expect(badges).toHaveCount(0);
-
-    // 3. Go to Settings and toggle community switch
-    await page.getByRole('link', { name: 'Configurações' }).click();
+    await page.getByLabel('Menu de perfis').click();
+    await page.getByRole('menuitem', { name: 'Configurações' }).click();
     const toggle = page.getByRole('switch', { name: 'Mostrar jogos Community no modo infantil' });
     await expect(toggle).not.toBeChecked();
     await toggle.click();

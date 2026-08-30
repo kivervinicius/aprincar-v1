@@ -1,43 +1,62 @@
 import { Button, Text } from '@mantine/core';
-import { Compass, Library, Sparkles } from 'lucide-react';
-import { Link } from '@tanstack/react-router';
+import { ArrowRight, Compass, Library, Sparkles, Star } from 'lucide-react';
+import { Link, useNavigate } from '@tanstack/react-router';
+import { AprincarMascot, MissionCard, WorldCard } from '@aprincar/ui';
 import { useAppStore } from '../app-store';
 import { GameCard } from '../components/GameCard';
-
-const categories = [
-  ['🔤', 'Letras', 'letters'],
-  ['123', 'Números', 'math'],
-  ['🎨', 'Criar', 'creative'],
-  ['🧩', 'Lógica', 'logic'],
-  ['🎵', 'Sons', 'music'],
-] as const;
+import { WORLDS, MISSIONS, type MissionItem } from '../worlds';
+import { useState } from 'react';
 
 export function Home() {
   const { profile, registry, libraryIds } = useAppStore();
+  const navigate = useNavigate();
   const age = profile?.age ?? 5;
+
+  const [missionIndex, setMissionIndex] = useState(0);
+  const [completedMissions, setCompletedMissions] = useState<Set<string>>(new Set());
+
+  const currentMission: MissionItem = MISSIONS[missionIndex % MISSIONS.length] ?? MISSIONS[0]!;
+  const isCurrentMissionDone = completedMissions.has(currentMission.id);
+
+  const handleCompleteMission = () => {
+    setCompletedMissions((prev) => new Set(prev).add(currentMission.id));
+  };
+
+  const handleNextMission = () => {
+    setMissionIndex((prev) => prev + 1);
+  };
+
+  // Find games fitting age and child preferences
   const fitting = registry.filter(
     (e) => age >= (e.ageGuidance?.min ?? 2) - 1 && age <= (e.ageGuidance?.max ?? 10) + 1,
   );
   const featured = (fitting.length ? fitting : registry).slice(0, 6);
-  const library = registry.filter((e) => libraryIds.has(e.id)).slice(0, 5);
+  const library = registry
+    .filter((e) => libraryIds.has(e.id) && !featured.some((f) => f.id === e.id))
+    .slice(0, 5);
+
   return (
     <div className="aprincar-page">
-      <section className="child-hero">
-        <div className="aprincar-panel child-hero-main">
+      {/* Hero child section */}
+      <section className="child-hero aprincar-panel">
+        <div className="child-hero-main">
           <div className="child-eyebrow">Seu espaço de descobertas</div>
-          <h1>Olá, {profile?.name}! 👋</h1>
-          <p>
-            Escolha uma aventura, continue algo que gostou ou descubra um jogo novo. Aqui, aprender acontece
-            brincando.
+          <h1>
+            Oi, {profile?.name}! <span aria-hidden="true">👋</span>
+          </h1>
+          <p className="hero-question">O que vamos descobrir hoje?</p>
+          <p className="hero-description">
+            Escolha uma aventura, continue algo que gostou ou experimente um jogo novo. Aqui, aprender
+            acontece brincando.
           </p>
           <div className="hero-actions">
             <Button
               component={Link}
               to="/discover"
-              className="ap-primary"
-              leftSection={<Compass size={18} />}
+              className="ap-primary hero-cta"
+              rightSection={<ArrowRight size={18} />}
             >
-              Descobrir jogos
+              Começar a brincar
             </Button>
             <Button
               component={Link}
@@ -49,26 +68,22 @@ export function Home() {
             </Button>
           </div>
         </div>
-        <div className="aprincar-panel child-hero-side" aria-hidden="true">
-          <div className="hero-world">
-            <div className="hero-hill" />
-            <div className="hero-house one" />
-            <div className="hero-house two" />
-            <div className="hero-mascot">
-              <span className="hero-smile" />
-              <span className="hero-arm" />
-            </div>
-          </div>
+        <div className="child-hero-side" aria-hidden="true">
+          <div className="hero-spark hero-spark-one">★</div>
+          <div className="hero-spark hero-spark-two">●</div>
+          <div className="hero-spark hero-spark-three">▲</div>
+          <AprincarMascot size={250} className="hero-star-mascot" />
         </div>
       </section>
 
+      {/* Featured shelf */}
       <section>
         <div className="section-head">
           <div>
             <h2>Destaques para você</h2>
-            <p>Jogos que combinam com sua idade e com o que você vem explorando.</p>
+            <p>Brincadeiras que combinam com sua idade e seu momento.</p>
           </div>
-          <Button component={Link} to="/discover" variant="subtle" color="violet">
+          <Button component={Link} to="/discover" variant="subtle" color="blue" className="section-more">
             Ver todos
           </Button>
         </div>
@@ -79,14 +94,15 @@ export function Home() {
         </div>
       </section>
 
+      {/* Continue exploring library */}
       {library.length > 0 && (
         <section>
           <div className="section-head">
             <div>
               <h2>Continue brincando</h2>
-              <p>Sua biblioteca fica sempre por perto.</p>
+              <p>Sua coleção de favoritos por perto.</p>
             </div>
-            <Button component={Link} to="/library" variant="subtle" color="violet">
+            <Button component={Link} to="/library" variant="subtle" color="blue" className="section-more">
               Abrir biblioteca
             </Button>
           </div>
@@ -98,37 +114,71 @@ export function Home() {
         </section>
       )}
 
+      {/* 9 Educational Worlds */}
       <section>
         <div className="section-head">
           <div>
-            <h2>Explore do seu jeito</h2>
-            <p>Escolha pelo tipo de descoberta que você quer fazer agora.</p>
+            <h2>Mundos de Descoberta</h2>
+            <p>Explore por áreas do conhecimento com caminhos lúdicos.</p>
           </div>
         </div>
-        <div className="category-grid" style={{ marginTop: 14 }}>
-          {categories.map(([icon, label, tag]) => (
-            <Link key={tag} to="/discover" style={{ textDecoration: 'none' }} className="category-card">
-              <div>
-                <div className="category-icon">{icon}</div>
-                <div className="category-label">{label}</div>
-              </div>
-            </Link>
+        <div className="worlds-grid" style={{ marginTop: 16 }}>
+          {WORLDS.map((w) => (
+            <WorldCard
+              key={w.id}
+              id={w.id}
+              title={w.title}
+              icon={w.icon}
+              color={w.color}
+              description={w.childSummary}
+              onClick={() => navigate({ to: '/world/$worldId', params: { worldId: w.id } })}
+            />
           ))}
         </div>
       </section>
 
-      <section
-        className="aprincar-panel"
-        style={{ padding: 22, display: 'flex', alignItems: 'center', gap: 14 }}
-      >
-        <Sparkles color="#6F5BD7" />
+      {/* Off-screen mission */}
+      <section>
+        <div className="section-head">
+          <div>
+            <h2>Missão fora da tela</h2>
+            <p>Brincadeiras e desafios para fazer no mundo real com a família.</p>
+          </div>
+          <Button component={Link} to="/missions" variant="subtle" color="blue" className="section-more">
+            Ver todas as missões
+          </Button>
+        </div>
+        <div style={{ marginTop: 14 }}>
+          <MissionCard
+            id={currentMission.id}
+            title={currentMission.title}
+            prompt={currentMission.prompt}
+            category={currentMission.category}
+            completed={isCurrentMissionDone}
+            onComplete={handleCompleteMission}
+            onNext={handleNextMission}
+          />
+        </div>
+      </section>
+
+      {/* Local-first banner */}
+      <section className="aprincar-panel local-first-card">
+        <Sparkles className="local-first-icon" />
         <div>
-          <Text fw={850}>Tudo funciona localmente.</Text>
+          <Text fw={850}>Seu espaço continua seu, mesmo sem internet.</Text>
           <Text size="sm" c="dimmed">
-            Perfis e progresso ficam neste dispositivo. Jogos preparados para offline continuam disponíveis
-            sem Internet.
+            Perfis e progresso ficam salvos com segurança neste dispositivo.
           </Text>
         </div>
+        <Button
+          component={Link}
+          to="/discover"
+          variant="subtle"
+          color="blue"
+          leftSection={<Compass size={17} />}
+        >
+          Explorar
+        </Button>
       </section>
     </div>
   );

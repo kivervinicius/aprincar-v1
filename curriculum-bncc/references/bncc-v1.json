@@ -1,0 +1,12 @@
+{
+  "framework": "BNCC",
+  "version": "2018",
+  "source": "https://basenacionalcomum.mec.gov.br/",
+  "references": [
+    { "code": "EI03ET05", "stage": "educacao-infantil" },
+    { "code": "EI03ET07", "stage": "educacao-infantil" },
+    { "code": "EF01MA02", "stage": "ensino-fundamental", "grade": "1" },
+    { "code": "EF01MA09", "stage": "ensino-fundamental", "grade": "1" },
+    { "code": "EF01MA14", "stage": "ensino-fundamental", "grade": "1" }
+  ]
+}

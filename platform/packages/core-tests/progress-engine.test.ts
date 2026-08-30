@@ -39,3 +39,32 @@ test('does not mark mastery from one game context only', () => {
   );
   assert.notEqual(state.state, 'consolidated');
 });
+
+test('community evidence can inform progress but cannot independently consolidate mastery', () => {
+  const engine = new ProgressEngine();
+  const evidence = [
+    ev('community-a', 'success'),
+    ev('community-b', 'success'),
+    ev('community-c', 'success'),
+    ev('community-a', 'success'),
+    ev('community-b', 'success'),
+    ev('community-c', 'success'),
+  ].map((item) => ({ ...item, trust: 'community' as const }));
+  const state = engine.calculate('sofia', 'math.counting.1-10', evidence as any);
+  assert.notEqual(state.state, 'consolidated');
+});
+
+test('experimental evidence does not mutate pedagogical skill state', () => {
+  const engine = new ProgressEngine();
+  const evidence = [
+    ev('experimental-a', 'success'),
+    ev('experimental-b', 'success'),
+    ev('experimental-c', 'success'),
+    ev('experimental-a', 'success'),
+    ev('experimental-b', 'success'),
+    ev('experimental-c', 'success'),
+  ].map((item) => ({ ...item, trust: 'experimental' as const }));
+  const state = engine.calculate('sofia', 'math.counting.1-10', evidence as any);
+  assert.equal(state.state, 'unknown');
+  assert.equal(state.evidenceCount, 0);
+});

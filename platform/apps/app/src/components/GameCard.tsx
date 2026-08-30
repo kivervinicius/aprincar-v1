@@ -26,40 +26,55 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
     store.isOfflineReady(entry).then(setOffline);
   }, [entry.id, entry.version]);
   const name = entry.name['pt-BR'] ?? entry.id.split('.').at(-1)?.replaceAll('-', ' ');
+
   return (
-    <article className="child-card" data-game-id={entry.id}>
-      <div className={`game-cover ${cover.cls}`}>
-        <div className="game-cover-art">{cover.emoji}</div>
-      </div>
+    <article className={`child-card ${compact ? 'compact' : ''}`} data-game-id={entry.id}>
+      <Link
+        to="/play/$gameId"
+        params={{ gameId: entry.id }}
+        className="game-card-main-link"
+        aria-label={`Jogar ${name}`}
+      >
+        <div className={`game-cover ${cover.cls}`}>
+          <div className="game-cover-art">{cover.emoji}</div>
+          <div className="game-cover-play">
+            <Play size={20} fill="currentColor" />
+          </div>
+        </div>
+      </Link>
       <div className="game-card-body">
-        <Group justify="space-between" gap="xs" wrap="nowrap">
+        <Group justify="space-between" gap="xs" wrap="nowrap" className="game-card-heading">
           <div className="game-title">{name}</div>
-          <TrustBadge trust={entry.trust} />
+          <div className="game-card-trust">
+            <TrustBadge trust={entry.trust} />
+          </div>
         </Group>
         <div className="game-meta">
           <Badge radius="xl" variant="light">
             {entry.ageGuidance?.min ?? 2}–{entry.ageGuidance?.max ?? 10} anos
           </Badge>
-          <OfflineBadge ready={offline} />
+          <span className="game-offline-badge">
+            <OfflineBadge ready={offline} />
+          </span>
           {entry.tags?.slice(0, 1).map((tag) => (
-            <Badge key={tag} variant="outline" radius="xl">
+            <Badge key={tag} variant="outline" radius="xl" className="game-tag-badge">
               {tag}
             </Badge>
           ))}
         </div>
         {!compact && (
-          <Text size="sm" c="dimmed" lineClamp={2}>
+          <Text size="sm" c="dimmed" lineClamp={2} className="game-card-description">
             {entry.description?.['pt-BR'] ?? 'Uma experiência Aprincar.'}
           </Text>
         )}
         <div className="game-actions">
           <Link to="/play/$gameId" params={{ gameId: entry.id }}>
-            <Button className="ap-primary" fullWidth leftSection={<Play size={16} />}>
+            <Button className="ap-primary game-play-button" fullWidth leftSection={<Play size={16} />}>
               Jogar
             </Button>
           </Link>
           <Button
-            className="ap-secondary"
+            className="ap-secondary game-card-library-action"
             leftSection={<Star size={16} />}
             onClick={() => store.addLibrary(entry)}
           >
@@ -68,8 +83,9 @@ export function GameCard({ entry, compact = false }: { entry: RegistryEntry; com
         </div>
         {!offline && (
           <Button
+            className="game-card-offline-action"
             variant="subtle"
-            color="violet"
+            color="blue"
             size="xs"
             leftSection={<CloudDownload size={15} />}
             onClick={async () => {

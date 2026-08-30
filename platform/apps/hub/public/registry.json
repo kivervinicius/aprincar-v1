@@ -19,7 +19,7 @@
     },
     "manifestUrl": "/extensions/block-tower/manifest.json",
     "entryUrl": "/extensions/block-tower/game.html",
-    "integrity": "533f82d33be80dcdb0ca9316628899878e564872b61fbd1115d064a89ff8d2f8",
+    "integrity": "dd3f6cf1241bda5283fa2693aad65af4b3ed53229b7c12f5c5bd133876670027",
     "tags": [
       "math",
       "counting",
@@ -46,7 +46,7 @@
     },
     "manifestUrl": "/extensions/color-match/manifest.json",
     "entryUrl": "/extensions/color-match/game.html",
-    "integrity": "8c1e863e5ecbe8d74c31b90008dc1f2d32bd1fbd7299eba325dc78e8de9dfacb",
+    "integrity": "c3d5c69006e9f457b748d83cdb789d5c4abbc21b67e2fe8430949ebde8ef098e",
     "tags": [
       "colors",
       "logic",
@@ -73,7 +73,7 @@
     },
     "manifestUrl": "/extensions/counting-animals/manifest.json",
     "entryUrl": "/extensions/counting-animals/game.html",
-    "integrity": "b041e7a9f60a1eacbcdfadb368b1fd59650c7642dd729a228c80339171240ffb",
+    "integrity": "2cf5d6fc1e9d7fb77f5d446fefeadc88081a1202d952f30658f49f4a63a1cd0c",
     "tags": [
       "math",
       "counting",
@@ -100,7 +100,7 @@
     },
     "manifestUrl": "/extensions/fruit-basket/manifest.json",
     "entryUrl": "/extensions/fruit-basket/game.html",
-    "integrity": "71a9dcb9b605b69eab89a8f43b6d1f30b3d554ad6b280c0333c1c653194b2b5d",
+    "integrity": "7523677447423c66b1f1a86d1bd95c9c1e4a2f00333790961e3104f341dea147",
     "tags": [
       "math",
       "counting",
@@ -127,7 +127,7 @@
     },
     "manifestUrl": "/extensions/letter-hunt/manifest.json",
     "entryUrl": "/extensions/letter-hunt/game.html",
-    "integrity": "bf990813299bb0fcbd0505d3500682e5757616c9c0468936e083ef886e2d3327",
+    "integrity": "c5a958c256aeab4d8e321373f15da29bb313e89b969bd976aa93be02ac4595f9",
     "tags": [
       "letters",
       "literacy"
@@ -153,7 +153,7 @@
     },
     "manifestUrl": "/extensions/memory-animals/manifest.json",
     "entryUrl": "/extensions/memory-animals/game.html",
-    "integrity": "74398bc1094efeeb9a446cff931bd564e4fa107f48cb02a897a9db17cbd42452",
+    "integrity": "2468adbeb4e8f7d597a43e3a03904f24c57f002b6c977e89e1d0f597a85f8355",
     "tags": [
       "memory",
       "animals",
@@ -180,7 +180,7 @@
     },
     "manifestUrl": "/extensions/paint-free/manifest.json",
     "entryUrl": "/extensions/paint-free/game.html",
-    "integrity": "82cbb5041a4ed991dfd1092f23018fc45fcc6d06ad96b7e0e30ee50e9e01b819",
+    "integrity": "2bd520d7a24c6868a5f0b525e863b50102fee208a4f8924582dba7b0e58f2f95",
     "tags": [
       "paint",
       "creative"
@@ -206,7 +206,7 @@
     },
     "manifestUrl": "/extensions/pattern-play/manifest.json",
     "entryUrl": "/extensions/pattern-play/game.html",
-    "integrity": "c14e403eeaacc58f954aaccae09a24c0c3654b4de1316b6ec66bf92c9ad67bcd",
+    "integrity": "b3bfaf7bcc9c40fdceafdda64b2414757fb1906449c8700c73eca1df77a88a97",
     "tags": [
       "logic",
       "patterns"
@@ -232,7 +232,7 @@
     },
     "manifestUrl": "/extensions/space-shapes-3d/manifest.json",
     "entryUrl": "/extensions/space-shapes-3d/game.html",
-    "integrity": "fd3bb23e929723a9b03ac3c4ecdb9bf72bb035e94393b2296264d65576bfb234",
+    "integrity": "2cb649e332f06800bf1cdc981c2afe609479dc2f36b01f1bedf468f4c32c2509",
     "tags": [
       "geometry",
       "3d",
@@ -259,7 +259,7 @@
     },
     "manifestUrl": "/extensions/write-a/manifest.json",
     "entryUrl": "/extensions/write-a/game.html",
-    "integrity": "1fc8bf7bf3597930ef395b02aef73734d7ea0719a9990294f701a9de05870cd5",
+    "integrity": "a96f214cae66480ac463609e81e1595a3f7d5aaf0fd5074a1c6a81a35b09b2a6",
     "tags": [
       "letters",
       "writing"

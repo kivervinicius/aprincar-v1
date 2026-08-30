@@ -26,7 +26,7 @@ npm ci
 npm run dev
 ```
 
-O App abre no endereço mostrado pelo Vite, normalmente `http://localhost:5173`.
+O App abre em `http://localhost:4173`.
 
 Em outro terminal:
 
@@ -35,7 +35,7 @@ cd platform
 npm run dev:hub
 ```
 
-O Hub usa a próxima porta disponível, normalmente `http://localhost:5174`.
+O Hub abre em `http://localhost:4174`.
 
 ## Verificar antes de abrir um PR
 

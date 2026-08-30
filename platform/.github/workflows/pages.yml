@@ -1,21 +1,32 @@
 name: Publish App and Hub to GitHub Pages
-
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
   group: pages-platform
   cancel-in-progress: true
-
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run verify:official
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
   deploy:
+    needs: validate
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -28,17 +39,15 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run check
-      - name: Assemble static site
-        env:
-          SITE_PREFIX: /platform
+      - name: Assemble static production site
         run: |
+          rm -rf site
           mkdir -p site/app site/hub site/extensions
           VITE_BASE_PATH=/platform/app/ npm run build -w @aprincar/app
-          VITE_BASE_PATH=/platform/hub/ npm run build -w @aprincar/hub
+          VITE_BASE_PATH=/platform/hub/ VITE_APRINCAR_APP_URL=/platform/app npm run build -w @aprincar/hub
           cp -R apps/app/dist/. site/app/
           cp -R apps/hub/dist/. site/hub/
-          cp -R apps/app/dist/extensions/. site/extensions/
+          cp -R apps/app/public/extensions/. site/extensions/
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           for (const file of ['site/app/registry.json', 'site/hub/registry.json']) {
@@ -53,19 +62,7 @@ jobs:
           NODE
           cp site/app/registry.json site/registry.json
           cat > site/index.html <<'HTML'
-          <!doctype html>
-          <html lang="pt-BR">
-            <head>
-              <meta charset="utf-8" />
-              <meta http-equiv="refresh" content="0;url=app/" />
-              <meta name="viewport" content="width=device-width,initial-scale=1" />
-              <title>Aprincar</title>
-            </head>
-            <body>
-              <p>Abrindo o <a href="app/">Aprincar</a>…</p>
-              <script>location.replace('app/' + location.search + location.hash);</script>
-            </body>
-          </html>
+          <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=app/"><title>Aprincar</title></head><body><p>Abrindo o <a href="app/">Aprincar</a>…</p><script>location.replace('app/' + location.search + location.hash)</script></body></html>
           HTML
           touch site/.nojekyll
       - uses: actions/configure-pages@v5

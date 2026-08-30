@@ -80,6 +80,7 @@ export interface EvidenceEvent {
   confidence: number;
   attempts?: number;
   metadata?: Record<string, string | number | boolean>;
+  trust?: TrustLevel;
   occurredAt: string;
 }
 

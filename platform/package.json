@@ -12,15 +12,17 @@
   "scripts": {
     "dev": "npm run dev -w @aprincar/app",
     "dev:hub": "npm run dev -w @aprincar/hub",
-    "build": "npm run build -ws --if-present",
-    "typecheck": "npm run typecheck -ws --if-present",
+    "build": "npm run build -w @aprincar/app && npm run build -w @aprincar/hub",
+    "typecheck": "tsc -p tsconfig.all.json",
     "test": "node --experimental-strip-types --test packages/core-tests/*.test.ts",
     "test:unit": "npm run test",
     "test:e2e": "playwright test",
     "lint": "eslint .",
     "format:check": "prettier --check .",
     "check": "npm run test && npm run typecheck && npm run lint && npm run build",
-    "prepare": "husky"
+    "prepare": "husky",
+    "verify:official": "node scripts/verify-official-snapshot.mjs",
+    "check:production": "npm run check && npm run verify:official && npm run test:e2e"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.6",

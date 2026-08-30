@@ -8,6 +8,7 @@
     "prepare": "node scripts/install-hooks.mjs",
     "validate": "node scripts/validate.mjs",
     "registry": "node scripts/build-registry.mjs",
-    "check": "npm run validate && npm run registry"
+    "check": "npm test && npm run validate && npm run registry",
+    "test": "node --test tests/*.test.mjs"
   }
 }

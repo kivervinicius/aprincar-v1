@@ -1,21 +1,30 @@
-import type { ExtensionManifest, EvidenceEvent } from '@aprincar/extension-contracts';
+import type { ExtensionManifest, EvidenceEvent, TrustLevel } from '@aprincar/extension-contracts';
+import { RuntimeBudget, validateGameMessagePayload } from '@aprincar/game-sdk';
 import { db } from '@aprincar/storage';
 import { getSkill } from '@aprincar/skill-graph';
 import { ProgressEngine } from '@aprincar/progress-engine';
 import { RewardEngine } from '@aprincar/reward-engine';
 import { evaluateHandwriting } from '@aprincar/handwriting';
-const progress = new ProgressEngine(),
-  rewards = new RewardEngine();
-export function createGameServices(profileId: string, gameId: string) {
+
+const progress = new ProgressEngine();
+const rewards = new RewardEngine();
+
+export function createGameServices(profileId: string, gameId: string, trust: TrustLevel = 'official') {
   let sessionId = crypto.randomUUID();
+  const budget = new RuntimeBudget();
+
   return {
     async handle(message: { type: string; requestId?: string; payload?: any }, manifest: ExtensionManifest) {
+      const validation = validateGameMessagePayload(message);
+      if (!validation.ok) throw new Error(`Invalid game message: ${validation.error}`);
+
       const p = message.payload ?? {};
       switch (message.type) {
         case 'game.ready':
-          return { profile: { id: profileId }, gameId };
+          return { profile: { id: profileId }, gameId, trust };
         case 'session.start': {
           sessionId = crypto.randomUUID();
+          budget.reset();
           await db.sessions.put({
             id: sessionId,
             profileId,
@@ -38,6 +47,7 @@ export function createGameServices(profileId: string, gameId: string) {
           return { sessionId };
         }
         case 'evidence.submit': {
+          budget.consume('evidence');
           const skillId = String(p.skillId ?? '');
           if (
             !manifest.contributes.skills.includes(skillId) &&
@@ -45,35 +55,43 @@ export function createGameServices(profileId: string, gameId: string) {
           )
             throw new Error('Game cannot emit evidence for undeclared skill');
           if (!getSkill(skillId)) throw new Error('Unknown skill');
+
+          const requestedResult =
+            p.result === 'failure' ? 'failure' : p.result === 'observed' ? 'observed' : 'success';
           const ev: EvidenceEvent = {
             id: crypto.randomUUID(),
             profileId,
             gameId,
             sessionId,
             skillId,
-            result: p.result === 'failure' ? 'failure' : p.result === 'observed' ? 'observed' : 'success',
+            result: trust === 'experimental' ? 'observed' : requestedResult,
             independent: p.independent !== false,
             assistance: p.assistance ?? 'none',
             difficulty: Number(p.difficulty ?? 0.5),
             confidence: Number(p.confidence ?? 0.85),
             attempts: Number(p.attempts ?? 1),
             metadata: p.metadata,
+            trust,
             occurredAt: new Date().toISOString(),
           };
           await db.evidence.add(ev);
-          const evidence = await db.evidence
-            .where('[profileId+skillId]')
-            .equals([profileId, skillId])
-            .toArray();
-          await db.skillStates.put(progress.calculate(profileId, skillId, evidence));
-          return { accepted: true };
+
+          if (trust !== 'experimental') {
+            const evidence = await db.evidence
+              .where('[profileId+skillId]')
+              .equals([profileId, skillId])
+              .toArray();
+            await db.skillStates.put(progress.calculate(profileId, skillId, evidence));
+          }
+          return { accepted: true, affectsProgress: trust !== 'experimental' };
         }
         case 'reward.request': {
+          budget.consume('reward');
           const event = rewards.grant({
             profileId,
             gameId,
             reason: String(p.reason ?? 'play'),
-            amount: Math.min(50, Math.max(1, Number(p.amount ?? 1))),
+            amount: Number(p.amount ?? 1),
           });
           await db.rewards.add(event);
           return event;
@@ -85,6 +103,7 @@ export function createGameServices(profileId: string, gameId: string) {
         }
         case 'storage.set': {
           if (!manifest.permissions.includes('storage')) throw new Error('storage permission not declared');
+          budget.consume('storageWrite');
           const key = `${profileId}:${gameId}:${p.key}`;
           await db.gameState.put({
             id: key,
@@ -98,6 +117,7 @@ export function createGameServices(profileId: string, gameId: string) {
         }
         case 'storage.remove': {
           if (!manifest.permissions.includes('storage')) throw new Error('storage permission not declared');
+          budget.consume('storageWrite');
           await db.gameState.delete(`${profileId}:${gameId}:${p.key}`);
           return { removed: true };
         }
