@@ -12,7 +12,7 @@ import { GameError, GameExitDialog, GameLoading, TrustBadge, OfflineBadge } from
 export function Play() {
   const { gameId } = useParams({ from: '/play/$gameId' });
   const navigate = useNavigate();
-  const { registry, profile, isOfflineReady } = useAppStore();
+  const { registry, profile, isOfflineReady, refresh } = useAppStore();
 
   const [resolved, setResolved] = useState<ResolvedExtension | null>(null);
   const [error, setError] = useState('');
@@ -170,8 +170,9 @@ export function Play() {
 
       <GameExitDialog
         opened={exitDialogOpen}
-        onConfirm={() => {
+        onConfirm={async () => {
           setExitDialogOpen(false);
+          await refresh();
           navigate({ to: '/' });
         }}
         onCancel={() => setExitDialogOpen(false)}
