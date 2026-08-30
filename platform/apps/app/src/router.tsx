@@ -40,6 +40,7 @@ const useMemoryHistory = Boolean(
 );
 
 export const router = createRouter({
+  basepath: import.meta.env.BASE_URL,
   routeTree: root.addChildren([
     index,
     onboarding,

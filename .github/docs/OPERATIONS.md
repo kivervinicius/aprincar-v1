@@ -10,12 +10,11 @@ Todos os repositórios usam CI em pull requests, Dependabot/CodeQL ou auditoria 
 
 Publicações atuais:
 
-- App: <https://aprincar.github.io/platform/app/>
-- Hub: <https://aprincar.github.io/platform/hub/>
-- Registry oficial: <https://aprincar.github.io/games-official/>
-- Registry comunitário: <https://aprincar.github.io/community-games/>
+- App: <https://kivervinicius.github.io/aprincar-v1/app/>
+- Hub: <https://kivervinicius.github.io/aprincar-v1/hub/>
+- Registry oficial: <https://kivervinicius.github.io/aprincar-v1/registry.json>
 
-O workflow do `platform` monta uma página estática com App, Hub e extensões. O App usa base `/platform/app/`, o Hub usa `/platform/hub/` e o site possui uma entrada HTML na raiz.
+O workflow da raiz monta uma página estática com App, Hub e extensões. O App usa base `/aprincar-v1/app/`, o Hub usa `/aprincar-v1/hub/` e o site possui uma entrada HTML na raiz.
 
 ## Publicação segura
 

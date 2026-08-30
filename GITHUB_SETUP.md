@@ -42,4 +42,4 @@ After publishing the four starter repositories, enable **Template repository** i
 
 ## Required checks
 
-For `platform`, require the CI workflow that includes unit/type/lint/build, official artifact parity and Playwright semantic/responsive E2E before merging to `main`. GitHub Pages deployment already declares the browser validation job as a prerequisite in source.
+For `platform`, require the CI workflow that includes unit/type/lint/build, official artifact parity and Playwright semantic/responsive E2E before merging to `main`. The root GitHub Pages workflow declares the same browser validation job as a prerequisite before deployment.

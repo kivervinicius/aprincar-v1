@@ -1,5 +1,12 @@
 # Aprincar DEV Worklog
 
+## [2026-08-30] Correção da publicação no GitHub Pages
+
+- Causa: o workflow de Pages estava sob `platform/.github/workflows`, diretório que o GitHub Actions não descobre no repositório raiz.
+- Correção: criado `.github/workflows/pages.yml`, com validação prévia ao deploy e caminhos de produção em `/aprincar-v1/`.
+- Compatibilidade: o roteador do App passa a usar `import.meta.env.BASE_URL`; teste de regressão adicionado.
+- Verificação local: 33/33 testes, TypeScript, lint, build, snapshot oficial e formatação aprovados.
+
 ## [2026-08-30] Estabilização Evidence/Progress e auditoria mestre
 
 - O runtime Phaser passou a publicar `inputReady` somente depois de persistir a tentativa e liberar nova interação; o E2E de gameplay espera esse contrato.

@@ -1,0 +1,100 @@
+name: Publish Aprincar to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: platform
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: platform/package-lock.json
+      - run: npm ci
+      - run: npm run check
+      - run: npm run verify:official
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: platform/package-lock.json
+      - run: npm ci
+      - name: Assemble static production site
+        run: |
+          rm -rf site
+          mkdir -p site/app site/hub site/extensions
+          VITE_BASE_PATH=/aprincar-v1/app/ npm run build -w @aprincar/app
+          VITE_BASE_PATH=/aprincar-v1/hub/ VITE_APRINCAR_APP_URL=/aprincar-v1/app npm run build -w @aprincar/hub
+          cp -R apps/app/dist/. site/app/
+          cp -R apps/hub/dist/. site/hub/
+          cp -R apps/app/public/extensions/. site/extensions/
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+
+          for (const file of ['site/app/registry.json', 'site/hub/registry.json']) {
+            const entries = JSON.parse(fs.readFileSync(file, 'utf8'));
+            for (const entry of entries) {
+              for (const key of ['manifestUrl', 'entryUrl']) {
+                if (entry[key]?.startsWith('/extensions/')) {
+                  entry[key] = `/aprincar-v1${entry[key]}`;
+                }
+              }
+            }
+            fs.writeFileSync(file, `${JSON.stringify(entries, null, 2)}\n`);
+          }
+          NODE
+          cp site/app/registry.json site/registry.json
+          cat > site/index.html <<'HTML'
+          <!doctype html>
+          <html lang="pt-BR">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width,initial-scale=1">
+              <meta http-equiv="refresh" content="0;url=app/">
+              <title>Aprincar</title>
+            </head>
+            <body>
+              <p>Abrindo o <a href="app/">Aprincar</a>…</p>
+              <script>location.replace('app/' + location.search + location.hash)</script>
+            </body>
+          </html>
+          HTML
+          touch site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: platform/site
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
