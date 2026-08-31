@@ -12,7 +12,14 @@ import {
 import path from 'node:path';
 import fs from 'node:fs';
 
-const rootValidationDir = path.resolve(process.cwd(), '..', '_validation', 'final-consistency', 'screenshots', 'games');
+const rootValidationDir = path.resolve(
+  process.cwd(),
+  '..',
+  '_validation',
+  'final-consistency',
+  'screenshots',
+  'games',
+);
 
 const GAMES = [
   { id: 'aprincar.counting-animals', title: 'Conte os Bichos', slug: 'counting-animals' },
@@ -42,7 +49,9 @@ test.describe('APRINCAR Final Consistency 150 Screenshots Matrix', () => {
 
   for (const game of GAMES) {
     for (const vp of VIEWPORT_CLASSES) {
-      test(`${game.slug} [${vp.name}] - 100% viewport fit, no overlay, responsive verification`, async ({ page }) => {
+      test(`${game.slug} [${vp.name}] - 100% viewport fit, no overlay, responsive verification`, async ({
+        page,
+      }) => {
         const gameDir = path.join(rootValidationDir, game.slug);
         fs.mkdirSync(gameDir, { recursive: true });
 
@@ -52,7 +61,9 @@ test.describe('APRINCAR Final Consistency 150 Screenshots Matrix', () => {
         await page.waitForTimeout(300);
 
         // Verify No Document Double Scroll / Overflow
-        const hasHorizontalScroll = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+        const hasHorizontalScroll = await page.evaluate(
+          () => document.documentElement.scrollWidth > window.innerWidth,
+        );
         expect(hasHorizontalScroll).toBe(false);
 
         // Verify Exit Button & Header Presence
