@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-08-30T18:22:17.934Z",
+  "generatedAt": "2026-08-30T14:29:44.513Z",
   "organization": "aprincar",
   "productionEnvironment": {
     "status": "PRODUCTION_GO",
@@ -140,15 +140,15 @@
     "platform": {
       "role": "platform",
       "defaultBranch": "main",
-      "currentMainSha": "c7733524e080d6cbcfd32be41aba42899ce0a68d",
-      "lastCommitMessage": "feat(hardening): post-production governance, dependabot multi-major fix, reproducible release manifest and E2E stabilization (#8)",
-      "lastCommitDate": "2026-08-30T15:38:42Z",
+      "currentMainSha": "65c43103ed5677188b915dc84346cb3627453183",
+      "lastCommitMessage": "docs(validation): add production-final-report.md, PRODUCTION_GO.md and live smoke spec (#7)",
+      "lastCommitDate": "2026-08-30T05:27:25Z",
       "lastMergedPr": {
-        "number": 8,
-        "title": "feat(hardening): post-production governance, dependabot multi-major fix and release manifest",
-        "headSha": "88b8bcc9c8c0ac98f9ba6a26d259c26a52737c14",
-        "mergeCommitSha": "c7733524e080d6cbcfd32be41aba42899ce0a68d",
-        "mergedAt": "2026-08-30T15:38:42Z"
+        "number": 7,
+        "title": "docs(validation): add production-final-report.md, PRODUCTION_GO.md and live smoke spec",
+        "headSha": "487b7d79d875b3491dbb3451854122bbe2cd4ce1",
+        "mergeCommitSha": "65c43103ed5677188b915dc84346cb3627453183",
+        "mergedAt": "2026-08-30T05:27:25Z"
       },
       "isTemplate": false,
       "topics": ["aprincar", "educational-games", "offline-first", "pwa", "react", "typescript"]

@@ -174,7 +174,6 @@ export interface MissionItem {
   category: string;
   worldId: string;
   icon: string;
-  skills?: string[];
 }
 
 export const MISSIONS: MissionItem[] = [

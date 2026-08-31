@@ -4,16 +4,20 @@ import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { MISSIONS, type MissionItem } from '../worlds';
 import { MissionCard } from '@aprincar/ui';
-import { useAppStore } from '../app-store';
 
 export function Missions() {
-  const { completedMissionIds, completeMission } = useAppStore();
   const [filter, setFilter] = useState('all');
+  const [completed, setCompleted] = useState<Set<string>>(new Set());
 
   const filteredMissions = MISSIONS.filter((m) => filter === 'all' || m.worldId === filter);
 
-  const toggleComplete = (m: MissionItem) => {
-    completeMission(m.id, m.worldId, m.skills ?? []);
+  const toggleComplete = (id: string) => {
+    setCompleted((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   };
 
   const categories = [
@@ -42,7 +46,7 @@ export function Missions() {
           </p>
         </div>
         <div className="hub-stat">
-          <strong>{completedMissionIds.size}</strong>
+          <strong>{completed.size}</strong>
           <span>missões realizadas 🎉</span>
         </div>
       </section>
@@ -78,8 +82,8 @@ export function Missions() {
               title={m.title}
               prompt={m.prompt}
               category={m.category}
-              completed={completedMissionIds.has(m.id)}
-              onComplete={() => toggleComplete(m)}
+              completed={completed.has(m.id)}
+              onComplete={() => toggleComplete(m.id)}
             />
           ))}
         </div>

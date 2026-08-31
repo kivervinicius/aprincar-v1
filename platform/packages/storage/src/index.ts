@@ -43,14 +43,6 @@ export interface GameSessionRow {
   endedAt?: string;
   durationSeconds?: number;
 }
-export interface MissionHistoryRow {
-  id: string;
-  profileId: string;
-  missionId: string;
-  worldId: string;
-  skills: string[];
-  completedAt: string;
-}
 export interface ExtensionCacheRow extends ResolvedExtension {
   key: string;
 }
@@ -64,7 +56,6 @@ export class AprincarDatabase extends Dexie {
   extensionCache!: EntityTable<ExtensionCacheRow, 'key'>;
   settings!: EntityTable<SettingRow, 'key'>;
   sessions!: EntityTable<GameSessionRow, 'id'>;
-  missionHistory!: EntityTable<MissionHistoryRow, 'id'>;
   constructor() {
     super('aprincar');
     this.version(1).stores({
@@ -77,9 +68,6 @@ export class AprincarDatabase extends Dexie {
       extensionCache: 'key,manifest.id,manifest.version',
       settings: 'key',
       sessions: 'id,profileId,extensionId,startedAt',
-    });
-    this.version(2).stores({
-      missionHistory: 'id,profileId,missionId,completedAt',
     });
   }
 }
