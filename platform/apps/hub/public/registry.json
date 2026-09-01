@@ -19,12 +19,25 @@
     },
     "manifestUrl": "/extensions/block-tower/manifest.json",
     "entryUrl": "/extensions/block-tower/game.html",
-    "integrity": "dd3f6cf1241bda5283fa2693aad65af4b3ed53229b7c12f5c5bd133876670027",
+    "integrity": "2c72f804ee30b3f2e67d7d695628e2d2511414407d46d1249d35fc80b86b22c4",
     "tags": [
       "math",
       "counting",
       "construction"
-    ]
+    ],
+    "experience": {
+      "fantasy": "Obra da torre",
+      "mechanic": "stack",
+      "interaction": "drag",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "quantity",
+        "sequencing"
+      ]
+    }
   },
   {
     "id": "aprincar.color-match",
@@ -46,12 +59,25 @@
     },
     "manifestUrl": "/extensions/color-match/manifest.json",
     "entryUrl": "/extensions/color-match/game.html",
-    "integrity": "c3d5c69006e9f457b748d83cdb789d5c4abbc21b67e2fe8430949ebde8ef098e",
+    "integrity": "0d88085c1ca43a989c7889266d6f182b7477848aa3a07a5aa960e9fd72e7609c",
     "tags": [
       "colors",
       "logic",
       "drag"
-    ]
+    ],
+    "experience": {
+      "fantasy": "Ateliê das cores",
+      "mechanic": "drag-match",
+      "interaction": "drag",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "classification",
+        "accuracy"
+      ]
+    }
   },
   {
     "id": "aprincar.counting-animals",
@@ -73,12 +99,25 @@
     },
     "manifestUrl": "/extensions/counting-animals/manifest.json",
     "entryUrl": "/extensions/counting-animals/game.html",
-    "integrity": "2cf5d6fc1e9d7fb77f5d446fefeadc88081a1202d952f30658f49f4a63a1cd0c",
+    "integrity": "c8e39e31f80a7b7f4e7386fa6c147f0c1b77ef375b97c429d448e82ffd67cbdf",
     "tags": [
       "math",
       "counting",
       "animals"
-    ]
+    ],
+    "experience": {
+      "fantasy": "Safari dos bichos",
+      "mechanic": "tap-count",
+      "interaction": "tap",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "accuracy",
+        "independentSuccess"
+      ]
+    }
   },
   {
     "id": "aprincar.fruit-basket",
@@ -100,12 +139,25 @@
     },
     "manifestUrl": "/extensions/fruit-basket/manifest.json",
     "entryUrl": "/extensions/fruit-basket/game.html",
-    "integrity": "7523677447423c66b1f1a86d1bd95c9c1e4a2f00333790961e3104f341dea147",
+    "integrity": "5c563848aaf1749589110fb31bc82c0ff09e95ae329f1bce8342382adc9440e2",
     "tags": [
       "math",
       "counting",
       "fruits"
-    ]
+    ],
+    "experience": {
+      "fantasy": "Feira da cesta",
+      "mechanic": "drag-into-basket",
+      "interaction": "drag",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "quantity",
+        "coordination"
+      ]
+    }
   },
   {
     "id": "aprincar.letter-hunt",
@@ -127,11 +179,24 @@
     },
     "manifestUrl": "/extensions/letter-hunt/manifest.json",
     "entryUrl": "/extensions/letter-hunt/game.html",
-    "integrity": "c5a958c256aeab4d8e321373f15da29bb313e89b969bd976aa93be02ac4595f9",
+    "integrity": "612decb686cbfc1716f6fc4256a5b559b3f06e362d4c2d39ae75a4192a6d44c0",
     "tags": [
       "letters",
       "literacy"
-    ]
+    ],
+    "experience": {
+      "fantasy": "Caça ao tesouro das letras",
+      "mechanic": "tap-chase",
+      "interaction": "tap",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "recognition",
+        "attention"
+      ]
+    }
   },
   {
     "id": "aprincar.memory-animals",
@@ -153,12 +218,25 @@
     },
     "manifestUrl": "/extensions/memory-animals/manifest.json",
     "entryUrl": "/extensions/memory-animals/game.html",
-    "integrity": "2468adbeb4e8f7d597a43e3a03904f24c57f002b6c977e89e1d0f597a85f8355",
+    "integrity": "5336128f0ed183aa765889a6590f95f27b6ab19f3092fec1132973fa89379488",
     "tags": [
       "memory",
       "animals",
       "logic"
-    ]
+    ],
+    "experience": {
+      "fantasy": "Reserva dos pares",
+      "mechanic": "flip-pairs",
+      "interaction": "tap",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "workingMemory",
+        "accuracy"
+      ]
+    }
   },
   {
     "id": "aprincar.paint-free",
@@ -180,11 +258,24 @@
     },
     "manifestUrl": "/extensions/paint-free/manifest.json",
     "entryUrl": "/extensions/paint-free/game.html",
-    "integrity": "2bd520d7a24c6868a5f0b525e863b50102fee208a4f8924582dba7b0e58f2f95",
+    "integrity": "a02a6e59b2610224fa35a3b11192f8f15faa5aebb83bf3b09700a06eb97f1c32",
     "tags": [
       "paint",
       "creative"
-    ]
+    ],
+    "experience": {
+      "fantasy": "Estúdio de pintura",
+      "mechanic": "free-draw",
+      "interaction": "draw",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "exploration",
+        "expression"
+      ]
+    }
   },
   {
     "id": "aprincar.pattern-play",
@@ -206,11 +297,24 @@
     },
     "manifestUrl": "/extensions/pattern-play/manifest.json",
     "entryUrl": "/extensions/pattern-play/game.html",
-    "integrity": "b3bfaf7bcc9c40fdceafdda64b2414757fb1906449c8700c73eca1df77a88a97",
+    "integrity": "be11b41a4b7b9c47bb0c51c9dd8ef9fb606eb2ce5f8a820c280b4c1d525a1936",
     "tags": [
       "logic",
       "patterns"
-    ]
+    ],
+    "experience": {
+      "fantasy": "Trem dos padrões",
+      "mechanic": "tap-sequence",
+      "interaction": "tap",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "sequencing",
+        "prediction"
+      ]
+    }
   },
   {
     "id": "aprincar.space-shapes-3d",
@@ -232,12 +336,25 @@
     },
     "manifestUrl": "/extensions/space-shapes-3d/manifest.json",
     "entryUrl": "/extensions/space-shapes-3d/game.html",
-    "integrity": "2cb649e332f06800bf1cdc981c2afe609479dc2f36b01f1bedf468f4c32c2509",
+    "integrity": "c0a9a2097c8226753acb8fa7eb5e1dec17b6d2d37b357c89af840696d6b2ac4f",
     "tags": [
       "geometry",
       "3d",
       "exploration"
-    ]
+    ],
+    "experience": {
+      "fantasy": "Missão espacial",
+      "mechanic": "rotate-select",
+      "interaction": "rotate",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "spatialReasoning",
+        "recognition"
+      ]
+    }
   },
   {
     "id": "aprincar.write-a",
@@ -259,10 +376,23 @@
     },
     "manifestUrl": "/extensions/write-a/manifest.json",
     "entryUrl": "/extensions/write-a/game.html",
-    "integrity": "a96f214cae66480ac463609e81e1595a3f7d5aaf0fd5074a1c6a81a35b09b2a6",
+    "integrity": "7e3de21f7439cc0bb511ba42780c8f094e6dbd50ba85f9afaa1c43625fa01c18",
     "tags": [
       "letters",
       "writing"
-    ]
+    ],
+    "experience": {
+      "fantasy": "Escola de escrita",
+      "mechanic": "trace",
+      "interaction": "draw",
+      "progression": {
+        "maxLevel": 5,
+        "adaptive": true
+      },
+      "learningSignals": [
+        "strokeOrder",
+        "shape"
+      ]
+    }
   }
 ]
